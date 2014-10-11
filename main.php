@@ -4,6 +4,7 @@
  * https://github.com/nikic/PHP-Parser/blob/master/doc/2_Usage_of_basic_components.markdown
  */
 
+ini_set('memory_limit', '4096m');
 require '/home/wangyuchen/project/git_monque_gadget/monqueDev.class.php';
 require __dir__.'/vendor/PHP-Parser/lib/bootstrap.php';
 

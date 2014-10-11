@@ -38,20 +38,32 @@ EOT;
 
     public function prepare()
     {
+        // TODO: Convert to full qulified name first
+
         self::$tb_def = array();
         self::$tb_defm = array();
         self::$tb_call = array();
+
+        // Load build-in functions
+        $lines = file(__dir__.'/buildin.dat');
+        foreach ($lines as $line) {
+            list($fname, $posbit) = explode(' ', $line, 2);
+            self::$tb_def[$fname] = array(
+                'pos' => intval($posbit),
+                'line' => null,
+            );
+        }
     }
 
     public function finish()
     {
         // Dump table
-        foreach (self::$tb_def as $name => $info) {
-            printf("function %s(%s)\n", $name, implode(', ', $info['pos']));
-        }
-        foreach (self::$tb_call as $info) {
-            printf("call %s(%s)\n", $info['name'], implode(', ', $info['pos']));
-        }
+        // foreach (self::$tb_def as $name => $info) {
+        //     printf("function %s(%b)\n", $name, $info['pos']);
+        // }
+        // foreach (self::$tb_call as $info) {
+        //     printf("call %s(%b)\n", $info['name'], $info['pos']);
+        // }
 
         // Check all call
         foreach (self::$tb_call as $cinfo) {
@@ -107,9 +119,6 @@ EOT;
 
     public function leaveNode($node)
     {
-        // TODO: Convert to full qulified name first
-        // TODO: Prepare build-in fucntions and methods
-
         // Populate
         if ($node instanceof PhpParser\Node\Stmt\Function_) {
             $this->populateDefine($node, 'func');
@@ -131,22 +140,23 @@ EOT;
 
     protected function getPositionsWithRef($node)
     {
-        $poslist = array();
+        $posbit = 0;
         foreach ($node->params as $pos => $param) {
             if ($param->byRef == 1) {
-                $poslist[$pos] = $pos;
+                $posbit |= 1 << $pos;
             }
         }
-        return $poslist;
+        return $posbit;
     }
 
     protected function getPositionsNoneVar($node)
     {
-        $poslist = array();
+        $posbit = 0;
         foreach ($node->args as $pos => $arg) {
             if ($arg->value instanceof PhpParser\Node\Expr\Variable ||
                 $arg->value instanceof PhpParser\Node\Expr\PropertyFetch ||
-                $arg->value instanceof PhpParser\Node\Expr\ArrayDimFetch) {
+                $arg->value instanceof PhpParser\Node\Expr\ArrayDimFetch ||
+                $arg->value instanceof PhpParser\Node\Expr\FuncCall) {
                 continue;
             } elseif ($arg->value instanceof PhpParser\Node\Expr\Assign) {
                 // Variable in assign expression
@@ -154,31 +164,25 @@ EOT;
                     continue;
                 }
             }
-            $poslist[$pos] = $pos;
+            $posbit |= 1 << $pos;
         }
-        return $poslist;
+        return $posbit;
     }
 
     protected function isMismatch($define, $call)
     {
-        // TODO: use bit and detect match
-        foreach ($call as $pos) {
-            if (isset($define[$pos])) {
-                return true;
-            }
-        }
-        return false;
+        return true && $define & $call;
     }
 
     protected function populateDefine($node, $type)
     {
-        $poslist = $this->getPositionsWithRef($node);
-        if (!$poslist) {
+        $posbit = $this->getPositionsWithRef($node);
+        if (!$posbit) {
             return;
         }
 
         $dinfo = array(
-            'pos' => $poslist,
+            'pos' => $posbit,
             'line' => $node->getLine(),
         );
 
@@ -210,8 +214,8 @@ EOT;
             return $this->dynamicCallname($node);
         }
 
-        $poslist = $this->getPositionsNoneVar($node);
-        if (!$poslist) {
+        $posbit = $this->getPositionsNoneVar($node);
+        if (!$posbit) {
             return;
         }
 
@@ -236,7 +240,7 @@ EOT;
 
         self::$tb_call[] = array(
             'name' => $callname,
-            'pos' => $poslist,
+            'pos' => $posbit,
             'file' => $this->cur_file,
             'line' => $node->getLine(),
         );
