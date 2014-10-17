@@ -1,0 +1,21 @@
+{
+    "name": "monque/php-migration",
+    "description": "A static analyzer for PHP version migration",
+    "keywords": ["migration", "analyzer"],
+    "license": "TODO: Difference between licenses?",
+    "authors": [
+        {
+            "name": "Yuchen Wang"
+        }
+    ],
+    "require": {
+        "php": ">=5.3",
+        "nikic/php-parser": "~1.0.1",
+        "docopt/docopt": "1.0.0-rc1"
+    },
+    "autoload": {
+        "psr-4": {
+            "PhpMigration\\": "src/"
+        }
+    }
+}
