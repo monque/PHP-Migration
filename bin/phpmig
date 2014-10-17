@@ -1,6 +1,13 @@
 #! /usr/bin/env php
 <?php
 
+/*
+ * @author Yuchen Wang <phobosw@gmail.com>
+ *
+ * Code is compliant with PSR-0, PSR-1, PSR-2 and PSR-4 standards
+ * http://www.php-fig.org/
+ */
+
 // Autoload
 require __DIR__.'/../vendor/autoload.php';
 
@@ -21,58 +28,41 @@ $args = Docopt::handle($usage);
 ini_set('memory_limit', '4096m');
 
 // Filelist
-function genFilelist($root, $ext = '.php')
+function genFilelist($root, $ext = 'php')
 {
-    if (!is_dir($root)) {
-        return array($root);
+    $iterator = new RecursiveDirectoryIterator($root);
+    $iterator = new RecursiveIteratorIterator($iterator);
+    $iterator = new RegexIterator($iterator, '/\.'.$ext.'$/');
+
+    $files = array();
+    foreach ($iterator as $filename) {
+        $files[] = (string) $filename;
     }
-
-    $flist = array();
-    $stack = array($root);
-    while ($stack) {
-        $path = array_shift($stack);
-        @$items = scandir($path);
-        if (!is_array($items)) {
-            continue;
-        }
-
-        foreach ($items as $item) {
-            if ($item[0] == '.') {
-                continue;
-            }
-
-            $item = $path.'/'.$item;
-            if (is_dir($item)) {
-                $stack[] = $item;
-            } elseif (substr($item, -4) == $ext) {
-                $flist[] = $item;
-            }
-        }
-    }
-
-    return $flist;
+    return $files;
 }
 if ($args['--recursive']) {
     $filelist = array();
-    foreach ($args['<file>'] as $file) {
-        $file = rtrim($file, '/');
-        if (is_dir($file)) {
-            $filelist = array_merge($filelist, genFilelist($file));
+    foreach ($args['<file>'] as $filename) {
+        $filename = rtrim($filename, '/');
+        if (is_dir($filename)) {
+            $filelist = array_merge($filelist, genFilelist($filename));
         } else {
-            $filelist[] = $file;
+            $filelist[] = $filename;
         }
     }
 } else {
     $filelist = $args['<file>'];
 }
 
-// Load changes
+// Load changes into vistor
 $visitor = new PhpMigration\ChangesVisitor(array(
 ));
 
 // Instance parser
-$parser = new PhpParser\Parser(new PhpParser\Lexer);
+$parser = new PhpParser\Parser(new PhpParser\Lexer\Emulative);
 $traverser = new PhpParser\NodeTraverser;
+
+$traverser->addVisitor(new PhpParser\NodeVisitor\NameResolver);
 $traverser->addVisitor($visitor);
 
 // Parse each file
