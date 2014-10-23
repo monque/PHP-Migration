@@ -15,12 +15,12 @@ require __DIR__.'/../vendor/autoload.php';
 $usage = <<<EOT
 PHP Migration - A static analyzer for PHP version migration
 
-Usage:
-  phpmig [options] <file>...
+Usage: phpmig [options] <file>...
 
 Options:
   -r, --recursive   Handle directories recursive
-  -h --help         Show this screen
+  -v, --verbose
+  -h, --help        Show this screen
 EOT;
 $args = Docopt::handle($usage);
 
@@ -68,6 +68,9 @@ $traverser->addVisitor($visitor);
 // Parse each file
 $visitor->prepare();
 foreach ($filelist as $filename) {
+    if ($args['--verbose']) {
+        PhpMigration\Logging::info('Parse file {file}', array('file' => $filename));
+    }
     $visitor->setFilename($filename);
     $code = file_get_contents($filename);
 

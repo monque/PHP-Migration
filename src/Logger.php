@@ -44,8 +44,7 @@ class Logger extends AbstractLogger
 
         fprintf(
             $this->stderr,
-            "%s %-10s %s\n",
-            date('Y-m-d H:i:s'),
+            "[%s] %s\n",
             strtoupper($level),
             $message
         );
