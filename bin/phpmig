@@ -74,7 +74,10 @@ foreach ($filelist as $filename) {
     try {
         $stmts = $parser->parse($code);
     } catch (PhpParser\Error $e) {
-        printf("%s Parse Error: %s\n", $filename, $e->getMessage());
+        PhpMigration\Logging::warning('Parse error {file}, error message "{exception}"', array(
+            'exception' => $e,
+            'file' => $filename,
+        ));
         continue;
     }
 
