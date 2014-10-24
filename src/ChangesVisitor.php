@@ -17,7 +17,7 @@ class ChangesVisitor extends NodeVisitorAbstract
 
     protected $filename;
 
-    public function __construct($changes)
+    public function __construct($changes = array())
     {
         $this->changes = $changes;
         $this->filename = null;

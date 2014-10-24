@@ -55,8 +55,21 @@ if ($args['--recursive']) {
 }
 
 // Load changes into vistor
-$visitor = new PhpMigration\ChangesVisitor(array(
-));
+$changes = array();
+$chgpath = __DIR__.'/../src/Changes';
+foreach (scandir($chgpath) as $setname) {
+    $setfile = $chgpath.'/'.$setname.'/set.json';
+    if ($setname[0] == '.' || !file_exists($setfile)) {
+        continue;
+    }
+    $chglist = file_get_contents($setfile);
+    $chglist = json_decode($chglist, true);
+    foreach ($chglist as $chgname) {
+        $chgname = 'PhpMigration\Changes\\'.$setname.'\\'.$chgname;
+        $changes[] = new $chgname;
+    }
+}
+$visitor = new PhpMigration\ChangesVisitor($changes);
 
 // Instance parser
 $parser = new PhpParser\Parser(new PhpParser\Lexer\Emulative);

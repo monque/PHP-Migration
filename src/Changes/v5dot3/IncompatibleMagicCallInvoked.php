@@ -1,4 +1,5 @@
 <?php
+namespace PhpMigration\Changes\v5dot3;
 
 /*
  * @author Yuchen Wang <phobosw@gmail.com>
@@ -8,16 +9,14 @@
  * http://www.php-fig.org/psr/psr-2/
  */
 
-class ChangeDev5 extends Change
+use PhpMigration\Change;
+
+class IncompatibleMagicCallInvoked extends Change
 {
     protected $version = '5.3.0';
 
     protected $description = <<<EOT
-The __toString() magic method can no longer accept arguments.
-EOT;
-
-    protected $errmsg = <<<EOT
-Fatal error:  Method Test::__tostring() cannot take arguments in %file% on line %line%
+The __call() magic method is now invoked on access to private and protected methods.
 EOT;
 
     protected $reference = 'http://php.net/manual/en/migration53.incompatible.php';
@@ -31,18 +30,22 @@ EOT;
 
     public function leaveNode($node)
     {
+        $nonpublic = array();
+        $has_magic_call = false;
+
         if ($node instanceof PhpParser\Node\Stmt\Class_) {
             foreach ($node->getMethods() as $mnode) {
-                if ($mnode->name == '__toString' && count($mnode->params) != 0) {
-                    $errmsg = str_replace(
-                        array('%name%', '%file%', '%line%'),
-                        array($mnode->name, $this->cur_file, $node->getLine()),
-                        $this->errmsg
-                    );
-                    echo $errmsg."\n";
+                if ($mnode->name == '__call') {
+                    $has_magic_call = true;
+                } elseif (!$mnode->isPublic()) {
+                    $nonpublic[] = $mnode->name;
                 }
             }
         }
+
+        if ($has_magic_call && $nonpublic) {
+            echo $node->name."\n";
+            print_r($nonpublic);
+        }
     }
 }
-

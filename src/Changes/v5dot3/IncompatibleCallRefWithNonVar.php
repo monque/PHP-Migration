@@ -1,4 +1,5 @@
 <?php
+namespace PhpMigration\Changes\v5dot3;
 
 /*
  * @author Yuchen Wang <phobosw@gmail.com>
@@ -8,7 +9,9 @@
  * http://www.php-fig.org/psr/psr-2/
  */
 
-class ChangeDev extends Change
+use PhpMigration\Change;
+
+class IncompatibleCallRefWithNonVar extends Change
 {
     protected $version = '5.3.0';
 

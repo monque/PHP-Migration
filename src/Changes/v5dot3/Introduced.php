@@ -1,4 +1,5 @@
 <?php
+namespace PhpMigration\Changes\v5dot3;
 
 /*
  * @author Yuchen Wang <phobosw@gmail.com>
@@ -8,9 +9,10 @@
  * http://www.php-fig.org/psr/psr-2/
  */
 
+use PhpMigration\Change;
 use PhpParser\Node;
 
-class ChangeNewIntroduced extends Change
+class Introduced extends Change
 {
     protected $function = array(
         // PHP Core

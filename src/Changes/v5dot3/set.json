@@ -1,0 +1,9 @@
+[ 
+    "Deprecated",
+    "IncompatibleCallFromGlobal",
+    "IncompatibleCallRefWithNonVar",
+    "IncompatibleMagicCallInvoked",
+    "IncompatibleMagicNonPublic",
+    "IncompatibleToStringWithArg",
+    "Introduced"
+]
