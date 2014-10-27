@@ -16,9 +16,11 @@ $usage = <<<EOT
 PHP Migration - A static analyzer for PHP version migration
 
 Usage: phpmig [options] <file>...
+       phpmig -l | --list
 
 Options:
-  -r, --recursive   Handle directories recursive
+  -l, --list        List all migration sets
+  -s, --set=NAME    The name of migration set to use
   -v, --verbose
   -h, --help        Show this screen
 EOT;
@@ -27,76 +29,80 @@ $args = Docopt::handle($usage);
 // Ini set
 ini_set('memory_limit', '4096m');
 
-// Filelist
-function genFilelist($root, $ext = 'php')
-{
-    $iterator = new RecursiveDirectoryIterator($root);
-    $iterator = new RecursiveIteratorIterator($iterator);
-    $iterator = new RegexIterator($iterator, '/\.'.$ext.'$/');
-
-    $files = array();
-    foreach ($iterator as $filename) {
-        $files[] = (string) $filename;
+// Routine: show set list
+$setpath = __DIR__.'/../src/Sets';
+if ($args['--list']) {
+    $iterator = new RecursiveDirectoryIterator($setpath);
+    $iterator = new RegexIterator($iterator, '/\.json$/');
+    foreach ($iterator as $setfile) {
+        $info = json_decode(file_get_contents($setfile));
+        printf("%s: %s\n", strstr($setfile->getBasename(), '.', true), $info->desc);
     }
-    return $files;
+    exit(0);
 }
-if ($args['--recursive']) {
-    $filelist = array();
-    foreach ($args['<file>'] as $filename) {
-        $filename = rtrim($filename, '/');
-        if (is_dir($filename)) {
-            $filelist = array_merge($filelist, genFilelist($filename));
-        } else {
-            $filelist[] = $filename;
+
+// Routine: main
+if (true) {
+    // Load Changes
+    $setfile = $setpath.'/'.$args['--set'].'.json';
+    if (!file_exists($setfile)) {
+        PhpMigration\Logging::error("Unable load setfile {name}", array('name' => $setfile));
+        exit(1);
+    }
+    $info = json_decode(file_get_contents($setfile));
+    $chglist = array();
+    foreach ($info->changes as $chgname) {
+        $chgname = 'PhpMigration\Changes\\'.$chgname;
+        $chglist[] = new $chgname;
+        if ($args['--verbose']) {
+            PhpMigration\Logging::info('Load change {name}', array('name' => $chgname));
         }
     }
-} else {
-    $filelist = $args['<file>'];
+    $chgvisitor = new PhpMigration\ChangesVisitor($chglist);
+
+    // Instance parser
+    $parser = new PhpParser\Parser(new PhpParser\Lexer\Emulative);
+    $traverser = new PhpParser\NodeTraverser;
+    $traverser->addVisitor(new PhpParser\NodeVisitor\NameResolver);
+    $traverser->addVisitor($chgvisitor);
+
+    // Prepare filelist
+    $filelist = array();
+    foreach ($args['<file>'] as $file) {
+        if (!file_exists($file)) {
+            PhpMigration\Logging::warning('No such file or directory {file}', array('file' => $file));
+        } elseif (is_dir($file)) {
+            $iterator = new RecursiveDirectoryIterator($file);
+            $iterator = new RecursiveIteratorIterator($iterator);
+            $iterator = new RegexIterator($iterator, '/\.php$/');
+            foreach ($iterator as $file) {
+                $filelist[] = $file;
+            }
+        } else {
+            $filelist[] = new SplFileInfo($file);
+        }
+    }
+
+    // Parse
+    $chgvisitor->prepare();
+    foreach ($filelist as $file) {
+        $chgvisitor->setFilename($file);
+        if ($args['--verbose']) {
+            PhpMigration\Logging::info('Parse file {file}', array('file' => $file));
+        }
+        $code = file_get_contents($file);
+
+        try {
+            $stmts = $parser->parse($code);
+        } catch (PhpParser\Error $e) {
+            PhpMigration\Logging::warning('Parse error {file}, error message "{exception}"', array(
+                'exception' => $e,
+                'file' => $file,
+            ));
+            continue;
+        }
+
+        $stmts = $traverser->traverse($stmts);
+    }
+    $chgvisitor->finish();
 }
-
-// Load changes into vistor
-$changes = array();
-$chgpath = __DIR__.'/../src/Changes';
-foreach (scandir($chgpath) as $setname) {
-    $setfile = $chgpath.'/'.$setname.'/set.json';
-    if ($setname[0] == '.' || !file_exists($setfile)) {
-        continue;
-    }
-    $chglist = file_get_contents($setfile);
-    $chglist = json_decode($chglist, true);
-    foreach ($chglist as $chgname) {
-        $chgname = 'PhpMigration\Changes\\'.$setname.'\\'.$chgname;
-        $changes[] = new $chgname;
-    }
-}
-$visitor = new PhpMigration\ChangesVisitor($changes);
-
-// Instance parser
-$parser = new PhpParser\Parser(new PhpParser\Lexer\Emulative);
-$traverser = new PhpParser\NodeTraverser;
-
-$traverser->addVisitor(new PhpParser\NodeVisitor\NameResolver);
-$traverser->addVisitor($visitor);
-
-// Parse each file
-$visitor->prepare();
-foreach ($filelist as $filename) {
-    if ($args['--verbose']) {
-        PhpMigration\Logging::info('Parse file {file}', array('file' => $filename));
-    }
-    $visitor->setFilename($filename);
-    $code = file_get_contents($filename);
-
-    try {
-        $stmts = $parser->parse($code);
-    } catch (PhpParser\Error $e) {
-        PhpMigration\Logging::warning('Parse error {file}, error message "{exception}"', array(
-            'exception' => $e,
-            'file' => $filename,
-        ));
-        continue;
-    }
-
-    $stmts = $traverser->traverse($stmts);
-}
-$visitor->finish();
