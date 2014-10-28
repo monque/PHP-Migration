@@ -20,7 +20,8 @@ Usage: phpmig [options] <file>...
 
 Options:
   -l, --list        List all migration sets
-  -s, --set=NAME    The name of migration set to use
+  -s, --set=NAME    The name of migration set to use [default: 52to53]
+  -d, --dump        Dump abstract syntax tree
   -v, --verbose
   -h, --help        Show this screen
 EOT;
@@ -58,7 +59,7 @@ if (true) {
             PhpMigration\Logging::info('Load change {name}', array('name' => $chgname));
         }
     }
-    $chgvisitor = new PhpMigration\ChangesVisitor($chglist);
+    $chgvisitor = new PhpMigration\ChangeVisitor($chglist);
 
     // Instance parser
     $parser = new PhpParser\Parser(new PhpParser\Lexer\Emulative);
@@ -86,7 +87,7 @@ if (true) {
     // Parse
     $chgvisitor->prepare();
     foreach ($filelist as $file) {
-        $chgvisitor->setFilename($file);
+        $chgvisitor->setFile($file);
         if ($args['--verbose']) {
             PhpMigration\Logging::info('Parse file {file}', array('file' => $file));
         }
@@ -102,7 +103,31 @@ if (true) {
             continue;
         }
 
+        // Apply traverser
         $stmts = $traverser->traverse($stmts);
     }
     $chgvisitor->finish();
+
+    // Display
+    foreach ($chgvisitor->getSpots() as $spots) {
+        usort($spots, function ($a, $b) {
+            return $a['line'] - $b['line'];
+        });
+
+        $spot = current($spots);
+        $filename = $spot['file']->getFilename();
+
+        echo "\n";
+        echo "File: $filename\n";
+        echo "--------------------------------------------------------------------------------\n";
+        foreach ($spots as $spot) {
+            printf("%4d | %s\n", $spot['line'], $spot['message']);
+        }
+        echo "--------------------------------------------------------------------------------\n";
+    }
+
+    // Dump tree
+    if ($args['--dump']) {
+        print_r($stmts);
+    }
 }

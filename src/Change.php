@@ -13,24 +13,17 @@ use PhpParser\Node;
 class Change
 {
     /**                                                                        
-     * The version this change been introduced
+     * Visitor who hold this change instance
      */ 
-    protected $version;
+    protected $visitor;
 
-    /**                                                                        
-     * The description writen in the official migration guide on php.net
-     */ 
-    protected $description;
-
-    /**                                                                        
-     * Message that will be outputed by PHP
-     */ 
-    protected $errmsg;
-
-    /**                                                                        
-     * The link to the official guide
-     */ 
-    protected $reference;
+    /**
+     * Assign visitor
+     */
+    public function setVisitor($visitor)
+    {
+        $this->visitor = $visitor;
+    }
 
     /**
      * Called before any processing, just after __construct
@@ -50,14 +43,14 @@ class Change
     /**
      * Called before Traverser woking
      */
-    public function beforeTraverse($filename)
+    public function beforeTraverse()
     {
     }
 
     /**
      * Called after Traverser woking done
      */
-    public function afterTraverse($filename)
+    public function afterTraverse()
     {
     }
 
