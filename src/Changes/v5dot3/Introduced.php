@@ -10,11 +10,12 @@ namespace PhpMigration\Changes\v5dot3;
  */
 
 use PhpMigration\Change;
-use PhpParser\Node;
+use PhpParser\Node\Expr;
+use PhpParser\Node\Stmt;
 
 class Introduced extends Change
 {
-    protected $function = array(
+    protected static $function = array(
         // PHP Core
         'array_replace', 'array_replace_recursive', 'class_alias',
         'forward_static_call', 'forward_static_call_array',
@@ -59,7 +60,7 @@ class Introduced extends Change
         'msg_queue_exists', 'shm_has_var',
     );
 
-    protected $class = array(
+    protected static $class = array(
         // Date/Time
         'DateInterval', 'DatePeriod',
 
@@ -73,15 +74,15 @@ class Introduced extends Change
         'SplStack',
     );
 
-    protected $const = array(
+    protected static $const = array(
         // PHP Core
-        '__DIR__', '__NAMESPACE__', 'E_DEPRECATED', 'E_USER_DEPRECATED', 
-        'INI_SCANNER_NORMAL', 'INI_SCANNER_RAW', 'PHP_MAXPATHLEN', 
-        'PHP_WINDOWS_NT_DOMAIN_CONTROLLER', 'PHP_WINDOWS_NT_SERVER', 
-        'PHP_WINDOWS_NT_WORKSTATION', 'PHP_WINDOWS_VERSION_BUILD', 
-        'PHP_WINDOWS_VERSION_MAJOR', 'PHP_WINDOWS_VERSION_MINOR', 
-        'PHP_WINDOWS_VERSION_PLATFORM', 'PHP_WINDOWS_VERSION_PRODUCTTYPE', 
-        'PHP_WINDOWS_VERSION_SP_MAJOR', 'PHP_WINDOWS_VERSION_SP_MINOR', 
+        '__DIR__', '__NAMESPACE__', 'E_DEPRECATED', 'E_USER_DEPRECATED',
+        'INI_SCANNER_NORMAL', 'INI_SCANNER_RAW', 'PHP_MAXPATHLEN',
+        'PHP_WINDOWS_NT_DOMAIN_CONTROLLER', 'PHP_WINDOWS_NT_SERVER',
+        'PHP_WINDOWS_NT_WORKSTATION', 'PHP_WINDOWS_VERSION_BUILD',
+        'PHP_WINDOWS_VERSION_MAJOR', 'PHP_WINDOWS_VERSION_MINOR',
+        'PHP_WINDOWS_VERSION_PLATFORM', 'PHP_WINDOWS_VERSION_PRODUCTTYPE',
+        'PHP_WINDOWS_VERSION_SP_MAJOR', 'PHP_WINDOWS_VERSION_SP_MINOR',
         'PHP_WINDOWS_VERSION_SUITEMASK',
 
         // cURL
@@ -91,8 +92,8 @@ class Introduced extends Change
         'IMG_FILTER_PIXELATE',
 
         // JSON
-        'JSON_ERROR_CTRL_CHAR', 'JSON_ERROR_DEPTH', 'JSON_ERROR_NONE', 
-        'JSON_ERROR_STATE_MISMATCH', 'JSON_ERROR_SYNTAX', 'JSON_FORCE_OBJECT', 
+        'JSON_ERROR_CTRL_CHAR', 'JSON_ERROR_DEPTH', 'JSON_ERROR_NONE',
+        'JSON_ERROR_STATE_MISMATCH', 'JSON_ERROR_SYNTAX', 'JSON_FORCE_OBJECT',
         'JSON_HEX_TAG', 'JSON_HEX_AMP', 'JSON_HEX_APOS', 'JSON_HEX_QUOT',
 
         // LDAP
@@ -105,42 +106,32 @@ class Introduced extends Change
         'PREG_BAD_UTF8_OFFSET_ERROR',
 
         // PCNTL
-        'BUS_ADRALN', 'BUS_ADRERR', 'BUS_OBJERR', 'CLD_CONTIUNED', 
-        'CLD_DUMPED', 'CLD_EXITED', 'CLD_KILLED', 'CLD_STOPPED', 'CLD_TRAPPED', 
-        'FPE_FLTDIV', 'FPE_FLTINV', 'FPE_FLTOVF', 'FPE_FLTRES', 'FPE_FLTSUB', 
-        'FPE_FLTUND', 'FPE_INTDIV', 'FPE_INTOVF', 'ILL_BADSTK', 'ILL_COPROC', 
-        'ILL_ILLADR', 'ILL_ILLOPC', 'ILL_ILLOPN', 'ILL_ILLTRP', 'ILL_PRVOPC', 
-        'ILL_PRVREG', 'POLL_ERR', 'POLL_HUP', 'POLL_IN', 'POLL_MSG', 
-        'POLL_OUT', 'POLL_PRI', 'SEGV_ACCERR', 'SEGV_MAPERR', 'SI_ASYNCIO', 
-        'SI_KERNEL', 'SI_MESGQ', 'SI_NOINFO', 'SI_QUEUE', 'SI_SIGIO', 
-        'SI_TIMER', 'SI_TKILL', 'SI_USER', 'SIG_BLOCK', 'SIG_SETMASK', 
+        'BUS_ADRALN', 'BUS_ADRERR', 'BUS_OBJERR', 'CLD_CONTIUNED',
+        'CLD_DUMPED', 'CLD_EXITED', 'CLD_KILLED', 'CLD_STOPPED', 'CLD_TRAPPED',
+        'FPE_FLTDIV', 'FPE_FLTINV', 'FPE_FLTOVF', 'FPE_FLTRES', 'FPE_FLTSUB',
+        'FPE_FLTUND', 'FPE_INTDIV', 'FPE_INTOVF', 'ILL_BADSTK', 'ILL_COPROC',
+        'ILL_ILLADR', 'ILL_ILLOPC', 'ILL_ILLOPN', 'ILL_ILLTRP', 'ILL_PRVOPC',
+        'ILL_PRVREG', 'POLL_ERR', 'POLL_HUP', 'POLL_IN', 'POLL_MSG',
+        'POLL_OUT', 'POLL_PRI', 'SEGV_ACCERR', 'SEGV_MAPERR', 'SI_ASYNCIO',
+        'SI_KERNEL', 'SI_MESGQ', 'SI_NOINFO', 'SI_QUEUE', 'SI_SIGIO',
+        'SI_TIMER', 'SI_TKILL', 'SI_USER', 'SIG_BLOCK', 'SIG_SETMASK',
         'SIG_UNBLOCK', 'TRAP_BRKPT', 'TRAP_TRACE',
     );
 
-    public function beforeTraverse($filename)
-    {
-        $this->cur_file = $filename;  // TODO: 统一保存
-    }
-
     public function leaveNode($node)
     {
-        if ($node instanceof Node\Stmt\Function_ && in_array($node->name, $this->function)) {
-            printf("Fatal error: Cannot redeclare %s() in %s on line %d\n",
-                $node->name, $this->cur_file, $node->getLine());
-        } elseif ($node instanceof Node\Stmt\Class_ && in_array($node->name, $this->class)) {
-            printf("Fatal error: Cannot redeclare class %s in %s on line %d\n",
-                $node->name, $this->cur_file, $node->getLine());
-        } elseif ($node instanceof Node\Expr\FuncCall) {
-            if ($node->name == 'define') {
-                $constname = $node->args[0]->value->value;
-                if (in_array($constname, $this->const)) {
-                    printf("Notice: Constant %s already defined in %s on line %d\n",
-                        $constname, $this->cur_file, $node->getLine());
-                }
+        if ($node instanceof Stmt\Function_ && in_array($node->name, static::$function)) {
+            // Function
+            $this->visitor->addSpot(sprintf('Cannot redeclare %s()', $node->name));
+        } elseif ($node instanceof Stmt\Class_ && in_array($node->name, static::$class)) {
+            // Class
+            $this->visitor->addSpot(sprintf('Cannot redeclare class %s', $node->name));
+        } elseif ($node instanceof Expr\FuncCall && $node->name == 'define') {
+            // Constant
+            $constname = $node->args[0]->value->value;
+            if (in_array($constname, static::$const)) {
+                $this->visitor->addSpot(sprintf('Constant %s already defined', $constname));
             }
         }
     }
 }
-
-
-// TODO: ini config file

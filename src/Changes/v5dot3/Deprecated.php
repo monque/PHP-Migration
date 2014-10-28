@@ -10,22 +10,12 @@ namespace PhpMigration\Changes\v5dot3;
  */
 
 use PhpMigration\Change;
+use PhpMigration\Utils\ParserHelper;
+use PhpParser\Node\Expr;
 
 class Deprecated extends Change
 {
-    protected $version = '5.3.0';
-
-    protected $description = <<<EOT
-EOT;
-
-    protected $errmsg = <<<EOT
-EOT;
-
-    protected $reference = 'http://php.net/manual/en/migration53.deprecated.php';
-
-    protected $cur_file;
-
-    protected $functions = array(
+    protected static $function = array(
         'call_user_method'          => 'use call_user_func() instead',
         'call_user_method_array'    => 'use call_user_func_array() instead',
         'define_syslog_variables'   => '',
@@ -49,35 +39,25 @@ EOT;
         // The is_dst parameter to mktime(). Use the new timezone handling functions instead.
     );
 
-    public function beforeTraverse($filename)
-    {
-        $this->cur_file = $filename;  // TODO: 统一保存
-    }
-
     public function leaveNode($node)
     {
-        if ($node instanceof PhpParser\Node\Expr\FuncCall) {
-            $this->populateCall($node);
-        } elseif ($node instanceof PhpParser\Node\Expr\AssignRef) {
-            if ($node->expr instanceof PhpParser\Node\Expr\New_) {
-                printf("Deprecated: Assigning the return value of new by reference is deprecated in %s on line %d\n", $this->cur_file, $node->getLine());
+        if ($node instanceof Expr\FuncCall && !ParserHelper::isDynamicCall($node)) {
+            $namestr = $node->name->toString();
+            if (!isset(static::$function[$namestr])) {
+                return;
             }
-        }
-        // TODO: call-time pass-by-reference
-        // TODO: advice
-        // TODO: Change的概念定义、命名规范，是否一个change可以检查多个特征，change是否需要和advice对应
-    }
 
-    protected function populateCall($node)
-    {
-        if (!is_string($node->name) && !($node->name instanceof PhpParser\Node\Name)) {
-            return;
-        }
-
-        $name = (string) $node->name;
-        if (isset($this->functions[$name])) {
-            $advice = $this->functions[$name];
-            printf("Function %s() is deprecated %s in %s on line %d\n", $name, $advice, $this->cur_file, $node->getLine());
+            // Function call
+            $advice = static::$function[$namestr];
+            if ($advice) {
+                $errmsg = sprintf('Function %s() is deprecated, %s', $namestr, $advice);
+            } else {
+                $errmsg = sprintf('Function %s() is deprecated', $namestr);
+            }
+            $this->visitor->addSpot($errmsg);
+        } elseif ($node instanceof Expr\AssignRef && $node->expr instanceof Expr\New_) {
+            // Assign new instance
+            $this->visitor->addSpot('Assigning the return value of new by reference is deprecated');
         }
     }
 }

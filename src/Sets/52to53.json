@@ -2,12 +2,11 @@
     "desc": "Migrating from PHP 5.2.x to PHP 5.3.x",
     "link": "http://php.net/manual/en/migration53.php",
     "changes": [ 
+        "v5dot3\\IncompByReference",
+        "v5dot3\\IncompCallFromGlobal",
+        "v5dot3\\IncompMagic",
+        "v5dot3\\IncompMagicInvoked",
         "v5dot3\\Deprecated",
-        "v5dot3\\IncompatibleCallFromGlobal",
-        "v5dot3\\IncompatibleCallRefWithNonVar",
-        "v5dot3\\IncompatibleMagicCallInvoked",
-        "v5dot3\\IncompatibleMagicNonPublic",
-        "v5dot3\\IncompatibleToStringWithArg",
         "v5dot3\\Introduced"
     ]
 }
