@@ -4,7 +4,7 @@ namespace PhpMigration\Changes\v5dot3;
 /*
  * @author Yuchen Wang <phobosw@gmail.com>
  *
- * Code follow PSR-1 and PSR-2 standards
+ * Code is compliant with PSR-1 and PSR-2 standards
  * http://www.php-fig.org/psr/psr-1/
  * http://www.php-fig.org/psr/psr-2/
  */
@@ -22,8 +22,8 @@ class IncompMagic extends Change
     {
         /*
          * {Description}
-         * The magic methods __get(), __set(), __isset(), __unset(), and 
-         * __call() must always be public and can no longer be static. Method 
+         * The magic methods __get(), __set(), __isset(), __unset(), and
+         * __call() must always be public and can no longer be static. Method
          * signatures are now enforced.
          *
          * {Errmsg}

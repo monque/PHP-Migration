@@ -4,7 +4,7 @@ namespace PhpMigration\Changes\v5dot3;
 /*
  * @author Yuchen Wang <phobosw@gmail.com>
  *
- * Code follow PSR-1 and PSR-2 standards
+ * Code is compliant with PSR-1 and PSR-2 standards
  * http://www.php-fig.org/psr/psr-1/
  * http://www.php-fig.org/psr/psr-2/
  */
@@ -23,9 +23,9 @@ class IncompCallFromGlobal extends Change
     {
         /*
          * {Description}
-         * func_get_arg(), func_get_args() and func_num_args() can no longer be 
-         * called from the outermost scope of a file that has been included by 
-         * calling include or require from within a function in the calling 
+         * func_get_arg(), func_get_args() and func_num_args() can no longer be
+         * called from the outermost scope of a file that has been included by
+         * calling include or require from within a function in the calling
          * file.
          * {Errmsg}
          * Warning:  {method}: Called from the global scope - no function context

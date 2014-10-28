@@ -4,7 +4,7 @@ namespace PhpMigration\Changes\v5dot3;
 /*
  * @author Yuchen Wang <phobosw@gmail.com>
  *
- * Code follow PSR-1 and PSR-2 standards
+ * Code is compliant with PSR-1 and PSR-2 standards
  * http://www.php-fig.org/psr/psr-1/
  * http://www.php-fig.org/psr/psr-2/
  */
@@ -24,12 +24,12 @@ class IncompByReference extends Change
     {
         /*
          * {Description}
-         * The behaviour of functions with by-reference parameters called by 
-         * value has changed. Where previously the function would accept the 
-         * by-value argument, a fatal error is now emitted. Any previous code 
-         * passing constants or literals to functions expecting references, 
-         * will need altering to assign the value to a variable before calling 
-         * the function. 
+         * The behaviour of functions with by-reference parameters called by
+         * value has changed. Where previously the function would accept the
+         * by-value argument, a fatal error is now emitted. Any previous code
+         * passing constants or literals to functions expecting references,
+         * will need altering to assign the value to a variable before calling
+         * the function.
          *
          * {Errmsg}
          * Fatal error: Only variables can be passed by reference
@@ -40,7 +40,7 @@ class IncompByReference extends Change
 
         if ($suspected) {
             $message = 'Only variables can be passed by reference, when %s called by instance %s';
-            $message = sprintf($message, $cinfo['name'], implode(',', $suspected));
+            $message = sprintf($message, $cinfo['name'], implode(', ', $suspected));
         } else {
             $message = 'Only variables can be passed by reference';
         }

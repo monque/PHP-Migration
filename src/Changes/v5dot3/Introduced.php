@@ -4,7 +4,7 @@ namespace PhpMigration\Changes\v5dot3;
 /*
  * @author Yuchen Wang <phobosw@gmail.com>
  *
- * Code follow PSR-1 and PSR-2 standards
+ * Code is compliant with PSR-1 and PSR-2 standards
  * http://www.php-fig.org/psr/psr-1/
  * http://www.php-fig.org/psr/psr-2/
  */

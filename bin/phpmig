@@ -121,7 +121,7 @@ if (true) {
         echo "File: $filename\n";
         echo "--------------------------------------------------------------------------------\n";
         foreach ($spots as $spot) {
-            printf("%4d | %s\n", $spot['line'], $spot['message']);
+            printf("%5d | %s\n", $spot['line'], $spot['message']);
         }
         echo "--------------------------------------------------------------------------------\n";
     }
