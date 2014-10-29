@@ -352,8 +352,11 @@ class IncompByReference extends Change
         foreach ($node->args as $pos => $arg) {
             if ($arg->value instanceof Expr\Variable ||
                 $arg->value instanceof Expr\PropertyFetch ||
+                $arg->value instanceof Expr\StaticPropertyFetch ||
                 $arg->value instanceof Expr\ArrayDimFetch ||
-                $arg->value instanceof Expr\FuncCall) {
+                $arg->value instanceof Expr\FuncCall ||
+                $arg->value instanceof Expr\MethodCall ||
+                $arg->value instanceof Expr\StaticCall) {
                 continue;
             } elseif ($arg->value instanceof Expr\Assign) {
                 // Variable in assign expression
@@ -369,7 +372,7 @@ class IncompByReference extends Change
     protected function checkPassByRef($node)
     {
         foreach ($node->args as $arg) {
-            if ($arg->byRef && $arg->value instanceof Expr\Variable) {
+            if ($arg->byRef) {
                 return $this->emitPassByRef($node);
             }
         }

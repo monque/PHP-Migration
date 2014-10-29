@@ -106,7 +106,9 @@ class ChangeVisitor extends NodeVisitorAbstract
         $this->node = $node;
 
         // Record current
-        if ($node instanceof Stmt\Class_) {
+        if ($node instanceof Stmt\Class_ ||
+            $node instanceof Stmt\Interface_ ||
+            $node instanceof Stmt\Trait_) {
             $this->class = $node;
         } elseif ($node instanceof Stmt\ClassMethod) {
             $this->method = $node;
