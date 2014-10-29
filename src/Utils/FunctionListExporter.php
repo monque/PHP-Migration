@@ -1,6 +1,15 @@
 <?php
+namespace PhpMigration\Utils;
 
-class MehtodDescParser
+/*
+ * @author Yuchen Wang <phobosw@gmail.com>
+ *
+ * Code is compliant with PSR-1 and PSR-2 standards
+ * http://www.php-fig.org/psr/psr-1/
+ * http://www.php-fig.org/psr/psr-2/
+ */
+
+class FunctionListExporter
 {
     protected static $defaultMethod = array(
         'modifier' => array(),
@@ -17,19 +26,15 @@ class MehtodDescParser
         'reference' => false,
     );
 
-    public function __construct()
-    {
-		libxml_use_internal_errors(true);
-    }
-
     public function parse($dhtml)
     {
         $dhtml = $this->prepare($dhtml);
 
+		libxml_use_internal_errors(true);
 		libxml_clear_errors();
-        $droot = new SimpleXMLElement($dhtml, LIBXML_NONET);
+        $droot = new \SimpleXMLElement($dhtml, LIBXML_NONET);
         if ($droot->attributes()->class != 'methodsynopsis dc-description') {
-            throw new Exception('Invalid method description html');
+            throw new \Exception('Invalid method description html');
         }
 		$errors = libxml_get_errors();
 
@@ -50,7 +55,7 @@ class MehtodDescParser
                     $method['params'][] = $param;
                 }
             } else {
-                throw new Exception('Unknown method defination class <'.$class.'>');
+                throw new \Exception('Unknown method defination class <'.$class.'>');
             }
         }
 
@@ -84,48 +89,34 @@ class MehtodDescParser
                 $param['name'] = $text;
                 $param['reference'] = true;
             } elseif ($class == 'initializer') {
-                $param['optional'] = true;  // TODO: 有没有默认值和optional无关
+                $param['optional'] = true;  // TODO: default-value, optional has no reference
                 $param['initializer'] = $text;
             } else {
-                throw new Exception('Unknown param defination class <'.$class.'>');
+                throw new \Exception('Unknown param defination class <'.$class.'>');
             }
         }
 
         return $param;
     }
-}
 
-// Download from http://php.net/get/php_manual_en.html.gz/from/a/mirror
-$html = file_get_contents('php_manual_en.html');
+    public function parseAll($wholehtml)
+    {
+        $list = array();
 
-$parser = new MehtodDescParser();
-
-$buildins = array();
-
-preg_match_all('/<div class="methodsynopsis dc-description">.+?<\/div>/s', $html, $matches);
-foreach ($matches[0] as $desc) {
-    try {
-        $method = $parser->parse($desc);
-    } catch (Exception $e) {
-        continue;
-    }
-
-    // Skip class method
-    if ($method['modifier']) {
-        continue;
-    }
-
-    // Find by-reference param
-    $posbit = 0;
-    foreach ($method['params'] as $key => $param) {
-        if ($param['reference']) {
-            $posbit |= 1 << $key;
+        preg_match_all('/<div class="methodsynopsis dc-description">.+?<\/div>/s', $wholehtml, $matches);
+        if (!$matches[0]) {
+            throw new \Exception('Invalid single document html');
         }
-    }
-    if (!$posbit) {
-        continue;
-    }
 
-    // Output
-    printf("%s %d\n", $method['name'], $posbit);
+        foreach ($matches[0] as $desc) {
+            try {
+                $method = $this->parse($desc);
+                $list[] = $method;
+            } catch (\Exception $e) {
+                continue;
+            }
+        }
+
+        return $list;
+    }
 }

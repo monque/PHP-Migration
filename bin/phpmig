@@ -4,9 +4,12 @@
 /*
  * @author Yuchen Wang <phobosw@gmail.com>
  *
- * Code is compliant with PSR-0, PSR-1, PSR-2 and PSR-4 standards
- * http://www.php-fig.org/
+ * Code is compliant with PSR-1 and PSR-2 standards
+ * http://www.php-fig.org/psr/psr-1/
+ * http://www.php-fig.org/psr/psr-2/
  */
+
+use PhpMigration\Logging;
 
 // Autoload
 require __DIR__.'/../vendor/autoload.php';
@@ -17,6 +20,7 @@ PHP Migration - A static analyzer for PHP version migration
 
 Usage: phpmig [options] <file>...
        phpmig -l | --list
+       phpmig --export-posbit <docfile>
 
 Options:
   -l, --list        List all migration sets
@@ -24,6 +28,9 @@ Options:
   -d, --dump        Dump abstract syntax tree
   -v, --verbose
   -h, --help        Show this screen
+
+Development:
+  --export-posbit   Export build-in function posbit list
 EOT;
 $args = Docopt::handle($usage);
 
@@ -40,6 +47,36 @@ if ($args['--list']) {
         printf("%s: %s\n", strstr($setfile->getBasename(), '.', true), $info->desc);
     }
     exit(0);
+} elseif ($args['--export-posbit']) {
+    $docfile = $args['<docfile>'];
+    if (!file_exists($docfile)) {
+        Logging::error("Unable load docfile {name}", array('name' => $docfile));
+        exit(1);
+    }
+    $html = file_get_contents($docfile);
+
+    $exporter = new PhpMigration\Utils\FunctionListExporter();
+    $methodlist = $exporter->parseAll($html);
+    foreach ($methodlist as $method) {
+        // Skip class method
+        if ($method['modifier'] || strpos($method['name'], '::') !== false) {
+            continue;
+        }
+
+        // Find by-reference param
+        $posbit = 0;
+        foreach ($method['params'] as $key => $param) {
+            if ($param['reference']) {
+                $posbit |= 1 << $key;
+            }
+        }
+        if (!$posbit) {
+            continue;
+        }
+
+        printf("%-40s => %4u, // %s\n", "'".$method['name']."'", $posbit, strrev(decbin($posbit)));
+    }
+    exit(0);
 }
 
 // Routine: main
@@ -47,7 +84,7 @@ if (true) {
     // Load Changes
     $setfile = $setpath.'/'.$args['--set'].'.json';
     if (!file_exists($setfile)) {
-        PhpMigration\Logging::error("Unable load setfile {name}", array('name' => $setfile));
+        Logging::error("Unable load setfile {name}", array('name' => $setfile));
         exit(1);
     }
     $info = json_decode(file_get_contents($setfile));
@@ -56,7 +93,7 @@ if (true) {
         $chgname = 'PhpMigration\Changes\\'.$chgname;
         $chglist[] = new $chgname;
         if ($args['--verbose']) {
-            PhpMigration\Logging::info('Load change {name}', array('name' => $chgname));
+            Logging::info('Load change {name}', array('name' => $chgname));
         }
     }
     $chgvisitor = new PhpMigration\ChangeVisitor($chglist);
@@ -71,7 +108,7 @@ if (true) {
     $filelist = array();
     foreach ($args['<file>'] as $file) {
         if (!file_exists($file)) {
-            PhpMigration\Logging::warning('No such file or directory {file}', array('file' => $file));
+            Logging::warning('No such file or directory {file}', array('file' => $file));
         } elseif (is_dir($file)) {
             $iterator = new RecursiveDirectoryIterator($file);
             $iterator = new RecursiveIteratorIterator($iterator);
@@ -89,14 +126,14 @@ if (true) {
     foreach ($filelist as $file) {
         $chgvisitor->setFile($file);
         if ($args['--verbose']) {
-            PhpMigration\Logging::info('Parse file {file}', array('file' => $file));
+            Logging::info('Parse file {file}', array('file' => $file));
         }
         $code = file_get_contents($file);
 
         try {
             $stmts = $parser->parse($code);
         } catch (PhpParser\Error $e) {
-            PhpMigration\Logging::warning('Parse error {file}, error message "{exception}"', array(
+            Logging::warning('Parse error {file}, error message "{exception}"', array(
                 'exception' => $e,
                 'file' => $file,
             ));
@@ -109,18 +146,16 @@ if (true) {
     $chgvisitor->finish();
 
     // Display
-    foreach ($chgvisitor->getSpots() as $spots) {
-        usort($spots, function ($a, $b) {
+    foreach ($chgvisitor->getSpots() as $spotlist) {
+        usort($spotlist, function ($a, $b) {
             return $a['line'] - $b['line'];
         });
 
-        $spot = current($spots);
-        $filename = $spot['file']->getFilename();
-
+        $spot = current($spotlist);
         echo "\n";
-        echo "File: $filename\n";
+        echo "File: ".$spot['file']."\n";
         echo "--------------------------------------------------------------------------------\n";
-        foreach ($spots as $spot) {
+        foreach ($spotlist as $spot) {
             printf("%5d | %s\n", $spot['line'], $spot['message']);
         }
         echo "--------------------------------------------------------------------------------\n";
