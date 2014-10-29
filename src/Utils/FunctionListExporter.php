@@ -30,13 +30,13 @@ class FunctionListExporter
     {
         $dhtml = $this->prepare($dhtml);
 
-		libxml_use_internal_errors(true);
-		libxml_clear_errors();
+        libxml_use_internal_errors(true);
+        libxml_clear_errors();
         $droot = new \SimpleXMLElement($dhtml, LIBXML_NONET);
         if ($droot->attributes()->class != 'methodsynopsis dc-description') {
             throw new \Exception('Invalid method description html');
         }
-		$errors = libxml_get_errors();
+        $errors = libxml_get_errors();
 
         $method = self::$defaultMethod;
         foreach ($droot as $element) {
