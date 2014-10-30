@@ -89,7 +89,7 @@ class FunctionListExporter
                 $param['name'] = $text;
                 $param['reference'] = true;
             } elseif ($class == 'initializer') {
-                $param['optional'] = true;  // TODO: default-value, optional has no reference
+                $param['optional'] = true;  // FIXME: has default-value isn't meanning be optional
                 $param['initializer'] = $text;
             } else {
                 throw new \Exception('Unknown param defination class <'.$class.'>');

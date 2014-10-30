@@ -46,11 +46,6 @@ class ChangeVisitor extends NodeVisitorAbstract
         return $this->file;
     }
 
-    public function getFilename()
-    {
-        return $this->file->getFilename();
-    }
-
     public function getClass()
     {
         return $this->class;
@@ -108,7 +103,7 @@ class ChangeVisitor extends NodeVisitorAbstract
         // Record current
         if ($node instanceof Stmt\Class_ ||
             $node instanceof Stmt\Interface_ ||
-            $node instanceof Stmt\Trait_) {
+            $node instanceof Stmt\Trait_) {  // FIXME: should Class, Interface, Trait all assign to $this->class ?
             $this->class = $node;
         } elseif ($node instanceof Stmt\ClassMethod) {
             $this->method = $node;
