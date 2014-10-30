@@ -31,4 +31,38 @@ class ParserHelper
             throw new \Exception('Invalid function, method call node ('.get_class($node).')');
         }
     }
+
+    public static function isSameFunc($a, $b)
+    {
+        // Node\Name object is acceptable, because of magic __toString method
+        $a = strtolower($a);
+        $b = strtolower($b);
+
+        return $a === $b;
+    }
+
+    public static function inFuncList($name, $list)
+    {
+        foreach ($list as $func) {
+            if (static::isSameFunc($name, $func)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static function isSameClass($a, $b)
+    {
+        return static::isSameFunc($a, $b);
+    }
+
+    public static function inClassList($name, $list)
+    {
+        foreach ($list as $func) {
+            if (static::isSameClass($name, $func)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
