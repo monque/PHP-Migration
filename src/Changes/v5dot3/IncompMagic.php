@@ -10,13 +10,25 @@ namespace PhpMigration\Changes\v5dot3;
  */
 
 use PhpMigration\Change;
+use PhpMigration\SymbolTable;
+use PhpMigration\Utils\NameHelper;
 use PhpParser\Node\Stmt;
 
 class IncompMagic extends Change
 {
-    protected static $magics = array(
+    protected static $prepared = false;
+
+    protected static $funcTable = array(
         '__get', '__set', '__isset', '__unset', '__call',
     );
+
+    public function prepare()
+    {
+        if (!static::$prepared) {
+            static::$funcTable  = new SymbolTable(array_flip(static::$funcTable), SymbolTable::IC);
+            static::$prepared = true;
+        }
+    }
 
     protected function emitNonPub($node)
     {
@@ -68,9 +80,9 @@ class IncompMagic extends Change
         }
 
         foreach ($node->getMethods() as $mnode) {
-            if (in_array($mnode->name, static::$magics) && (!$mnode->isPublic() || $mnode->isStatic())) {
+            if ((!$mnode->isPublic() || $mnode->isStatic()) && static::$funcTable->has($mnode->name)) {
                 $this->emitNonPub($mnode);
-            } elseif ($mnode->name == '__toString' && count($mnode->params) > 0) {
+            } elseif (NameHelper::isSameFunc($mnode->name, '__toString') && count($mnode->params) > 0) {
                 $this->emitToString($mnode);
             }
         }

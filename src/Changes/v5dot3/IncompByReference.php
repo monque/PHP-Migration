@@ -10,20 +10,23 @@ namespace PhpMigration\Changes\v5dot3;
  */
 
 use PhpMigration\Change;
+use PhpMigration\SymbolTable;
 use PhpMigration\Utils\ParserHelper;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Stmt;
 
 class IncompByReference extends Change
 {
-    protected static $tb_def;
-    protected static $tb_defm;
-    protected static $tb_call;
+    protected static $prepared = false;
 
-    /*
-     * This list is exported by running `phpmig --export-posbit <docfile>`
-     */
-    protected static $tb_defbi = array(
+    protected static $callList;
+
+    protected static $declareTable;
+
+    protected static $methodTable;
+
+    protected static $buildinTable = array(
+        // This list is exported by running `phpmig --export-posbit <docfile>`
         'apc_dec'                                =>    4, // 001
         'apc_fetch'                              =>    2, // 01
         'apc_inc'                                =>    4, // 001
@@ -238,7 +241,55 @@ class IncompByReference extends Change
         'yaz_wait'                               =>    1, // 1
     );
 
-    protected function emitSpot($cinfo, $suspected = null)
+    public function prepare()
+    {
+        if (!static::$prepared) {
+            static::$callList = array();
+            static::$declareTable = new SymbolTable(static::$buildinTable, SymbolTable::IC);
+            static::$methodTable = new SymbolTable(array(), SymbolTable::IC);
+        }
+    }
+
+    public function leaveNode($node)
+    {
+        // Populate
+        if ($node instanceof Stmt\Function_) {
+            $this->populateDefine($node, 'func');
+        } elseif ($node instanceof Stmt\ClassMethod) {
+            $this->populateDefine($node, 'method');
+        } elseif ($node instanceof Expr\FuncCall) {
+            $this->populateCall($node, 'func');
+        } elseif ($node instanceof Expr\StaticCall) {
+            $this->populateCall($node, 'static');
+        } elseif ($node instanceof Expr\MethodCall) {
+            $this->populateCall($node, 'method');
+        }
+    }
+
+    public function finish()
+    {
+        // Check all call
+        foreach (static::$callList as $call) {
+            $cname = $call['name'];
+            if (static::$declareTable->has($cname)) {
+                if ($this->isMismatch(static::$declareTable->get($cname), $call['pos'])) {
+                    $this->emitSpot($call);
+                }
+            } elseif (substr($cname, 0, 2) == '->' && static::$methodTable->has($cname)) {
+                $suspect = array();
+                foreach (static::$methodTable->get($cname) as $class => $posbit) {
+                    if ($this->isMismatch($posbit, $call['pos'])) {
+                        $suspect[] = $class;
+                    }
+                }
+                if ($suspect) {
+                    $this->emitSpot($call, $suspect);
+                }
+            }
+        }
+    }
+
+    protected function emitSpot($call, $suspect = null)
     {
         /*
          * {Description}
@@ -256,14 +307,14 @@ class IncompByReference extends Change
          * http://php.net/manual/en/migration53.incompatible.php
          */
 
-        if ($suspected) {
+        if ($suspect) {
             $message = 'Only variables can be passed by reference, when %s called by instance %s';
-            $message = sprintf($message, $cinfo['name'], implode(', ', $suspected));
+            $message = sprintf($message, $call['name'], implode(', ', $suspect));
         } else {
             $message = 'Only variables can be passed by reference';
         }
 
-        $this->visitor->addSpot($message, $cinfo['line'], $cinfo['file']);
+        $this->visitor->addSpot($message, $call['line'], $call['file']);
     }
 
     protected function emitPassByRef($node)
@@ -278,60 +329,12 @@ class IncompByReference extends Change
         $this->visitor->addSpot('Calltime pass-by-reference is deprecated');
     }
 
-    public function prepare()
+    protected function checkPassByRef($node)
     {
-        // Init defination table
-        self::$tb_def = self::$tb_defbi;
-        self::$tb_defm = array();
-        self::$tb_call = array();
-    }
-
-    public function finish()
-    {
-        // Dump table
-        if (false) {
-            foreach (self::$tb_def as $name => $posbit) {
-                printf("function %s(%b)\n", $name, $posbit);
+        foreach ($node->args as $arg) {
+            if ($arg->byRef) {
+                return $this->emitPassByRef($node);
             }
-            foreach (self::$tb_call as $info) {
-                printf("call %s(%b)\n", $info['name'], $info['pos']);
-            }
-        }
-
-        // Check all call
-        foreach (self::$tb_call as $cinfo) {
-            $cname = $cinfo['name'];
-            if (isset(self::$tb_def[$cname])) {
-                if ($this->isMismatch(self::$tb_def[$cname], $cinfo['pos'])) {
-                    $this->emitSpot($cinfo);
-                }
-            } elseif (substr($cname, 0, 2) == '->' && isset(self::$tb_defm[$cname])) {
-                $suspected = array();
-                foreach (self::$tb_defm[$cname] as $class => $posbit) {
-                    if ($this->isMismatch($posbit, $cinfo['pos'])) {
-                        $suspected[] = $class;
-                    }
-                }
-                if ($suspected) {
-                    $this->emitSpot($cinfo, $suspected);
-                }
-            }
-        }
-    }
-
-    public function leaveNode($node)
-    {
-        // Populate
-        if ($node instanceof Stmt\Function_) {
-            $this->populateDefine($node, 'func');
-        } elseif ($node instanceof Stmt\ClassMethod) {
-            $this->populateDefine($node, 'method');
-        } elseif ($node instanceof Expr\FuncCall) {
-            $this->populateCall($node, 'func');
-        } elseif ($node instanceof Expr\StaticCall) {
-            $this->populateCall($node, 'static');
-        } elseif ($node instanceof Expr\MethodCall) {
-            $this->populateCall($node, 'method');
         }
     }
 
@@ -369,15 +372,6 @@ class IncompByReference extends Change
         return $posbit;
     }
 
-    protected function checkPassByRef($node)
-    {
-        foreach ($node->args as $arg) {
-            if ($arg->byRef) {
-                return $this->emitPassByRef($node);
-            }
-        }
-    }
-
     protected function isMismatch($define, $call)
     {
         return true && ($define & $call);
@@ -396,10 +390,18 @@ class IncompByReference extends Change
             $fname = $this->visitor->getClassname().'::'.$node->name;
         } else {
             $fname = $this->visitor->getClassname().'->'.$node->name;
-            self::$tb_defm['->'.$node->name][$this->visitor->getClassname()] = $posbit;
+
+            $mname = '->'.$node->name;
+            if (static::$methodTable->has($mname)) {
+                $suspect = static::$methodTable->get($mname);
+            } else {
+                $suspect = array();
+            }
+            $suspect[$this->visitor->getClassname()] = $posbit;
+            static::$methodTable->set($fname, $suspect);
         }
 
-        self::$tb_def[$fname] = $posbit;
+        static::$declareTable->set($fname, $posbit);
     }
 
     protected function populateCall($node, $type)
@@ -416,7 +418,7 @@ class IncompByReference extends Change
         }
 
         if ($type == 'func') {
-            $callname = (string) $node->name;
+            $callname = $node->name;
         } elseif ($type == 'static') {
             $class = $node->class->toString();
             if ($class == 'self' && $this->visitor->inClass()) {
@@ -433,7 +435,7 @@ class IncompByReference extends Change
             $callname = $object.'->'.$node->name;
         }
 
-        self::$tb_call[] = array(
+        static::$callList[] = array(
             'name' => $callname,
             'pos' => $posbit,
             'file' => $this->visitor->getFile(),

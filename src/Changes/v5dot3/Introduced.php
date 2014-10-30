@@ -10,13 +10,17 @@ namespace PhpMigration\Changes\v5dot3;
  */
 
 use PhpMigration\Change;
+use PhpMigration\SymbolTable;
+use PhpMigration\Utils\NameHelper;
 use PhpMigration\Utils\ParserHelper;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Stmt;
 
 class Introduced extends Change
 {
-    protected static $function = array(
+    protected static $prepared = false;
+
+    protected static $funcTable = array(
         // PHP Core
         'array_replace', 'array_replace_recursive', 'class_alias',
         'forward_static_call', 'forward_static_call_array',
@@ -61,7 +65,7 @@ class Introduced extends Change
         'msg_queue_exists', 'shm_has_var',
     );
 
-    protected static $class = array(
+    protected static $classTable = array(
         // Date/Time
         'DateInterval', 'DatePeriod',
 
@@ -75,7 +79,7 @@ class Introduced extends Change
         'SplStack',
     );
 
-    protected static $const = array(
+    protected static $constTable = array(
         // PHP Core
         '__DIR__', '__NAMESPACE__', 'E_DEPRECATED', 'E_USER_DEPRECATED',
         'INI_SCANNER_NORMAL', 'INI_SCANNER_RAW', 'PHP_MAXPATHLEN',
@@ -119,69 +123,54 @@ class Introduced extends Change
         'SIG_UNBLOCK', 'TRAP_BRKPT', 'TRAP_TRACE',
     );
 
-    protected $condFunc;
+    protected $condFunc = null;
 
-    protected $condClass;
+    protected $condClass = null;
 
-    protected function isConditionalDeclare($node, $testfunc)
+    public function prepare()
     {
-        if (!($node instanceof Stmt\If_ && $node->cond instanceof Expr\BooleanNot)) {
-            return false;
+        if (!static::$prepared) {
+            static::$funcTable  = new SymbolTable(array_flip(static::$funcTable), SymbolTable::IC);
+            static::$classTable = new SymbolTable(array_flip(static::$classTable), SymbolTable::IC);
+            static::$constTable = new SymbolTable(array_flip(static::$constTable), SymbolTable::CS);
+            static::$prepared = true;
         }
-
-        $expr = $node->cond->expr;
-        return $expr instanceof Expr\FuncCall && ParserHelper::isSameFunc($expr->name, $testfunc);
-    }
-
-    protected function isConditionalFunc($node)
-    {
-        return $this->isConditionalDeclare($node, 'function_exists');
-    }
-
-    protected function isConditionalClass($node)
-    {
-        return $this->isConditionalDeclare($node, 'class_exists');
-    }
-
-    protected function getConditionalName($node)
-    {
-        return $node->cond->expr->args[0]->value->value;
     }
 
     public function enterNode($node)
     {
         // Support the simplest conditional declaration
-        if ($this->isConditionalFunc($node)) {
-            $this->condFunc = $this->getConditionalName($node);
-        } elseif ($this->isConditionalClass($node)) {
-            $this->condClass = $this->getConditionalName($node);
+        if (ParserHelper::isConditionalFunc($node)) {
+            $this->condFunc = ParserHelper::getConditionalName($node);
+        } elseif (ParserHelper::isConditionalClass($node)) {
+            $this->condClass = ParserHelper::getConditionalName($node);
         }
     }
 
     public function leaveNode($node)
     {
-        if ($node instanceof Stmt\Function_ &&
-                (is_null($this->condFunc) || !ParserHelper::isSameFunc($node->name, $this->condFunc)) &&
-                ParserHelper::inFuncList($node->name, static::$function)) {
-            // Function
+        // Function
+        if ($node instanceof Stmt\Function_ && static::$funcTable->has($node->name) &&
+                (is_null($this->condFunc) || !NameHelper::isSameFunc($node->name, $this->condFunc))) {
             $this->visitor->addSpot(sprintf('Cannot redeclare %s()', $node->name));
-        } elseif ($node instanceof Stmt\Class_ &&
-                (is_null($this->condClass) || !ParserHelper::isSameFunc($node->name, $this->condClass)) &&
-                ParserHelper::inClassList($node->name, static::$class)) {
-            // Class
+
+        // Class
+        } elseif ($node instanceof Stmt\Class_ && static::$classTable->has($node->name) &&
+                (is_null($this->condClass) || !NameHelper::isSameClass($node->name, $this->condClass))) {
             $this->visitor->addSpot(sprintf('Cannot redeclare class %s', $node->name));
-        } elseif ($node instanceof Expr\FuncCall && $node->name == 'define') {
-            // Constant
+
+        // Constant
+        } elseif ($node instanceof Expr\FuncCall && NameHelper::isSameFunc($node->name, 'define')) {
             $constname = $node->args[0]->value->value;
-            if (in_array($constname, static::$const)) {
+            if (static::$constTable->has($constname)) {
                 $this->visitor->addSpot(sprintf('Constant %s already defined', $constname));
             }
         }
 
         // Conditional declaration clear
-        if ($this->isConditionalFunc($node)) {
+        if (ParserHelper::isConditionalFunc($node)) {
             $this->condFunc = null;
-        } elseif ($this->isConditionalClass($node)) {
+        } elseif (ParserHelper::isConditionalClass($node)) {
             $this->condClass = null;
         }
     }

@@ -9,9 +9,9 @@ namespace PhpMigration\Utils;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-use PhpMigration\Logging;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
+use PhpParser\Node\Stmt;
 
 class ParserHelper
 {
@@ -32,37 +32,29 @@ class ParserHelper
         }
     }
 
-    public static function isSameFunc($a, $b)
+    protected static function isConditionalDeclare($node, $testfunc)
     {
-        // Node\Name object is acceptable, because of magic __toString method
-        $a = strtolower($a);
-        $b = strtolower($b);
-
-        return $a === $b;
-    }
-
-    public static function inFuncList($name, $list)
-    {
-        foreach ($list as $func) {
-            if (static::isSameFunc($name, $func)) {
-                return true;
-            }
+        if (!($node instanceof Stmt\If_ && $node->cond instanceof Expr\BooleanNot)) {
+            return false;
         }
-        return false;
+
+        $expr = $node->cond->expr;
+        return $expr instanceof Expr\FuncCall && NameHelper::isSameFunc($expr->name, $testfunc);
     }
 
-    public static function isSameClass($a, $b)
+    public static function isConditionalFunc($node)
     {
-        return static::isSameFunc($a, $b);
+        return static::isConditionalDeclare($node, 'function_exists');
     }
 
-    public static function inClassList($name, $list)
+    public static function isConditionalClass($node)
     {
-        foreach ($list as $func) {
-            if (static::isSameClass($name, $func)) {
-                return true;
-            }
-        }
-        return false;
+        return static::isConditionalDeclare($node, 'class_exists');
     }
+
+    public static function getConditionalName($node)
+    {
+        return $node->cond->expr->args[0]->value->value;
+    }
+
 }

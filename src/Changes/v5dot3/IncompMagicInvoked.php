@@ -10,6 +10,7 @@ namespace PhpMigration\Changes\v5dot3;
  */
 
 use PhpMigration\Change;
+use PhpMigration\Utils\NameHelper;
 use PhpParser\Node\Stmt;
 
 class IncompMagicInvoked extends Change
@@ -38,7 +39,7 @@ class IncompMagicInvoked extends Change
 
         if ($node instanceof Stmt\Class_) {
             foreach ($node->getMethods() as $mnode) {
-                if ($mnode->name == '__call') {
+                if (NameHelper::isSameFunc($mnode->name, '__call')) {
                     $has_magic_call = true;
                 } elseif (!$mnode->isPublic()) {
                     $non_public[] = $mnode->name;

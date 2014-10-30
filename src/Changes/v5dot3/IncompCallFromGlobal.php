@@ -10,14 +10,24 @@ namespace PhpMigration\Changes\v5dot3;
  */
 
 use PhpMigration\Change;
-use PhpMigration\Utils\ParserHelper;
+use PhpMigration\SymbolTable;
 use PhpParser\Node\Expr;
 
 class IncompCallFromGlobal extends Change
 {
-    protected static $function = array(
+    protected static $prepared = false;
+
+    protected static $funcTable = array(
         'func_get_arg', 'func_get_args', 'func_num_args'
     );
+
+    public function prepare()
+    {
+        if (!static::$prepared) {
+            static::$funcTable  = new SymbolTable(array_flip(static::$funcTable), SymbolTable::IC);
+            static::$prepared = true;
+        }
+    }
 
     protected function emitSpot($node)
     {
@@ -43,12 +53,11 @@ class IncompCallFromGlobal extends Change
     public function enterNode($node)
     {
         // Populate
-        if ($node instanceof Expr\FuncCall && !ParserHelper::isDynamicCall($node)) {
-            $namestr = $node->name->toString();
-            if (!$this->visitor->inMethod() && !$this->visitor->inFunction() &&
-                    in_array($namestr, static::$function)) {
-                $this->emitSpot($node);
-            }
+        if ($node instanceof Expr\FuncCall &&
+                static::$funcTable->has($node->name) &&
+                !$this->visitor->inMethod() &&
+                !$this->visitor->inFunction()) {
+            $this->emitSpot($node);
         }
     }
 }

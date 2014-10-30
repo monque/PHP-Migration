@@ -10,12 +10,14 @@ namespace PhpMigration\Changes\v5dot3;
  */
 
 use PhpMigration\Change;
-use PhpMigration\Utils\ParserHelper;
+use PhpMigration\SymbolTable;
 use PhpParser\Node\Expr;
 
 class Deprecated extends Change
 {
-    protected static $function = array(
+    protected static $prepared = false;
+
+    protected static $funcTable = array(
         'call_user_method'          => 'use call_user_func() instead',
         'call_user_method_array'    => 'use call_user_func_array() instead',
         'define_syslog_variables'   => '',
@@ -39,20 +41,24 @@ class Deprecated extends Change
         // The is_dst parameter to mktime(). Use the new timezone handling functions instead.
     );
 
+    public function prepare()
+    {
+        if (!static::$prepared) {
+            static::$funcTable = new SymbolTable(static::$funcTable, SymbolTable::IC);
+            static::$prepared = true;
+        }
+    }
+
     public function leaveNode($node)
     {
-        if ($node instanceof Expr\FuncCall && !ParserHelper::isDynamicCall($node)) {
-            $namestr = $node->name->toString();
-            if (!isset(static::$function[$namestr])) {
-                return;
-            }
+        if ($node instanceof Expr\FuncCall && static::$funcTable->has($node->name)) {
 
             // Function call
-            $advice = static::$function[$namestr];
+            $advice = static::$funcTable->get($node->name);
             if ($advice) {
-                $errmsg = sprintf('Function %s() is deprecated, %s', $namestr, $advice);
+                $errmsg = sprintf('Function %s() is deprecated, %s', $node->name, $advice);
             } else {
-                $errmsg = sprintf('Function %s() is deprecated', $namestr);
+                $errmsg = sprintf('Function %s() is deprecated', $node->name);
             }
             $this->visitor->addSpot($errmsg);
         } elseif ($node instanceof Expr\AssignRef && $node->expr instanceof Expr\New_) {
