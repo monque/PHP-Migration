@@ -47,7 +47,7 @@ class IncompByReference extends Change
         'collator_sort_with_sort_keys'           =>    2, // 01
         'curl_multi_exec'                        =>    2, // 01
         'curl_multi_info_read'                   =>    2, // 01
-        'current'                                =>    1, // 1
+        // 'current'                                =>    1, // 1
         'datefmt_localtime'                      =>    4, // 001
         'datefmt_parse'                          =>    4, // 001
         'dbplus_curr'                            =>    2, // 01
@@ -66,7 +66,7 @@ class IncompByReference extends Change
         'exec'                                   =>    6, // 011
         'exif_thumbnail'                         =>   14, // 0111
         'expect_expectl'                         =>    4, // 001
-        'extract'                                =>    1, // 1
+        // 'extract'                                =>    1, // 1
         'flock'                                  =>    4, // 001
         'fscanf'                                 =>    4, // 001
         'fsockopen'                              =>   12, // 0011
@@ -398,7 +398,7 @@ class IncompByReference extends Change
                 $suspect = array();
             }
             $suspect[$this->visitor->getClassname()] = $posbit;
-            static::$methodTable->set($fname, $suspect);
+            static::$methodTable->set($mname, $suspect);
         }
 
         static::$declareTable->set($fname, $posbit);
@@ -426,13 +426,13 @@ class IncompByReference extends Change
             }
             $callname = $class.'::'.$node->name;
         } elseif ($type == 'method') {
-            $object = $node->var->name;
-            if ($object == 'this' && $this->visitor->inClass()) {
-                $object = $this->visitor->getClassname();
+            if ($node->var instanceof Expr\Variable &&
+                    $node->var->name == 'this' && $this->visitor->inClass()) {
+                $oname = $this->visitor->getClassname();
             } else {
-                $object = '';
+                $oname = '';
             }
-            $callname = $object.'->'.$node->name;
+            $callname = $oname.'->'.$node->name;
         }
 
         static::$callList[] = array(
