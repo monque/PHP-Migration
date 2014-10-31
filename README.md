@@ -4,15 +4,15 @@
 ## TODO
 
 ### TODO 0
-- 比对5.3的migration文档
-- 未实现的检查
-    - ini file
-- Spot级别
+- Document -> Check -> Spot
+    - 制定统一的便于检索的注释
+        类似：xxxx问题由yyyy检查可能会报出zzzz错误
+    - Spot级别分类
+        tip, fatal, deprecated
+- Output using markdown
+    - 引用注释
 
 ### TODO 8
-- 重读php手册
-- Output using markdown
-- 使用PEAR中的getopt替代docopt
 - 用statis还是self，是否有必要用静态
 
 ### TODO 9
@@ -22,4 +22,5 @@
         很多Base类其实都包含了：抽象或接口的约定限制(abstract)，快捷方法(trait)，原形定义
         按照Laravel的套路拆开吧
     - 目录是否为复数名称
-- 严格遵守PSR标准
+- 遵守PSR标准
+- 多行注释的规范格式
