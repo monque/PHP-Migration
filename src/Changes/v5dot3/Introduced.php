@@ -123,6 +123,33 @@ class Introduced extends Change
         'SIG_UNBLOCK', 'TRAP_BRKPT', 'TRAP_TRACE',
     );
 
+    protected static $paramTable = array(
+        // PHP Core
+        'clearstatcache'            => 'added clear_realpath_cache and filename',
+        'copy'                      => 'added a stream context parameter, context',
+        'fgetcsv'                   => 'added escape',
+        'ini_get_all'               => 'added details',
+        'nl2br'                     => 'added is_xhtml',
+        'parse_ini_file'            => 'added scanner_mode',
+        'round'                     => 'added mode',
+        'stream_context_create'     => 'added params',
+        'strstr'                    => 'added before_needle',
+        'stristr'                   => 'added before_needle',
+
+        // json
+        'json_encode'               => 'added options',
+        'json_decode'               => 'added depth',
+
+        // Streams
+        'stream_select'             => 'now work with user-space stream wrappers',
+        'stream_set_blocking'       => 'now work with user-space stream wrappers',
+        'stream_set_timeout'        => 'now work with user-space stream wrappers',
+        'stream_set_write_buffer'   => 'now work with user-space stream wrappers',
+
+        // sybase_ct
+        'sybase_connect'            => 'added new',
+    );
+
     protected $condFunc = null;
 
     protected $condClass = null;
@@ -133,6 +160,7 @@ class Introduced extends Change
             static::$funcTable  = new SymbolTable(array_flip(static::$funcTable), SymbolTable::IC);
             static::$classTable = new SymbolTable(array_flip(static::$classTable), SymbolTable::IC);
             static::$constTable = new SymbolTable(array_flip(static::$constTable), SymbolTable::CS);
+            static::$paramTable = new SymbolTable(static::$paramTable, SymbolTable::IC);
             static::$prepared = true;
         }
     }
@@ -159,11 +187,19 @@ class Introduced extends Change
                 (is_null($this->condClass) || !NameHelper::isSameClass($node->name, $this->condClass))) {
             $this->visitor->addSpot(sprintf('Cannot redeclare class %s', $node->name));
 
-        // Constant
-        } elseif ($node instanceof Expr\FuncCall && NameHelper::isSameFunc($node->name, 'define')) {
-            $constname = $node->args[0]->value->value;
-            if (static::$constTable->has($constname)) {
-                $this->visitor->addSpot(sprintf('Constant %s already defined', $constname));
+        } elseif ($node instanceof Expr\FuncCall) {
+
+            // Constant
+            if (NameHelper::isSameFunc($node->name, 'define')) {
+                $constname = $node->args[0]->value->value;
+                if (static::$constTable->has($constname)) {
+                    $this->visitor->addSpot(sprintf('Constant %s already defined', $constname));
+                }
+
+            // Parameter
+            } elseif (static::$paramTable->has($node->name)) {
+                $advice = static::$paramTable->get($node->name);
+                $this->visitor->addSpot(sprintf('Function %s() has new parameter, %s', $node->name, $advice));
             }
         }
 
