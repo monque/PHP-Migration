@@ -21,7 +21,8 @@ class Deprecated extends Change
         'call_user_method'          => 'use call_user_func() instead',
         'call_user_method_array'    => 'use call_user_func_array() instead',
         'define_syslog_variables'   => '',
-        'dl'                        => '',
+        // dl() advice copy from http://php.net/manual/en/migration53.sapi.php
+        'dl'                        => 'available only under CLI, CGI, and embed SAPIs',
         'ereg'                      => 'use preg_match() instead',
         'ereg_replace'              => 'use preg_replace() instead',
         'eregi'                     => 'use preg_match() with the "i" modifier instead',
@@ -51,6 +52,8 @@ class Deprecated extends Change
 
     public function leaveNode($node)
     {
+        // Deprecated feature call-time pass-by-reference is checked by IncompByReference
+
         if ($node instanceof Expr\FuncCall && static::$funcTable->has($node->name)) {
 
             // Function call
