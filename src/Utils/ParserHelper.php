@@ -56,5 +56,4 @@ class ParserHelper
     {
         return $node->cond->expr->args[0]->value->value;
     }
-
 }
