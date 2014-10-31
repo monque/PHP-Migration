@@ -6,6 +6,7 @@
         "v5dot3\\IncompCallFromGlobal",
         "v5dot3\\IncompMagic",
         "v5dot3\\IncompMagicInvoked",
+        "v5dot3\\IncompMisc",
         "v5dot3\\Deprecated",
         "v5dot3\\Introduced"
     ]
