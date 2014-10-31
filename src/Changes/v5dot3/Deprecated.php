@@ -52,11 +52,8 @@ class Deprecated extends Change
 
     public function leaveNode($node)
     {
-        // Deprecated feature call-time pass-by-reference is checked by IncompByReference
-
-        if ($node instanceof Expr\FuncCall && static::$funcTable->has($node->name)) {
-
-            // Function call
+        // Function call
+        if ($this->isDeprecatedFunc($node)) {
             $advice = static::$funcTable->get($node->name);
             if ($advice) {
                 $errmsg = sprintf('Function %s() is deprecated, %s', $node->name, $advice);
@@ -64,9 +61,22 @@ class Deprecated extends Change
                 $errmsg = sprintf('Function %s() is deprecated', $node->name);
             }
             $this->visitor->addSpot($errmsg);
-        } elseif ($node instanceof Expr\AssignRef && $node->expr instanceof Expr\New_) {
-            // Assign new instance
+
+        // Assign new instance
+        } elseif ($this->isAssignNewByRef($node)) {
             $this->visitor->addSpot('Assigning the return value of new by reference is deprecated');
         }
+
+        // call-time pass-by-reference is checked by IncompByReference
+    }
+
+    public function isDeprecatedFunc($node)
+    {
+        return ($node instanceof Expr\FuncCall && static::$funcTable->has($node->name));
+    }
+
+    public function isAssignNewByRef($node)
+    {
+        return ($node instanceof Expr\AssignRef && $node->expr instanceof Expr\New_);
     }
 }
