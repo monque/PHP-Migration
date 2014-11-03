@@ -17,7 +17,7 @@ class Deprecated extends Change
 {
     protected static $prepared = false;
 
-    protected static $funcTable = array(
+    public static $funcTable = array(
         'call_user_method'          => 'use call_user_func() instead',
         'call_user_method_array'    => 'use call_user_func_array() instead',
         'define_syslog_variables'   => '',
