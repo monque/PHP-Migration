@@ -9,7 +9,7 @@ namespace PhpMigration;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-class SymbolTable
+class SymbolTable implements \Iterator
 {
     const CS = true;
     const IC = false;
@@ -49,5 +49,31 @@ class SymbolTable
     {
         $key = $this->caseSensitive ? $key : strtolower($key);
         return $this->data[$key] = $value;
+    }
+
+    // Iterator
+    public function current()
+    {
+        return current($this->data);
+    }
+
+    public function key()
+    {
+        return key($this->data);
+    }
+
+    public function next()
+    {
+        next($this->data);
+    }
+
+    public function rewind()
+    {
+        reset($this->data);
+    }
+
+    public function valid()
+    {
+        return ($this->current() !== false);
     }
 }
