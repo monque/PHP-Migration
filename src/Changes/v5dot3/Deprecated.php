@@ -65,9 +65,18 @@ class Deprecated extends Change
         // Assign new instance
         } elseif ($this->isAssignNewByRef($node)) {
             $this->visitor->addSpot('Assigning the return value of new by reference is deprecated');
-        }
 
-        // call-time pass-by-reference is checked by IncompByReference
+        // Call-time pass-by-reference
+        } elseif ($this->isCallTimePassByRef($node)) {
+            /*
+             * {Description}
+             * Call-time pass-by-reference is now deprecated
+             *
+             * {Reference}
+             * http://php.net/manual/en/migration53.deprecated.php
+             */
+            $this->visitor->addSpot('Calltime pass-by-reference is deprecated');
+        }
     }
 
     public function isDeprecatedFunc($node)
@@ -78,5 +87,20 @@ class Deprecated extends Change
     public function isAssignNewByRef($node)
     {
         return ($node instanceof Expr\AssignRef && $node->expr instanceof Expr\New_);
+    }
+
+    public function isCallTimePassByRef($node)
+    {
+        if (!($node instanceof Expr\FuncCall || $node instanceof Expr\StaticCall ||
+                $node instanceof Expr\MethodCall)) {
+            return false;
+        }
+
+        foreach ($node->args as $arg) {
+            if ($arg->byRef) {
+                return true;
+            }
+        }
+        return false;
     }
 }

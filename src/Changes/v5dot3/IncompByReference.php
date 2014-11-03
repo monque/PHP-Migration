@@ -317,27 +317,6 @@ class IncompByReference extends Change
         $this->visitor->addSpot($message, $call['line'], $call['file']);
     }
 
-    protected function emitPassByRef($node)
-    {
-        /*
-         * {Description}
-         * Call-time pass-by-reference is now deprecated
-         *
-         * {Reference}
-         * http://php.net/manual/en/migration53.deprecated.php
-         */
-        $this->visitor->addSpot('Calltime pass-by-reference is deprecated');
-    }
-
-    protected function checkPassByRef($node)
-    {
-        foreach ($node->args as $arg) {
-            if ($arg->byRef) {
-                return $this->emitPassByRef($node);
-            }
-        }
-    }
-
     protected function positionWithRef($node)
     {
         $posbit = 0;
@@ -406,8 +385,6 @@ class IncompByReference extends Change
 
     protected function populateCall($node, $type)
     {
-        $this->checkPassByRef($node);
-
         if (ParserHelper::isDynamicCall($node)) {
             return;
         }
