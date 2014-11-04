@@ -9,28 +9,22 @@ namespace PhpMigration\Changes\v5dot3;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-use PhpParser\Lexer;
-use PhpParser\Parser;
+use PhpMigration\TestHelper;
 
 class DeprecatedTest extends \PHPUnit_Framework_TestCase
 {
-    protected $parser;
-
     protected $change;
 
     protected function setUp()
     {
-        $this->parser = new Parser(new Lexer\Emulative);
-
         $this->change = new Deprecated();
         $this->change->prepare();
     }
 
     protected function genFuncCall($name)
     {
-        $code = sprintf('<?php %s();', $name);
-        $stmts = $this->parser->parse($code);
-        return $stmts[0];
+        $code = sprintf('%s();', $name);
+        return TestHelper::getNodeByCode($code);
     }
 
     public function testDeprecatedFunc()
@@ -54,11 +48,11 @@ class DeprecatedTest extends \PHPUnit_Framework_TestCase
     public function testAssignNewByRef()
     {
         // Direct assign
-        $node = current($this->parser->parse('<?php $o = new Class_();'));
+        $node = TestHelper::getNodeByCode('$o = new Class_();');
         $this->assertFalse($this->change->isAssignNewByRef($node));
 
         // By-reference
-        $node = current($this->parser->parse('<?php $o = &new Class_();'));
+        $node = TestHelper::getNodeByCode('$o = &new Class_();');
         $this->assertTrue($this->change->isAssignNewByRef($node));
     }
 }

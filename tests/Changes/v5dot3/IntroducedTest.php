@@ -9,29 +9,22 @@ namespace PhpMigration\Changes\v5dot3;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-use PhpParser\Lexer;
-use PhpParser\Parser;
+use PhpMigration\TestHelper;
 
 class IntroducedTest extends \PHPUnit_Framework_TestCase
 {
-    protected $parser;
-
     protected $change;
 
     protected function setUp()
     {
-        $this->parser = new Parser(new Lexer\Emulative);
-
         $this->change = new Introduced();
         $this->change->prepare();
     }
 
     protected function genFuncDef($name)
     {
-        // TODO: merge to utility
-        $code = sprintf('<?php function %s() {}', $name);
-        $stmts = $this->parser->parse($code);
-        return $stmts[0];
+        $code = sprintf('function %s() {}', $name);
+        return TestHelper::getNodeByCode($code);
     }
 
     public function testNewFunc()
@@ -54,9 +47,8 @@ class IntroducedTest extends \PHPUnit_Framework_TestCase
 
     protected function genClassDef($name)
     {
-        $code = sprintf('<?php class %s {}', $name);
-        $stmts = $this->parser->parse($code);
-        return $stmts[0];
+        $code = sprintf('class %s {}', $name);
+        return TestHelper::getNodeByCode($code);
     }
 
     public function testNewClass()
@@ -79,9 +71,8 @@ class IntroducedTest extends \PHPUnit_Framework_TestCase
 
     protected function genConstDef($name)
     {
-        $code = sprintf('<?php define("%s", false);', $name);
-        $stmts = $this->parser->parse($code);
-        return $stmts[0];
+        $code = sprintf('define("%s", false);', $name);
+        return TestHelper::getNodeByCode($code);
     }
 
     public function testNewConst()
@@ -99,9 +90,8 @@ class IntroducedTest extends \PHPUnit_Framework_TestCase
 
     protected function genFuncCall($name)
     {
-        $code = sprintf('<?php %s();', $name);
-        $stmts = $this->parser->parse($code);
-        return $stmts[0];
+        $code = sprintf('%s();', $name);
+        return TestHelper::getNodeByCode($code);
     }
 
     public function testNewParam()
