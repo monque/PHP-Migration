@@ -36,7 +36,7 @@ class ChangeVisitor extends NodeVisitorAbstract
         $this->filename = $this->class = $this->method = $this->function = null;
     }
 
-    public function setFile($file)
+    public function setFile(\SplFileInfo $file)
     {
         $this->file = $file;
     }
