@@ -37,8 +37,10 @@ class IncompCallFromGlobal extends Change
          * called from the outermost scope of a file that has been included by
          * calling include or require from within a function in the calling
          * file.
+         *
          * {Errmsg}
-         * Warning:  {method}: Called from the global scope - no function context
+         * Warning:  {method} Called from the global scope - no function context
+         *
          * {Reference}
          * http://php.net/manual/en/migration53.incompatible.php
          */
@@ -47,7 +49,7 @@ class IncompCallFromGlobal extends Change
             '%s() Called from the global scope - no function context',
             $node->name
         );
-        $this->visitor->addSpot($message);
+        $this->visitor->addSpot($message, 'WARNING');
     }
 
     public function enterNode($node)

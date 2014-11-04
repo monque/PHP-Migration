@@ -33,23 +33,53 @@ class IncompMisc extends Change
     public function leaveNode($node)
     {
         if ($node instanceof Expr\FuncCall) {
-            // clearstatcache()
+            /*
+             * {Description}
+             * clearstatcache() no longer clears the realpath cache by default.
+             *
+             * {Reference}
+             * http://php.net/manual/en/migration53.incompatible.php
+             */
             if (NameHelper::isSameFunc($node->name, 'clearstatcache')) {
-                $this->visitor->addSpot('clearstatcache() no longer clears the realpath cache by default');
+                $this->visitor->addSpot('clearstatcache() no longer clears the realpath cache by default', 'TIP');
 
-            // realpath()
+            /*
+             * {Description}
+             * realpath() is now fully platform-independent. Consequence of 
+             * this is that invalid relative paths such as __FILE__ . "/../x" 
+             * do not work anymore.
+             *
+             * {Reference}
+             * http://php.net/manual/en/migration53.incompatible.php
+             */
             } elseif (NameHelper::isSameFunc($node->name, 'realpath')) {
-                $this->visitor->addSpot('realpath() is now fully platform-independent. Consequence of this is that invalid relative paths such as __FILE__ . "/../x" do not work anymore.');
+                $this->visitor->addSpot('realpath() is now fully platform-independent. Consequence of this is that invalid relative paths such as __FILE__ . "/../x" do not work anymore.', 'TIP');
 
-            // array functions
+            /*
+             * {Description}
+             * The array functions natsort(), natcasesort(), usort(), uasort(), 
+             * uksort(), array_flip(), and array_unique() no longer accept 
+             * objects passed as arguments. To apply these functions to an 
+             * object, cast the object to an array first.
+             *
+             * {Reference}
+             * http://php.net/manual/en/migration53.incompatible.php
+             */
             } elseif (static::$arrFuncTable->has($node->name)) {
-                $this->visitor->addSpot(sprintf('%s() no longer accept objects passed as arguments', $node->name));
+                $this->visitor->addSpot(sprintf('%s() no longer accept objects passed as arguments', $node->name), 'TIP');
 
-            // call_user_func_array()
+            /*
+             * {Description}
+             * The call_user_func() family of functions now propagate $this 
+             * even if the callee is a parent class.
+             *
+             * {Reference}
+             * http://php.net/manual/en/migration53.incompatible.php
+             */
             } elseif (NameHelper::isSameFunc($node->name, 'call_user_func_array')) {
                 if (!($node->args[1]->value instanceof Expr\Array_)) {
                     // TODO: comment this, it's from User Contributed Notes in php.net
-                    $this->visitor->addSpot(sprintf('%s() no longer accept non-array passed as arguments', $node->name));
+                    $this->visitor->addSpot(sprintf('%s() no longer accept non-array passed as arguments', $node->name), 'TIP');
                 }
             }
         }

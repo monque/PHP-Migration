@@ -177,23 +177,43 @@ class Introduced extends Change
 
     public function leaveNode($node)
     {
-        // Function
+        /*
+         * Function
+         *
+         * {Reference}
+         * http://php.net/manual/en/migration53.functions.php
+         */
         if ($this->isNewFunc($node)) {
-            $this->visitor->addSpot(sprintf('Cannot redeclare %s()', $node->name));
+            $this->visitor->addSpot(sprintf('Cannot redeclare %s()', $node->name), 'FATAL');
 
-        // Class
+        /*
+         * Class
+         *
+         * {Reference}
+         * http://php.net/manual/en/migration53.classes.php
+         */
         } elseif ($this->isNewClass($node)) {
-            $this->visitor->addSpot(sprintf('Cannot redeclare class %s', $node->name));
+            $this->visitor->addSpot(sprintf('Cannot redeclare class %s', $node->name), 'FATAL');
 
-        // Constant
+        /*
+         * Constant
+         *
+         * {Reference}
+         * http://php.net/manual/en/migration53.global-constants.php
+         */
         } elseif ($this->isNewConst($node)) {
             $constname = $node->args[0]->value->value;
-            $this->visitor->addSpot(sprintf('Constant %s already defined', $constname));
+            $this->visitor->addSpot(sprintf('Constant %s already defined', $constname), 'WARNING');
 
-        // Parameter
+        /*
+         * Parameter
+         *
+         * {Reference}
+         * http://php.net/manual/en/migration53.parameters.php
+         */
         } elseif ($this->isNewParam($node)) {
             $advice = static::$paramTable->get($node->name);
-            $this->visitor->addSpot(sprintf('Function %s() has new parameter, %s', $node->name, $advice));
+            $this->visitor->addSpot(sprintf('Function %s() has new parameter, %s', $node->name, $advice), 'TIP');
         }
 
         // Conditional declaration clear

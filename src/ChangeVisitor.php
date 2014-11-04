@@ -152,7 +152,7 @@ class ChangeVisitor extends NodeVisitorAbstract
         }
     }
 
-    public function addSpot($message, $line = null, $file = null)
+    public function addSpot($message, $cate, $line = null, $file = null)
     {
         if (is_null($line) && $this->node instanceof Node) {
             $line = $this->node->getLine();
@@ -166,6 +166,7 @@ class ChangeVisitor extends NodeVisitorAbstract
         // Add by file
         $this->spots[$filename][] = array(
             'message' => $message,
+            'cate' => $cate,
             'line' => $line,
             'file' => $file,
         );

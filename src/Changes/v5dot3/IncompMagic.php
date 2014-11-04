@@ -39,7 +39,7 @@ class IncompMagic extends Change
          * signatures are now enforced.
          *
          * {Errmsg}
-         * Warning: The magic method {method}() must have public visibility and cannot be static
+         * Warning: The magic method {method} must have public visibility and cannot be static
          *
          * {Reference}
          * http://php.net/manual/en/migration53.incompatible.php
@@ -50,7 +50,7 @@ class IncompMagic extends Change
             $this->visitor->getClassname(),
             $node->name
         );
-        $this->visitor->addSpot($message, $node->getLine());
+        $this->visitor->addSpot($message, 'WARNING', $node->getLine());
     }
 
     protected function emitToString($node)
@@ -70,7 +70,7 @@ class IncompMagic extends Change
             'Method %s::__tostring() cannot take arguments',
             $this->visitor->getClassname()
         );
-        $this->visitor->addSpot($message, $node->getLine());
+        $this->visitor->addSpot($message, 'FATAL', $node->getLine());
     }
 
     public function leaveNode($node)

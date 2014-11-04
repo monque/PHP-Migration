@@ -60,11 +60,32 @@ class Deprecated extends Change
             } else {
                 $errmsg = sprintf('Function %s() is deprecated', $node->name);
             }
-            $this->visitor->addSpot($errmsg);
+            /*
+             * {Errmsg}
+             * Deprecated: Function {function} is deprecated
+             *
+             * {Reference}
+             * http://php.net/manual/en/migration53.deprecated.php
+             */
+            if ($node->name == 'dl') {
+                $this->visitor->addSpot($errmsg, 'FATAL');
+            } else {
+                $this->visitor->addSpot($errmsg, 'DEPRECATED');
+            }
 
         // Assign new instance
         } elseif ($this->isAssignNewByRef($node)) {
-            $this->visitor->addSpot('Assigning the return value of new by reference is deprecated');
+            /*
+             * {Description}
+             * Assigning the return value of new by reference is now deprecated.
+             *
+             * {Errmsg}
+             * Deprecated: Assigning the return value of new by reference is deprecated
+             *
+             * {Reference}
+             * http://php.net/manual/en/migration53.deprecated.php
+             */
+            $this->visitor->addSpot('Assigning the return value of new by reference is deprecated', 'DEPRECATED');
 
         // Call-time pass-by-reference
         } elseif ($this->isCallTimePassByRef($node)) {
@@ -75,7 +96,7 @@ class Deprecated extends Change
              * {Reference}
              * http://php.net/manual/en/migration53.deprecated.php
              */
-            $this->visitor->addSpot('Calltime pass-by-reference is deprecated');
+            $this->visitor->addSpot('Calltime pass-by-reference is deprecated', 'DEPRECATED');
         }
     }
 

@@ -310,11 +310,13 @@ class IncompByReference extends Change
         if ($suspect) {
             $message = 'Only variables can be passed by reference, when %s called by instance %s';
             $message = sprintf($message, $call['name'], implode(', ', $suspect));
+            $cate = 'WARNING';
         } else {
             $message = 'Only variables can be passed by reference';
+            $cate = 'FATAL';
         }
 
-        $this->visitor->addSpot($message, $call['line'], $call['file']);
+        $this->visitor->addSpot($message, $cate, $call['line'], $call['file']);
     }
 
     protected function positionWithRef($node)

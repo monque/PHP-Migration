@@ -21,6 +21,7 @@ class IncompMagicInvoked extends Change
          * {Description}
          * The __call() magic method is now invoked on access to private and
          * protected methods.
+         *
          * {Reference}
          * http://php.net/manual/en/migration53.incompatible.php
          */
@@ -29,7 +30,7 @@ class IncompMagicInvoked extends Change
             'The __call() magic method will be invoked on access to non-public mehtods in %s',
             $this->visitor->getClassname()
         );
-        $this->visitor->addSpot($message, $node->getLine());
+        $this->visitor->addSpot($message, 'TIP', $node->getLine());
     }
 
     public function leaveNode($node)
