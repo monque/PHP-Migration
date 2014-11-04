@@ -110,11 +110,18 @@ if (true) {
         if (!file_exists($file)) {
             Logging::warning('No such file or directory {file}', array('file' => $file));
         } elseif (is_dir($file)) {
-            $iterator = new RecursiveDirectoryIterator($file);
-            $iterator = new RecursiveIteratorIterator($iterator);
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($file),
+                0,
+                RecursiveIteratorIterator::CATCH_GET_CHILD
+            );
             $iterator = new RegexIterator($iterator, '/\.php$/');
-            foreach ($iterator as $file) {
-                $filelist[] = $file;
+            try {
+                foreach ($iterator as $file) {
+                    $filelist[] = $file;
+                }
+            } catch (Exception $e) {
+                continue;
             }
         } else {
             $filelist[] = new SplFileInfo($file);
