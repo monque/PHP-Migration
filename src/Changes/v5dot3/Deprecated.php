@@ -96,9 +96,10 @@ class Deprecated extends Change
              * Call-time pass-by-reference is now deprecated
              *
              * {Reference}
+             * http://php.net/manual/en/language.references.pass.php
              * http://php.net/manual/en/migration53.deprecated.php
              */
-            $this->addSpot('DEPRECATED', 'Calltime pass-by-reference is deprecated');
+            $this->addSpot('DEPRECATED', 'Call-time pass-by-reference is deprecated');
         }
     }
 
