@@ -4,16 +4,13 @@
 ## TODO
 
 ### TODO 0
-- Document -> Check -> Spot
-    - 制定统一的便于检索的注释
-        类似：xxxx问题由yyyy检查可能会报出zzzz错误
-    - Spot级别分类
-        tip, fatal, deprecated
-- Output using markdown
-    - 引用注释
+- 5.4
 
 ### TODO 8
+- Output using markdown
+    - 引用注释
 - 用statis还是self，是否有必要用静态
+    同一个change是否可能有多个实例？比如在两个不同set中
 
 ### TODO 9
 - 目录结构

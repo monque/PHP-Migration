@@ -12,7 +12,7 @@ namespace PhpMigration\Changes\v5dot4;
 use PhpMigration\Change;
 use PhpParser\Node\Expr;
 
-class Removed extends Change
+class IncompByReference extends Change
 {
     protected static $version = '5.4.0';
 

@@ -5,6 +5,7 @@
         "to53"
     ],
     "changes": [
-        "v5dot4\\Removed"
+        "v5dot4\\IncompByReference",
+        "v5dot4\\IncompBreakContinue"
     ]
 }
