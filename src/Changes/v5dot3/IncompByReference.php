@@ -342,7 +342,8 @@ class IncompByReference extends Change
                 $arg->value instanceof Expr\ArrayDimFetch ||
                 $arg->value instanceof Expr\FuncCall ||
                 $arg->value instanceof Expr\MethodCall ||
-                $arg->value instanceof Expr\StaticCall) {
+                $arg->value instanceof Expr\StaticCall ||
+                $arg->value instanceof Expr\New_) {
                 continue;
             } elseif ($arg->value instanceof Expr\Assign) {
                 // Variable in assign expression
