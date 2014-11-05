@@ -15,6 +15,8 @@ use PhpParser\Node\Stmt;
 
 class IncompMagicInvoked extends Change
 {
+    protected static $version = '5.3.0';
+
     protected function emitSpot($node, $non_public)
     {
         /*
@@ -30,7 +32,7 @@ class IncompMagicInvoked extends Change
             'The __call() magic method will be invoked on access to non-public mehtods in %s',
             $this->visitor->getClassname()
         );
-        $this->visitor->addSpot($message, 'TIP', $node->getLine());
+        $this->addSpot('NOTICE', $message, $node->getLine());
     }
 
     public function leaveNode($node)

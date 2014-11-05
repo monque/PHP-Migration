@@ -16,6 +16,8 @@ use PhpParser\Node\Stmt;
 
 class IncompMagic extends Change
 {
+    protected static $version = '5.3.0';
+
     protected static $prepared = false;
 
     protected static $funcTable = array(
@@ -50,7 +52,7 @@ class IncompMagic extends Change
             $this->visitor->getClassname(),
             $node->name
         );
-        $this->visitor->addSpot($message, 'WARNING', $node->getLine());
+        $this->addSpot('WARNING', $message, $node->getLine());
     }
 
     protected function emitToString($node)
@@ -70,7 +72,7 @@ class IncompMagic extends Change
             'Method %s::__tostring() cannot take arguments',
             $this->visitor->getClassname()
         );
-        $this->visitor->addSpot($message, 'FATAL', $node->getLine());
+        $this->addSpot('FATAL', $message, $node->getLine());
     }
 
     public function leaveNode($node)

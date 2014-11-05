@@ -163,7 +163,7 @@ if (true) {
         echo "File: ".$spot['file']."\n";
         echo "--------------------------------------------------------------------------------\n";
         foreach ($spotlist as $spot) {
-            printf("%5d | %s | %s\n", $spot['line'], $spot['cate'], $spot['message']);
+            printf("%5d | %-10s | %s | %s\n", $spot['line'], $spot['cate'], $spot['version'], $spot['message']);
         }
         echo "--------------------------------------------------------------------------------\n";
     }

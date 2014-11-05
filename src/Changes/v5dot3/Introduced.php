@@ -18,6 +18,8 @@ use PhpParser\Node\Stmt;
 
 class Introduced extends Change
 {
+    protected static $version = '5.3.0';
+
     protected static $prepared = false;
 
     public static $funcTable = array(
@@ -184,7 +186,7 @@ class Introduced extends Change
          * http://php.net/manual/en/migration53.functions.php
          */
         if ($this->isNewFunc($node)) {
-            $this->visitor->addSpot(sprintf('Cannot redeclare %s()', $node->name), 'FATAL');
+            $this->addSpot('FATAL', sprintf('Cannot redeclare %s()', $node->name));
 
         /*
          * Class
@@ -193,7 +195,7 @@ class Introduced extends Change
          * http://php.net/manual/en/migration53.classes.php
          */
         } elseif ($this->isNewClass($node)) {
-            $this->visitor->addSpot(sprintf('Cannot redeclare class %s', $node->name), 'FATAL');
+            $this->addSpot('FATAL', sprintf('Cannot redeclare class %s', $node->name));
 
         /*
          * Constant
@@ -203,7 +205,7 @@ class Introduced extends Change
          */
         } elseif ($this->isNewConst($node)) {
             $constname = $node->args[0]->value->value;
-            $this->visitor->addSpot(sprintf('Constant %s already defined', $constname), 'WARNING');
+            $this->addSpot('WARNING', sprintf('Constant %s already defined', $constname));
 
         /*
          * Parameter
@@ -213,7 +215,7 @@ class Introduced extends Change
          */
         } elseif ($this->isNewParam($node)) {
             $advice = static::$paramTable->get($node->name);
-            $this->visitor->addSpot(sprintf('Function %s() has new parameter, %s', $node->name, $advice), 'TIP');
+            $this->addSpot('NEW', sprintf('Function %s() has new parameter, %s', $node->name, $advice));
         }
 
         // Conditional declaration clear

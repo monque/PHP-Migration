@@ -15,6 +15,8 @@ use PhpParser\Node\Expr;
 
 class IncompCallFromGlobal extends Change
 {
+    protected static $version = '5.3.0';
+
     protected static $prepared = false;
 
     protected static $funcTable = array(
@@ -49,7 +51,7 @@ class IncompCallFromGlobal extends Change
             '%s() Called from the global scope - no function context',
             $node->name
         );
-        $this->visitor->addSpot($message, 'WARNING');
+        $this->addSpot('WARNING', $message);
     }
 
     public function enterNode($node)

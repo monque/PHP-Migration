@@ -27,6 +27,20 @@ class Change
     }
 
     /**
+     * Quick method to add spot to visitor
+     */
+    public function addSpot($cate, $message, $line = null, $file = null)
+    {
+        $this->visitor->addSpot(
+            $cate,
+            $message,
+            static::$version,
+            $line,
+            $file
+        );
+    }
+
+    /**
      * Called before any processing, just after __construct
      */
     public function prepare()

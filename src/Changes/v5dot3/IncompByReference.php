@@ -17,6 +17,8 @@ use PhpParser\Node\Stmt;
 
 class IncompByReference extends Change
 {
+    protected static $version = '5.3.0';
+
     protected static $prepared = false;
 
     protected static $callList;
@@ -316,7 +318,7 @@ class IncompByReference extends Change
             $cate = 'FATAL';
         }
 
-        $this->visitor->addSpot($message, $cate, $call['line'], $call['file']);
+        $this->addSpot($cate, $message, $call['line'], $call['file']);
     }
 
     protected function positionWithRef($node)

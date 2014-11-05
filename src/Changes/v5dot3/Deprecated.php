@@ -15,6 +15,8 @@ use PhpParser\Node\Expr;
 
 class Deprecated extends Change
 {
+    protected static $version = '5.3.0';
+
     protected static $prepared = false;
 
     public static $funcTable = array(
@@ -68,9 +70,9 @@ class Deprecated extends Change
              * http://php.net/manual/en/migration53.deprecated.php
              */
             if ($node->name == 'dl') {
-                $this->visitor->addSpot($errmsg, 'FATAL');
+                $this->addSpot('FATAL', $errmsg);
             } else {
-                $this->visitor->addSpot($errmsg, 'DEPRECATED');
+                $this->addSpot('DEPRECATED', $errmsg);
             }
 
         // Assign new instance
@@ -85,7 +87,7 @@ class Deprecated extends Change
              * {Reference}
              * http://php.net/manual/en/migration53.deprecated.php
              */
-            $this->visitor->addSpot('Assigning the return value of new by reference is deprecated', 'DEPRECATED');
+            $this->addSpot('DEPRECATED', 'Assigning the return value of new by reference is deprecated');
 
         // Call-time pass-by-reference
         } elseif ($this->isCallTimePassByRef($node)) {
@@ -96,7 +98,7 @@ class Deprecated extends Change
              * {Reference}
              * http://php.net/manual/en/migration53.deprecated.php
              */
-            $this->visitor->addSpot('Calltime pass-by-reference is deprecated', 'DEPRECATED');
+            $this->addSpot('DEPRECATED', 'Calltime pass-by-reference is deprecated');
         }
     }
 
