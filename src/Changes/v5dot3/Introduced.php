@@ -249,6 +249,7 @@ class Introduced extends Change
 
     public function isNewParam($node)
     {
+        return false;  // New param introduced is too trivial to display
         return ($node instanceof Expr\FuncCall && static::$paramTable->has($node->name));
     }
 }
