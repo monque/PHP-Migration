@@ -24,7 +24,7 @@ Usage: phpmig [options] <file>...
 
 Options:
   -l, --list        List all migration sets
-  -s, --set=NAME    The name of migration set to use [default: 52to53]
+  -s, --set=NAME    The name of migration set to use [default: to54]
   -d, --dump        Dump abstract syntax tree
   -v, --verbose
   -h, --help        Show this screen
@@ -81,19 +81,43 @@ if ($args['--list']) {
 
 // Routine: main
 if (true) {
-    // Load Changes
-    $setfile = $setpath.'/'.$args['--set'].'.json';
-    if (!file_exists($setfile)) {
-        Logging::error("Unable load setfile {name}", array('name' => $setfile));
-        exit(1);
-    }
-    $info = json_decode(file_get_contents($setfile));
+    // Load set, change
+    $loaded_sets = array();
+    $setstack = array($args['--set']);
     $chglist = array();
-    foreach ($info->changes as $chgname) {
-        $chgname = 'PhpMigration\Changes\\'.$chgname;
-        $chglist[] = new $chgname;
-        if ($args['--verbose']) {
-            Logging::info('Load change {name}', array('name' => $chgname));
+    while (!empty($setstack)) {
+        $setname = array_shift($setstack);
+
+        // Prevent infinite-loop
+        if (isset($loaded_sets[$setname])) {
+            continue;
+        }
+        $loaded_sets[$setname] = true;
+
+        // Load
+        $setfile = $setpath.'/'.$setname.'.json';
+        if (!file_exists($setfile)) {
+            Logging::error("Unable load setfile {name}", array('name' => $setfile));
+            exit(1);
+        }
+        $info = json_decode(file_get_contents($setfile));
+
+        // Depend
+        if (isset($info->depend)) {
+            foreach ($info->depend as $setname) {
+                $setstack[] = $setname;
+            }
+        }
+
+        // Instantiate
+        if (isset($info->changes)) {
+            foreach ($info->changes as $chgname) {
+                $chgname = 'PhpMigration\Changes\\'.$chgname;
+                $chglist[] = new $chgname;
+                if ($args['--verbose']) {
+                    Logging::info('Load change {name}', array('name' => $chgname));
+                }
+            }
         }
     }
     $chgvisitor = new PhpMigration\ChangeVisitor($chglist);

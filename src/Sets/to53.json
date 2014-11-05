@@ -1,7 +1,7 @@
 {
-    "desc": "Migrating from PHP 5.2.x to PHP 5.3.x",
+    "desc": "Migrating to PHP 5.3.x",
     "link": "http://php.net/manual/en/migration53.php",
-    "changes": [ 
+    "changes": [
         "v5dot3\\IncompByReference",
         "v5dot3\\IncompCallFromGlobal",
         "v5dot3\\IncompMagic",

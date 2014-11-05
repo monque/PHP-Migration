@@ -1,0 +1,10 @@
+{
+    "desc": "Migrating to PHP 5.4.x",
+    "link": "http://php.net/manual/en/migration54.php",
+    "depend": [
+        "to53"
+    ],
+    "changes": [
+        "v5dot4\\Removed"
+    ]
+}
