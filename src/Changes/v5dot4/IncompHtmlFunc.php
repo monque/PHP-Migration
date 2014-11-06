@@ -11,7 +11,7 @@ namespace PhpMigration\Changes\v5dot4;
 
 use PhpMigration\Change;
 use PhpMigration\Utils\NameHelper;
-use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Expr;
 
 class IncompHtmlFunc extends Change
 {
@@ -19,7 +19,7 @@ class IncompHtmlFunc extends Change
 
     public function leaveNode($node)
     {
-        if ($node instanceof FuncCall) {
+        if ($node instanceof Expr\FuncCall) {
             /**
              * {Description}
              * If you use htmlentities() with asian character sets, it works 

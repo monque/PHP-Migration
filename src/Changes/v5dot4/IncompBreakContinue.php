@@ -10,9 +10,8 @@ namespace PhpMigration\Changes\v5dot4;
  */
 
 use PhpMigration\Change;
-use PhpParser\Node\Scalar\LNumber;
-use PhpParser\Node\Stmt\Break_;
-use PhpParser\Node\Stmt\Continue_;
+use PhpParser\Node\Scalar;
+use PhpParser\Node\Stmt;
 
 class IncompBreakContinue extends Change
 {
@@ -37,17 +36,17 @@ class IncompBreakContinue extends Change
          * http://php.net/manual/en/migration54.incompatible.php
          */
 
-        if ($node instanceof Break_) {
+        if ($node instanceof Stmt\Break_) {
             $operator = 'break';
-        } elseif ($node instanceof Continue_) {
+        } elseif ($node instanceof Stmt\Continue_) {
             $operator = 'continue';
         } else {
             return;
         }
 
-        if (!is_null($node->num) && !($node->num instanceof LNumber)) {
+        if (!is_null($node->num) && !($node->num instanceof Scalar\LNumber)) {
             $this->addSpot('FATAL', $operator.' operator with non-constant operand is no longer supported');
-        } elseif ($node->num instanceof LNumber && $node->num->value < 1) {
+        } elseif ($node->num instanceof Scalar\LNumber && $node->num->value < 1) {
             $this->addSpot('FATAL', $operator.' operator accepts only positive numbers');
         }
     }

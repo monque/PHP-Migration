@@ -51,7 +51,7 @@ class Reserved extends Change
         if ($node instanceof Stmt\Class_ ||
                 $node instanceof Stmt\Interface_ ||
                 $node instanceof Stmt\Function_ ||
-                $node instanceof ClassMethod ||
+                $node instanceof Stmt\ClassMethod ||
                 $node instanceof Expr\MethodCall ||
                 $node instanceof Expr\StaticCall) {
             $name = $node->name;

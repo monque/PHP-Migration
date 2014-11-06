@@ -11,7 +11,7 @@ namespace PhpMigration\Changes\v5dot4;
 
 use PhpMigration\Change;
 use PhpMigration\Utils\NameHelper;
-use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Expr;
 
 class IncompObStart extends Change
 {
@@ -19,7 +19,7 @@ class IncompObStart extends Change
 
     public function leaveNode($node)
     {
-        if ($node instanceof FuncCall && NameHelper::isSameFunc($node->name, 'ob_start') && isset($node->args[2])) {
+        if ($node instanceof Expr\FuncCall && NameHelper::isSameFunc($node->name, 'ob_start') && isset($node->args[2])) {
             /**
              * {Description}
              * The third parameter of ob_start() has changed from boolean erase

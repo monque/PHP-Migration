@@ -11,8 +11,7 @@ namespace PhpMigration\Changes\v5dot4;
 
 use PhpMigration\Change;
 use PhpMigration\SymbolTable;
-use PhpParser\Node\Stmt\ClassMethod;
-use PhpParser\Node\Stmt\Function_;
+use PhpParser\Node\Stmt;
 
 class IncompParamName extends Change
 {
@@ -47,7 +46,7 @@ class IncompParamName extends Change
          * http://php.net/manual/en/migration54.incompatible.php
          */
 
-        if (($node instanceof Function_ || $node instanceof ClassMethod)
+        if (($node instanceof Stmt\Function_ || $node instanceof Stmt\ClassMethod)
                 && $this->hasParamShadowGlobal($node)) {
             $this->addSpot('FATAL', 'Cannot re-assign auto-global variable');
         }
@@ -61,7 +60,7 @@ class IncompParamName extends Change
                 return true;
 
             // $this
-            } elseif ($param->name == 'this' && $node instanceof ClassMethod && !$node->isStatic()) {
+            } elseif ($param->name == 'this' && $node instanceof Stmt\ClassMethod && !$node->isStatic()) {
                 return true;
             }
         }

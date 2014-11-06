@@ -11,7 +11,7 @@ namespace PhpMigration\Changes\v5dot4;
 
 use PhpMigration\Change;
 use PhpMigration\SymbolTable;
-use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Expr;
 
 class Removed extends Change
 {
@@ -59,6 +59,6 @@ class Removed extends Change
 
     public function isRemovedFunc($node)
     {
-        return ($node instanceof FuncCall && static::$funcTable->has($node->name));
+        return ($node instanceof Expr\FuncCall && static::$funcTable->has($node->name));
     }
 }
