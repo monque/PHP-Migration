@@ -1,5 +1,5 @@
 <?php
-namespace PhpMigration\Changes\v5dot4;
+namespace PhpMigration\Changes\v5dot3;
 
 /*
  * @author Yuchen Wang <phobosw@gmail.com>
@@ -17,12 +17,12 @@ use PhpParser\Node\Stmt;
 
 class Reserved extends Change
 {
-    protected static $version = '5.4.0';
+    protected static $version = '5.3.0';
 
     protected static $prepared = false;
 
     protected static $keywords = array(
-        'trait', 'callable', 'insteadof'
+        'goto', 'namespace',
     );
 
     public function prepare()
