@@ -164,10 +164,13 @@ if (true) {
         try {
             $stmts = $parser->parse($code);
         } catch (PhpParser\Error $e) {
-            Logging::warning('Parse error {file}, error message "{exception}"', array(
-                'exception' => $e,
-                'file' => $file,
-            ));
+            $chgvisitor->addSpot('PARSE', $e->getMessage(), '', $e->getRawLine());
+            if ($args['--verbose']) {
+                Logging::warning('Parse error {file}, error message "{exception}"', array(
+                    'exception' => $e,
+                    'file' => $file,
+                ));
+            }
             continue;
         }
 
