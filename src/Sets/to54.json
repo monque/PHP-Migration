@@ -12,6 +12,7 @@
         "v5dot4\\IncompObStart",
         "v5dot4\\Reserved",
         "v5dot4\\Removed",
-        "v5dot4\\Deprecated"
+        "v5dot4\\Deprecated",
+        "v5dot3\\Introduced"
     ]
 }

@@ -23,10 +23,13 @@
 - [x] New reversed keywords trait, callable, insteadof
 - [x] Removed function define_syslog_variables(), etc
 
-**Deprecated features**
+**Introduced, Deprecated, Removed**
 - [x] Deprecated functions:
-    - mcrypt_generic_end()
-    - mysql_list_dbs()
+- [x] New Functions
+- [x] New Classes and Interfaces
+- ~~[ ] New Methods~~
+- ~~[ ] Remove Extensions~~
+- [x] New Global Constants
 
 
 ## TODO

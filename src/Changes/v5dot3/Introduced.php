@@ -9,20 +9,14 @@ namespace PhpMigration\Changes\v5dot3;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-use PhpMigration\Change;
+use PhpMigration\Changes\AbstractIntroduced;
 use PhpMigration\SymbolTable;
-use PhpMigration\Utils\NameHelper;
-use PhpMigration\Utils\ParserHelper;
-use PhpParser\Node\Expr;
-use PhpParser\Node\Stmt;
 
-class Introduced extends Change
+class Introduced extends AbstractIntroduced
 {
     protected static $version = '5.3.0';
 
-    protected static $prepared = false;
-
-    public static $funcTable = array(
+    protected $funcTable = array(
         // PHP Core
         'array_replace', 'array_replace_recursive', 'class_alias',
         'forward_static_call', 'forward_static_call_array',
@@ -67,7 +61,7 @@ class Introduced extends Change
         'msg_queue_exists', 'shm_has_var',
     );
 
-    public static $classTable = array(
+    protected $classTable = array(
         // Date/Time
         'DateInterval', 'DatePeriod',
 
@@ -81,7 +75,7 @@ class Introduced extends Change
         'SplStack',
     );
 
-    public static $constTable = array(
+    protected $constTable = array(
         // PHP Core
         '__DIR__', '__NAMESPACE__', 'E_DEPRECATED', 'E_USER_DEPRECATED',
         'INI_SCANNER_NORMAL', 'INI_SCANNER_RAW', 'PHP_MAXPATHLEN',
@@ -125,7 +119,7 @@ class Introduced extends Change
         'SIG_UNBLOCK', 'TRAP_BRKPT', 'TRAP_TRACE',
     );
 
-    public static $paramTable = array(
+    protected $paramTable = array(
         // PHP Core
         'clearstatcache'            => 'added clear_realpath_cache and filename',
         'copy'                      => 'added a stream context parameter, context',
@@ -152,104 +146,13 @@ class Introduced extends Change
         'sybase_connect'            => 'added new',
     );
 
-    protected $condFunc = null;
-
-    protected $condClass = null;
-
-    public function prepare()
+    protected function loadTable()
     {
-        if (!static::$prepared) {
-            static::$funcTable  = new SymbolTable(array_flip(static::$funcTable), SymbolTable::IC);
-            static::$classTable = new SymbolTable(array_flip(static::$classTable), SymbolTable::IC);
-            static::$constTable = new SymbolTable(array_flip(static::$constTable), SymbolTable::CS);
-            static::$paramTable = new SymbolTable(static::$paramTable, SymbolTable::IC);
-            static::$prepared = true;
-        }
-    }
+        $this->funcTable  = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
+        $this->classTable = new SymbolTable(array_flip($this->classTable), SymbolTable::IC);
+        $this->constTable = new SymbolTable(array_flip($this->constTable), SymbolTable::CS);
 
-    public function enterNode($node)
-    {
-        // Support the simplest conditional declaration
-        if (ParserHelper::isConditionalFunc($node)) {
-            $this->condFunc = ParserHelper::getConditionalName($node);
-        } elseif (ParserHelper::isConditionalClass($node)) {
-            $this->condClass = ParserHelper::getConditionalName($node);
-        }
-    }
-
-    public function leaveNode($node)
-    {
-        /*
-         * Function
-         *
-         * {Reference}
-         * http://php.net/manual/en/migration53.functions.php
-         */
-        if ($this->isNewFunc($node)) {
-            $this->addSpot('FATAL', sprintf('Cannot redeclare %s()', $node->name));
-
-        /*
-         * Class
-         *
-         * {Reference}
-         * http://php.net/manual/en/migration53.classes.php
-         */
-        } elseif ($this->isNewClass($node)) {
-            $this->addSpot('FATAL', sprintf('Cannot redeclare class %s', $node->name));
-
-        /*
-         * Constant
-         *
-         * {Reference}
-         * http://php.net/manual/en/migration53.global-constants.php
-         */
-        } elseif ($this->isNewConst($node)) {
-            $constname = $node->args[0]->value->value;
-            $this->addSpot('WARNING', sprintf('Constant %s already defined', $constname));
-
-        /*
-         * Parameter
-         *
-         * {Reference}
-         * http://php.net/manual/en/migration53.parameters.php
-         */
-        } elseif ($this->isNewParam($node)) {
-            $advice = static::$paramTable->get($node->name);
-            $this->addSpot('NEW', sprintf('Function %s() has new parameter, %s', $node->name, $advice));
-        }
-
-        // Conditional declaration clear
-        if (ParserHelper::isConditionalFunc($node)) {
-            $this->condFunc = null;
-        } elseif (ParserHelper::isConditionalClass($node)) {
-            $this->condClass = null;
-        }
-    }
-
-    public function isNewFunc($node)
-    {
-        return ($node instanceof Stmt\Function_ && static::$funcTable->has($node->name) &&
-            (is_null($this->condFunc) || !NameHelper::isSameFunc($node->name, $this->condFunc)));
-    }
-
-    public function isNewClass($node)
-    {
-        return ($node instanceof Stmt\Class_ && static::$classTable->has($node->name) &&
-            (is_null($this->condClass) || !NameHelper::isSameClass($node->name, $this->condClass)));
-    }
-
-    public function isNewConst($node)
-    {
-        if ($node instanceof Expr\FuncCall && NameHelper::isSameFunc($node->name, 'define')) {
-            $constname = $node->args[0]->value->value;
-            return static::$constTable->has($constname);
-        }
-        return false;
-    }
-
-    public function isNewParam($node)
-    {
-        return false;  // New param introduced is too trivial to display
-        return ($node instanceof Expr\FuncCall && static::$paramTable->has($node->name));
+        unset($this->paramTable);  // New parameter is too trivial
+        // $this->paramTable = new SymbolTable($this->paramTable, SymbolTable::IC);
     }
 }
