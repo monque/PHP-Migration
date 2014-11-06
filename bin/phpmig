@@ -111,7 +111,7 @@ if (true) {
 
         // Instantiate
         if (isset($info->changes)) {
-            foreach ($info->changes as $chgname) {
+            foreach (array_reverse($info->changes) as $chgname) {
                 $chgname = 'PhpMigration\Changes\\'.$chgname;
                 $chglist[] = new $chgname;
                 if ($args['--verbose']) {
@@ -120,6 +120,7 @@ if (true) {
             }
         }
     }
+    $chglist = array_reverse($chglist);  // FIXME: use a better method making load order correct
     $chgvisitor = new PhpMigration\ChangeVisitor($chglist);
 
     // Instance parser
