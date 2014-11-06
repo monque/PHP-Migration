@@ -11,6 +11,7 @@
         "v5dot4\\IncompHtmlFunc",
         "v5dot4\\IncompObStart",
         "v5dot4\\Reserved",
-        "v5dot4\\Removed"
+        "v5dot4\\Removed",
+        "v5dot4\\Deprecated"
     ]
 }

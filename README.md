@@ -20,6 +20,13 @@
 - ~~[ ] array_combine() now returns array() instead of FALSE when two empty arrays are provided as parameters.~~
 - [x] If you use htmlentities() with asian character sets, it works like htmlspecialchars() - this has always been the case in previous versions of PHP, but now an E_STRICT level error is emitted.
 - [x] The third parameter of ob_start() has changed from boolean erase to integer flags. Note that code that explicitly set erase to FALSE will no longer behave as expected in PHP 5.4: please follow this example to write code that is compatible with PHP 5.3 and 5.4.
+- [x] New reversed keywords trait, callable, insteadof
+- [x] Removed function define_syslog_variables(), etc
+
+**Deprecated features**
+- [x] Deprecated functions:
+    - mcrypt_generic_end()
+    - mysql_list_dbs()
 
 
 ## TODO
