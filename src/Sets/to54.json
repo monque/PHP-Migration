@@ -8,7 +8,9 @@
         "v5dot4\\IncompByReference",
         "v5dot4\\IncompBreakContinue",
         "v5dot4\\IncompParamName",
+        "v5dot4\\IncompHtmlFunc",
         "v5dot4\\IncompObStart",
-        "v5dot4\\Reserved"
+        "v5dot4\\Reserved",
+        "v5dot4\\Removed"
     ]
 }
