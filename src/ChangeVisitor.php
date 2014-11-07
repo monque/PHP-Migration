@@ -161,7 +161,11 @@ class ChangeVisitor extends NodeVisitorAbstract
         if (is_null($file)) {
             $file = $this->getFile();
         }
-        $filename = $file->getRealpath();
+        if ($file instanceof \SplFileInfo) {
+            $filename = $file->getRealpath();
+        } else {
+            $filename = '';
+        }
 
         // Add by file
         $this->spots[$filename][] = array(
