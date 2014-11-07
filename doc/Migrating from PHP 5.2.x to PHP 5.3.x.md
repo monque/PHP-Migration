@@ -1,3 +1,32 @@
+All these changes are from [PHP Manual > Appendices > Migrating from PHP 5.2.x to PHP 5.3.x](http://php.net/manual/en/migration53.php)
+
+But **NOT ALL** changes will be checked, because some can not be check by a program.
+
+Although not all be covered, I still do my best to ensure the code works fine in new version.
+
+Lists below describes which will be check and not.
+
+## Overview
+- [x] [Backward Incompatible Changes](migration53.incompatible.php)
+- [ ] [New features](migration53.new-features.php)
+- [ ] [Changes made to Windows support](migration53.windows.php)
+- [ ] [Changes in SAPI modules](migration53.sapi.php)
+- [x] [Deprecated features in PHP 5.3.x](migration53.deprecated.php)
+- [ ] [Undeprecated features in PHP 5.3.x](migration53.undeprecated.php)
+- [ ] [New Parameters](migration53.parameters.php)
+- [x] [New Functions](migration53.functions.php)
+- [ ] [New stream wrappers](migration53.new-stream-wrappers.php)
+- [ ] [New stream filters](migration53.new-stream-filters.php)
+- [ ] [New Class Constants](migration53.class-constants.php)
+- [ ] [New Methods](migration53.methods.php)
+- [ ] [New Extensions](migration53.new-extensions.php)
+- [ ] [Removed Extensions](migration53.removed-extensions.php)
+- [ ] [Other changes to extensions](migration53.extensions-other.php)
+- [x] [New Classes](migration53.classes.php)
+- [x] [New Global Constants](migration53.global-constants.php)
+- [ ] [Changes to INI file handling](migration53.ini.php)
+- [ ] [Other changes](migration53.other.php)
+
 ## Backward Incompatible Changes
 http://php.net/manual/en/migration53.incompatible.php
 
@@ -18,3 +47,13 @@ http://php.net/manual/en/migration53.incompatible.php
 - [ ] The following keywords are now reserved and may not be used in function, class, etc. names.
     - [goto](control-structures.goto.php) 
     - [namespace](language.namespaces.php) 
+
+## Deprecated features
+http://php.net/manual/en/migration53.deprecated.php
+
+- [ ] INI directives, including [define_syslog_variables]() and etc
+- [ ] Functions, including [call_user_method()]() and etc
+- [ ] Feature
+    - [ ] Assigning the return value of new by reference is now deprecated.
+    - [ ] Call-time pass-by-reference is now deprecated
+- [ ] Undeprecated function [is_a()]()
