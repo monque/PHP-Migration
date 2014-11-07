@@ -38,6 +38,7 @@ abstract class AbstractIntroduced extends Change
     {
         if (!$this->tableLoaded) {
             $this->loadTable();
+            $this->tableLoaded = true;
         }
     }
 
