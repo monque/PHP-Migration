@@ -1,5 +1,5 @@
 <?php
-namespace PhpMigration\Changes\v5dot3;
+namespace PhpMigration\Changes\v5dot6;
 
 /*
  * @author Yuchen Wang <phobosw@gmail.com>

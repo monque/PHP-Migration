@@ -9,7 +9,10 @@ namespace PhpMigration;
  * http://www.php-fig.org/psr/psr-2/
  */
 
+use PhpMigration\ChangeVisitor;
 use PhpParser\Lexer;
+use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\Parser;
 
 class TestHelper
@@ -25,11 +28,39 @@ class TestHelper
         return self::$parser;
     }
 
-    public static function getNodeByCode($code, $addtag = true)
+    public static function parseCode($code, $addtag = true)
     {
         if ($addtag) {
             $code = '<?php '.$code;
         }
-        return current(self::getParser()->parse($code));
+        return self::getParser()->parse($code);
+    }
+
+    public static function getNodeByCode($code, $addtag = true)
+    {
+        return current(self::parseCode($code, $addtag));
+    }
+
+    public static function getProperty($object, $name)
+    {
+        $reflection = new \ReflectionClass($object);
+        $property = $reflection->getProperty($name);
+        $property->setAccessible(true);
+        return $property->getValue($object);
+    }
+
+    public static function runChange($change, $code)
+    {
+        $visitor = new ChangeVisitor(array($change));
+
+        $traverser = new NodeTraverser;
+        $traverser->addVisitor(new NameResolver);
+        $traverser->addVisitor($visitor);
+
+        $visitor->prepare();
+        $traverser->traverse(self::parseCode($code));
+        $visitor->finish();
+
+        return $visitor->getSpots();
     }
 }
