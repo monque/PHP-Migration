@@ -17,9 +17,9 @@ class Removed extends Change
 {
     protected static $version = '5.4.0';
 
-    protected static $prepared = false;
+    protected $tableLoaded = false;
 
-    public static $funcTable = array(
+    protected $funcTable = array(
         'define_syslog_variables',
         'import_request_variables',
         'session_is_registered',
@@ -36,9 +36,9 @@ class Removed extends Change
 
     public function prepare()
     {
-        if (!static::$prepared) {
-            static::$funcTable = new SymbolTable(array_flip(static::$funcTable), SymbolTable::IC);
-            static::$prepared = true;
+        if (!$this->tableLoaded) {
+            $this->funcTable = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
+            $this->tableLoaded = true;
         }
     }
 
@@ -59,6 +59,6 @@ class Removed extends Change
 
     public function isRemovedFunc($node)
     {
-        return ($node instanceof Expr\FuncCall && static::$funcTable->has($node->name));
+        return ($node instanceof Expr\FuncCall && $this->funcTable->has($node->name));
     }
 }

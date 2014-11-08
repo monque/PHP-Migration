@@ -1,39 +1,8 @@
 # PHP Migration
 
-## Changes
-
-### PHP 5.4
-
-**Backward Incompatible Changes**
-- [ ] Safe mode is no longer supported. Any applications that rely on safe mode may need adjustment, in terms of security.
-- [ ] Magic quotes has been removed. Applications relying on this feature may need to be updated, to avoid security issues. get_magic_quotes_gpc() and get_magic_quotes_runtime() now always return FALSE. set_magic_quotes_runtime() raises an E_CORE_ERROR level error on trying to enable Magic quotes.
-- [ ] The register_globals and register_long_arrays php.ini directives have been removed.
-- [ ] mbstring.script_encoding directives have been removed. Use zend.script_encoding instead.
-- [x] Call-time pass by reference has been removed.
-- [x] The break and continue statements no longer accept variable arguments (e.g., break 1 + foo() * $bar;). Static arguments still work, such as break 2;. As a side effect of this change break 0; and continue 0; are no longer allowed.
-- [ ] In the date and time extension, the timezone can no longer be set using the TZ environment variable. Instead you have to specify a timezone using the date.timezone php.ini option or date_default_timezone_set() function. PHP will no longer attempt to guess the timezone, and will instead fall back to "UTC" and issue a E_WARNING.
-- [ ] Non-numeric string offsets - e.g. $a['foo'] where $a is a string - now return false on isset() and true on empty(), and produce a E_WARNING if you try to use them. Offsets of types double, bool and null produce a E_NOTICE. Numeric strings (e.g. $a['2']) still work as before. Note that offsets like '12.3' and '5 foobar' are considered non-numeric and produce a E_WARNING, but are converted to 12 and 5 respectively, for backward compatibility reasons. Note: Following code returns different result. $str='abc';var_dump(isset($str['x'])); // false for PHP 5.4 or later, but true for 5.3 or less
-- ~~[ ] Converting an array to a string will now generate an E_NOTICE level error, but the result of the cast will still be the string "Array".~~
-- ~~[ ] Turning NULL, FALSE, or an empty string into an object by adding a property will now emit an E_WARNING level error, instead of E_STRICT.~~
-- [x] Parameter names that shadow super globals now cause a fatal error. This prohibits code like function foo($_GET, $_POST) {}.
-- ~~[ ] The Salsa10 and Salsa20 hash algorithms have been removed.~~
-- ~~[ ] array_combine() now returns array() instead of FALSE when two empty arrays are provided as parameters.~~
-- [x] If you use htmlentities() with asian character sets, it works like htmlspecialchars() - this has always been the case in previous versions of PHP, but now an E_STRICT level error is emitted.
-- [x] The third parameter of ob_start() has changed from boolean erase to integer flags. Note that code that explicitly set erase to FALSE will no longer behave as expected in PHP 5.4: please follow this example to write code that is compatible with PHP 5.3 and 5.4.
-- [x] New reversed keywords trait, callable, insteadof
-- [x] Removed function define_syslog_variables(), etc
-
-**Introduced, Deprecated, Removed**
-- [x] Deprecated functions:
-- [x] New Functions
-- [x] New Classes and Interfaces
-- ~~[ ] New Methods~~
-- ~~[ ] Remove Extensions~~
-- [x] New Global Constants
-
-
 ## TODO
-
+- 对着doc中5.3-5.4的部分捋
+- ChangeVisitor改名为CheckVisitor
 
 ### TODO 8
 - Output using markdown

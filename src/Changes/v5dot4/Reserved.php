@@ -48,14 +48,12 @@ class Reserved extends Change
          * http://php.net/manual/en/migration54.incompatible.php
          */
         $name = null;
-        if ($node instanceof Stmt\Class_ ||
-                $node instanceof Stmt\Interface_ ||
-                $node instanceof Stmt\Function_ ||
-                $node instanceof Stmt\ClassMethod ||
-                $node instanceof Expr\MethodCall ||
-                $node instanceof Expr\StaticCall) {
+        if ($node instanceof Stmt\Class_ || $node instanceof Stmt\Interface_ ||
+                $node instanceof Stmt\Function_ || $node instanceof Stmt\ClassMethod ||
+                $node instanceof Expr\MethodCall || $node instanceof Expr\StaticCall) {
             $name = $node->name;
-        } elseif ($node instanceof Expr\FuncCall && !ParserHelper::isDynamicCall($node)) {
+        } elseif ($node instanceof Expr\ConstFetch ||
+                ($node instanceof Expr\FuncCall && !ParserHelper::isDynamicCall($node))) {
             $name = $node->name->toString();
         }
         if (!is_null($name) && static::$keywords->has($name)) {

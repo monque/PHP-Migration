@@ -6,17 +6,17 @@ Changes are collected from
 Lists below describes which will be check and not.
 
 ## Overview
-- [ ] [Backward Incompatible Changes](http://php.net/manual/en/migration54.incompatible.php)
-- [ ] [New features](http://php.net/manual/en/migration54.new-features.php)
-- [ ] [Changes in SAPI modules](http://php.net/manual/en/migration54.sapi.php)
-- [ ] [Deprecated features in PHP 5.4.x](http://php.net/manual/en/migration54.deprecated.php)
+- [x] [Backward Incompatible Changes](http://php.net/manual/en/migration54.incompatible.php)
+- [i] [New features](http://php.net/manual/en/migration54.new-features.php)
+- [i] [Changes in SAPI modules](http://php.net/manual/en/migration54.sapi.php)
+- [x] [Deprecated features](http://php.net/manual/en/migration54.deprecated.php)
 - [ ] [Changed Functions](http://php.net/manual/en/migration54.parameters.php)
-- [ ] [New Functions](http://php.net/manual/en/migration54.functions.php)
-- [ ] [New Classes and Interfaces](http://php.net/manual/en/migration54.classes.php)
+- [x] [New Functions](http://php.net/manual/en/migration54.functions.php)
+- [x] [New Classes and Interfaces](http://php.net/manual/en/migration54.classes.php)
 - [ ] [New Methods](http://php.net/manual/en/migration54.methods.php)
 - [ ] [Removed Extensions](http://php.net/manual/en/migration54.removed-extensions.php)
 - [ ] [Other changes to extensions](http://php.net/manual/en/migration54.extensions-other.php)
-- [ ] [New Global Constants](http://php.net/manual/en/migration54.global-constants.php)
+- [x] [New Global Constants](http://php.net/manual/en/migration54.global-constants.php)
 - [ ] [Changes to INI file handling](http://php.net/manual/en/migration54.ini.php)
 - [ ] [Other changes](http://php.net/manual/en/migration54.other.php)
 
@@ -32,9 +32,9 @@ Applications relying on this feature may need to be updated, to avoid security i
 - [ ] mbstring.script_encoding directives have been removed.
 Use [zend.script_encoding](http://php.net/manual/en/ini.core.php#ini.zend.script-encoding) instead.
 
-- [ ] **[Call-time pass by reference](http://php.net/manual/en/language.references.pass.php) has been removed.**
+- [x] **[Call-time pass by reference](http://php.net/manual/en/language.references.pass.php) has been removed.**
 
-- [ ] **The [break](http://php.net/manual/en/control-structures.break.php) and [continue](http://php.net/manual/en/control-structures.continue.php) statements no longer accept variable arguments** (e.g., `break 1 + foo() * $bar;`).
+- [x] **The [break](http://php.net/manual/en/control-structures.break.php) and [continue](http://php.net/manual/en/control-structures.continue.php) statements no longer accept variable arguments** (e.g., `break 1 + foo() * $bar;`).
 Static arguments still work, such as `break 2;`. As a side effect of this change `break 0;` and `continue 0;` are no longer allowed.
 
 - [ ] In the [date and time extension](http://php.net/manual/en/book.datetime.php), the timezone can no longer be set using the TZ environment variable.
@@ -49,36 +49,30 @@ $str='abc';
 var_dump(isset($str['x'])); // false for PHP 5.4 or later, but true for 5.3 or less
 ```
 
-- [ ] Converting an array to a string will now generate an `E_NOTICE` level error, but the result of the cast will still be the string *"Array"*.
+- [i] Converting an array to a string will now generate an `E_NOTICE` level error, but the result of the cast will still be the string *"Array"*.
 
 - [ ] Turning `NULL`, `FALSE`, or an empty string into an object by adding a property will now emit an `E_WARNING` level error, instead of `E_STRICT`.
 
-- [ ] **Parameter names that shadow super globals now cause a fatal error.**
+- [x] **Parameter names that shadow super globals now cause a fatal error.**
 This prohibits code like `function foo($_GET, $_POST) {}`.
 
 - [ ] The Salsa10 and Salsa20 [hash algorithms](http://php.net/manual/en/book.hash.php) have been removed.
 
-- [ ] [array_combine()](http://php.net/manual/en/function.array-combine.php) now returns *array()* instead of `FALSE` when two empty arrays are provided as parameters.
+- [ ] [array_combine()](http://php.net/manual/en/function.array-combine.php) now returns `array()` instead of `FALSE` when two empty arrays are provided as parameters.
 
-- [ ] If you use [htmlentities()](http://php.net/manual/en/function.htmlentities.php) with asian character sets, it works like [htmlspecialchars()](http://php.net/manual/en/function.htmlspecialchars.php) - this has always been the case in previous versions of PHP, but now an `E_STRICT` level error is emitted.
+- [x] If you use [htmlentities()](http://php.net/manual/en/function.htmlentities.php) with asian character sets, it works like [htmlspecialchars()](http://php.net/manual/en/function.htmlspecialchars.php) - this has always been the case in previous versions of PHP, but now an `E_STRICT` level error is emitted.
 
-- [ ] The third parameter of [ob_start()](http://php.net/manual/en/function.ob-start.php) has changed from `boolean $erase` to `integer $flags`.
+- [x] The third parameter of [ob_start()](http://php.net/manual/en/function.ob-start.php) has changed from `boolean $erase` to `integer $flags`.
 Note that code that explicitly set erase to `FALSE` will no longer behave as expected in PHP 5.4.
 Please follow [this example](http://php.net/manual/en/function.ob-start.php#function.ob-start.flags-bc) to write code that is compatible with PHP 5.3 and 5.4.
 
-- [ ] The following keywords are now [reserved](http://php.net/manual/en/reserved.php), and may not be used as names by functions, classes, etc.
+- [x] The following keywords are now [reserved](http://php.net/manual/en/reserved.php), and may not be used as names by functions, classes, etc.
     - [trait](http://php.net/manual/en/language.oop5.traits.php)
     - [callable](http://php.net/manual/en/language.types.callable.php)
     - [insteadof](http://php.net/manual/en/language.oop5.traits.php)
 
-- [ ] The following functions have been removed from PHP:
+- [x] The following functions have been removed from PHP:
     - [define_syslog_variables()](http://php.net/manual/en/function.define-syslog-variables.php)
     - [import_request_variables()](http://php.net/manual/en/function.import-request-variables.php)
     - [session_is_registered()](http://php.net/manual/en/function.session-is-registered.php), [session_register()](http://php.net/manual/en/function.session-register.php) and [session_unregister()](http://php.net/manual/en/function.session-unregister.php).
     - The aliases [mysqli_bind_param()](http://php.net/manual/en/function.mysqli-bind-param.php), [mysqli_bind_result()](http://php.net/manual/en/function.mysqli-bind-result.php), [mysqli_client_encoding()](http://php.net/manual/en/function.mysqli-client-encoding.php), [mysqli_fetch()](http://php.net/manual/en/function.mysqli-fetch.php), [mysqli_param_count()](http://php.net/manual/en/function.mysqli-param-count.php), [mysqli_get_metadata()](http://php.net/manual/en/function.mysqli-get-metadata.php), [mysqli_send_long_data()](http://php.net/manual/en/function.mysqli-send-long-data.php), mysqli::client_encoding() and mysqli_stmt::stmt().
-
-## Deprecated features [link](http://php.net/manual/en/migration54.deprecated.php)
-
-- [ ] Functions
-    - [mcrypt_generic_end()](http://php.net/manual/en/)
-    - [mysql_list_dbs()](http://php.net/manual/en/)

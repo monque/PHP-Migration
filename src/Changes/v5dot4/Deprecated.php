@@ -17,18 +17,18 @@ class Deprecated extends Change
 {
     protected static $version = '5.4.0';
 
-    protected static $prepared = false;
+    protected $tableLoaded = false;
 
-    public static $funcTable = array(
+    protected $funcTable = array(
         'mcrypt_generic_end',
         'mysql_list_dbs',
     );
 
     public function prepare()
     {
-        if (!static::$prepared) {
-            static::$funcTable = new SymbolTable(array_flip(static::$funcTable), SymbolTable::IC);
-            static::$prepared = true;
+        if (!$this->tableLoaded) {
+            $this->funcTable = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
+            $this->tableLoaded = true;
         }
     }
 
@@ -43,12 +43,12 @@ class Deprecated extends Change
              * {Reference}
              * http://php.net/manual/en/migration54.deprecated.php
              */
-            $this->addSpot('FATAL', sprintf('Function %s() is deprecated', $node->name));
+            $this->addSpot('WARNING', sprintf('Function %s() is deprecated', $node->name));
         }
     }
 
     public function isDeprecatedFunc($node)
     {
-        return ($node instanceof Expr\FuncCall && static::$funcTable->has($node->name));
+        return ($node instanceof Expr\FuncCall && $this->funcTable->has($node->name));
     }
 }
