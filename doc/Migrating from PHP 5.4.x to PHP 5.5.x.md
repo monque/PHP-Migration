@@ -13,13 +13,13 @@ Lists below describes which will be check and not.
 - [x] [New Functions](http://php.net/manual/en/migration55.new-functions.php)
 - [x] [New Classes and Interfaces](http://php.net/manual/en/migration55.classes.php)
 - [ ] [New Methods](http://php.net/manual/en/migration55.new-methods.php)
-- [ignore] [Other changes to extensions](http://php.net/manual/en/migration55.extensions-other.php)
+- [*Ignore*] [Other changes to extensions](http://php.net/manual/en/migration55.extensions-other.php)
 - [x] [New Global Constants](http://php.net/manual/en/migration55.global-constants.php)
-- [ignore] [Changes to INI file handling](http://php.net/manual/en/migration55.ini.php)
-- [ignore] [Changes to PHP Internals](http://php.net/manual/en/migration55.internals.php)
+- [*Ignore*] [Changes to INI file handling](http://php.net/manual/en/migration55.ini.php)
+- [*Ignore*] [Changes to PHP Internals](http://php.net/manual/en/migration55.internals.php)
 
 ## Backward Incompatible Changes [link](http://php.net/manual/en/migration55.incompatible.php)
-- [ignore] **Windows XP and 2003 support dropped**
+- [*Ignore*] **Windows XP and 2003 support dropped**
 
 Support for Windows XP and 2003 has been dropped. Windows builds of PHP now require Windows Vista or newer.
 
@@ -66,7 +66,7 @@ The GUIDs that previously resulted in PHP outputting various logos have been rem
     - php_real_logo_guid()
     - [zend_logo_guid()](http://php.net/manual/en/function.zend-logo-guid.php)
 
-- [ignore] **Internal execution changes**
+- [*Ignore*] **Internal execution changes**
 
 Extension authors should note that the zend_execute() function can no longer be overridden, and that numerous changes have been made to the execute_data struct and related function and method handling opcodes.
 
