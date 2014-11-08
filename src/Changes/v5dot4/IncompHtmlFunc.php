@@ -27,23 +27,22 @@ class IncompHtmlFunc extends Change
              * previous versions of PHP, but now an E_STRICT level error is 
              * emitted.
              *
-             * PHP 5.4 and 5.5 will use UTF-8 as the default. Earlier versions 
-             * of PHP use ISO-8859-1.
-             *
-             * Although the encoding argument is technically optional, you are 
-             * highly encouraged to specify the correct value for your code if 
-             * you are using PHP 5.5 or earlier, or if your default_charset 
-             * configuration option may be set incorrectly for the given input.
-             *
-             * Changelog:
-             * - The default value for the encoding parameter was changed to 
-             * UTF-8.
-             * - The constants ENT_SUBSTITUTE, ENT_DISALLOWED, ENT_HTML401, 
-             * ENT_XML1, ENT_XHTML and ENT_HTML5 were added.
+             * The default character set for htmlspecialchars() and
+             * htmlentities() is now UTF-8, instead of ISO-8859-1. Note that
+             * changing your output charset via the default_charset
+             * configuration setting does not affect
+             * htmlspecialchars/htmlentities unless you are passing "" (an
+             * empty string) as the encoding parameter to your
+             * htmlspecialchars()/htmlentities() calls. Generally we do not
+             * recommend doing this because you should be able to change your
+             * output charset without affecting the runtime charset used by
+             * these functions. The safest approach is to explicitly set the
+             * charset on each call to htmlspecialchars() and htmlentities().
              *
              * {Reference}
              * http://php.net/manual/en/function.htmlentities.php
              * http://php.net/manual/en/function.htmlspecialchars.php
+             * http://php.net/manual/en/migration54.other.php
              * http://php.net/manual/en/migration54.incompatible.php
              */
             if (NameHelper::isSameFunc($node->name, 'htmlentities')) {
