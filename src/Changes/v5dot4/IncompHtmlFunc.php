@@ -48,7 +48,7 @@ class IncompHtmlFunc extends Change
             if (NameHelper::isSameFunc($node->name, 'htmlentities')) {
                 $this->addSpot('WARNING', 'htmlentities() never encode asian character sets, and default encoding was changed');
             } elseif (NameHelper::isSameFunc($node->name, 'htmlspecialchars')) {
-                $this->addSpot('WARNING', 'htmlspecialchars() default encoding was changed');
+                $this->addSpot('NOTICE', 'htmlspecialchars() default encoding was changed');
             }
         }
     }

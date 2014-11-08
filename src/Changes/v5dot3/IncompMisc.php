@@ -59,7 +59,7 @@ class IncompMisc extends Change
              * http://php.net/manual/en/migration53.incompatible.php
              */
             } elseif (NameHelper::isSameFunc($node->name, 'realpath')) {
-                $this->addSpot('NOTICE', 'realpath() is now fully platform-independent, Especially on *BSD.');
+                $this->addSpot('NOTICE', 'realpath() is now fully platform-independent, especially on *BSD.');
 
             /*
              * {Description}
