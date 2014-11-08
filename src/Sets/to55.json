@@ -8,6 +8,7 @@
         "v5dot5\\IncompCaseInsensitive",
         "v5dot5\\IncompPack",
         "v5dot4\\Removed",
+        "v5dot4\\Deprecated",
         "v5dot5\\Introduced"
     ]
 }

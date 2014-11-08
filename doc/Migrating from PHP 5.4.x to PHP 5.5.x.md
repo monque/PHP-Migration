@@ -8,7 +8,7 @@ Lists below describes which will be check and not.
 ## Overview
 - [ ] [Backward Incompatible Changes](http://php.net/manual/en/migration55.incompatible.php)
 - [ ] [New features](http://php.net/manual/en/migration55.new-features.php)
-- [ ] [Deprecated features in PHP 5.5.x](http://php.net/manual/en/migration55.deprecated.php)
+- [x] [Deprecated features](http://php.net/manual/en/migration55.deprecated.php)
 - [ ] [Changed Functions](http://php.net/manual/en/migration55.changed-functions.php)
 - [x] [New Functions](http://php.net/manual/en/migration55.new-functions.php)
 - [x] [New Classes and Interfaces](http://php.net/manual/en/migration55.classes.php)
