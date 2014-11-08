@@ -25,12 +25,12 @@ Lists below describes which will be check and not.
 Although most existing PHP 5 code should work without changes, please take
 note of some backward incompatible changes:
 
-### {~~Ignore~~} Windows XP and 2003 support dropped
+#### {~~Ignore~~} Windows XP and 2003 support dropped
 
 Support for Windows XP and 2003 has been dropped. Windows builds of PHP
 now require Windows Vista or newer.
 
-### {*Todo*} Case insensitivity no longer locale specific
+#### {*Todo*} Case insensitivity no longer locale specific
 
 All case insensitive matching for function, class and constant names is
 now performed in a locale independent manner according to ASCII rules.
@@ -45,7 +45,7 @@ non-English, non-ASCII code base, then you will need to test that you are
 not inadvertently relying on this behaviour before deploying PHP 5.5 to
 production systems.
 
-### {**Done**} [pack()](http://php.net/manual/en/function.pack.php) and [unpack()](http://php.net/manual/en/function.unpack.php) changes
+#### {**Done**} [pack()](http://php.net/manual/en/function.pack.php) and [unpack()](http://php.net/manual/en/function.unpack.php) changes
 
 Changes were made to [pack()](http://php.net/manual/en/function.pack.php) and
 [unpack()](http://php.net/manual/en/function.unpack.php) to make them more
@@ -81,7 +81,7 @@ if (version_compare(PHP_VERSION, '5.5.0-dev', '>=')) {
 ?>
 ```
 
-### {**Done**} self, parent and static are now always case insensitive
+#### {**Done**} self, parent and static are now always case insensitive
 
 Prior to PHP 5.5, cases existed where the
 [self](http://php.net/manual/en/language.oop5.paamayim-nekudotayim.php),
@@ -91,7 +91,7 @@ keywords were treated in a case sensitive fashion. These have now been
 resolved, and these keywords are always handled case insensitively:
 `SELF::CONSTANT` is now treated identically to `self::CONSTANT`.
 
-### {**Done**} PHP logo GUIDs removed
+#### {**Done**} PHP logo GUIDs removed
 
 The GUIDs that previously resulted in PHP outputting various logos have
 been removed. This includes the removal of the functions to return those
@@ -102,7 +102,7 @@ GUIDs. The removed functions are:
 - php_real_logo_guid()
 - [zend_logo_guid()](http://php.net/manual/en/function.zend-logo-guid.php)
 
-### {~~Ignore~~} Internal execution changes
+#### {~~Ignore~~} Internal execution changes
 
 Extension authors should note that the zend_execute() function can no longer be
 overridden, and that numerous changes have been made to the execute_data struct
@@ -115,21 +115,21 @@ these changes](http://php.net/manual/en/migration55.internals.php).
 
 ## Deprecated features [link](http://php.net/manual/en/migration55.deprecated.php)
 
-### {**Done**} [ext/mysql](http://php.net/manual/en/book.mysql.php) deprecation
+#### {**Done**} [ext/mysql](http://php.net/manual/en/book.mysql.php) deprecation
 
 The [original MySQL extension](http://php.net/manual/en/book.mysql.php) is now
 deprecated, and will generate `E_DEPRECATED` errors when connecting to a
 database. Instead, use the [MySQLi](http://php.net/manual/en/book.mysqli.php)
 or [PDO_MySQL](http://php.net/manual/en/ref.pdo-mysql.php) extensions.
 
-### {**Done**} [preg_replace()](http://php.net/manual/en/function.preg-replace.php) /e modifier
+#### {**Done**} [preg_replace()](http://php.net/manual/en/function.preg-replace.php) /e modifier
 
 The [preg_replace()](http://php.net/manual/en/function.preg-replace.php) /e
 modifier is now deprecated. Instead, use the
 [preg_replace_callback()](http://php.net/manual/en/function.preg-replace-callback.php)
 function.
 
-### {**Done**} [intl](http://php.net/manual/en/book.intl.php) deprecations
+#### {**Done**} [intl](http://php.net/manual/en/book.intl.php) deprecations
 
 [IntlDateFormatter::setTimeZoneID()](http://php.net/manual/en/intldateformatter.settimezoneid.php)
 and
@@ -140,7 +140,7 @@ method and
 [datefmt_set_timezone()](http://php.net/manual/en/intldateformatter.settimezone.php)
 function, respectively.
 
-### {**Done**} [mcrypt](http://php.net/manual/en/book.mcrypt.php) deprecations
+#### {**Done**} [mcrypt](http://php.net/manual/en/book.mcrypt.php) deprecations
 
 The following functions have been deprecated:
 - [mcrypt_cbc()](http://php.net/manual/en/function.mcrypt-cbc.php)
