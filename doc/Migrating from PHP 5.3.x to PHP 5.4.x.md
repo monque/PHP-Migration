@@ -7,8 +7,8 @@ Lists below describes which will be check and not.
 
 ## Overview
 - [x] [Backward Incompatible Changes](http://php.net/manual/en/migration54.incompatible.php)
-- [i] [New features](http://php.net/manual/en/migration54.new-features.php)
-- [i] [Changes in SAPI modules](http://php.net/manual/en/migration54.sapi.php)
+- [ignore] [New features](http://php.net/manual/en/migration54.new-features.php)
+- [ignore] [Changes in SAPI modules](http://php.net/manual/en/migration54.sapi.php)
 - [x] [Deprecated features](http://php.net/manual/en/migration54.deprecated.php)
 - [ ] [Changed Functions](http://php.net/manual/en/migration54.parameters.php)
 - [x] [New Functions](http://php.net/manual/en/migration54.functions.php)
@@ -49,7 +49,7 @@ $str='abc';
 var_dump(isset($str['x'])); // false for PHP 5.4 or later, but true for 5.3 or less
 ```
 
-- [i] Converting an array to a string will now generate an `E_NOTICE` level error, but the result of the cast will still be the string *"Array"*.
+- [ignore] Converting an array to a string will now generate an `E_NOTICE` level error, but the result of the cast will still be the string *"Array"*.
 
 - [ ] Turning `NULL`, `FALSE`, or an empty string into an object by adding a property will now emit an `E_WARNING` level error, instead of `E_STRICT`.
 
