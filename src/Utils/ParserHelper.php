@@ -47,11 +47,6 @@ class ParserHelper
         return static::isConditionalDeclare($node, 'function_exists');
     }
 
-    public static function isConditionalClass($node)
-    {
-        return static::isConditionalDeclare($node, 'class_exists');
-    }
-
     public static function getConditionalName($node)
     {
         return $node->cond->expr->args[0]->value->value;

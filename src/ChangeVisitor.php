@@ -101,9 +101,12 @@ class ChangeVisitor extends NodeVisitorAbstract
         $this->node = $node;
 
         // Record current
-        if ($node instanceof Stmt\Class_ ||
-            $node instanceof Stmt\Interface_ ||
-            $node instanceof Stmt\Trait_) {  // FIXME: should Class, Interface, Trait all assign to $this->class ?
+        if ($node instanceof Stmt\Class_ || $node instanceof Stmt\Interface_ || $node instanceof Stmt\Trait_) {
+            /**
+             * Class, Interface, Trait are stored in one same HashTable (zend_executor_globals.class_table).
+             * Their name will be conflict if duplicated (eg, class Demo {} and Interface Demo {})
+             * So, we treat all these class-like's name as Class name.
+             */
             $this->class = $node;
         } elseif ($node instanceof Stmt\ClassMethod) {
             $this->method = $node;
@@ -127,7 +130,7 @@ class ChangeVisitor extends NodeVisitorAbstract
         }
 
         // Clear current
-        if ($node instanceof Stmt\Class_) {
+        if ($node instanceof Stmt\Class_ || $node instanceof Stmt\Interface_ || $node instanceof Stmt\Trait_) {
             $this->class = null;
         } elseif ($node instanceof Stmt\ClassMethod) {
             $this->method = null;

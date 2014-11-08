@@ -30,8 +30,6 @@ abstract class AbstractIntroduced extends Change
 
     protected $condFunc = null;
 
-    protected $condClass = null;
-
     abstract protected function loadTable();
 
     public function prepare()
@@ -47,8 +45,6 @@ abstract class AbstractIntroduced extends Change
         // Support the simplest conditional declaration
         if (ParserHelper::isConditionalFunc($node)) {
             $this->condFunc = ParserHelper::getConditionalName($node);
-        } elseif (ParserHelper::isConditionalClass($node)) {
-            $this->condClass = ParserHelper::getConditionalName($node);
         }
     }
 
@@ -58,7 +54,7 @@ abstract class AbstractIntroduced extends Change
         if ($this->isNewFunc($node)) {
             $this->addSpot('FATAL', sprintf('Cannot redeclare %s()', $node->name));
 
-        // Class
+        // Class, Interface, Trait
         } elseif ($this->isNewClass($node)) {
             $this->addSpot('FATAL', sprintf('Cannot redeclare class %s', $node->name));
 
@@ -76,8 +72,6 @@ abstract class AbstractIntroduced extends Change
         // Conditional declaration clear
         if (ParserHelper::isConditionalFunc($node)) {
             $this->condFunc = null;
-        } elseif (ParserHelper::isConditionalClass($node)) {
-            $this->condClass = null;
         }
     }
 
@@ -90,9 +84,8 @@ abstract class AbstractIntroduced extends Change
 
     public function isNewClass(Node $node)
     {
-        return ($node instanceof Stmt\Class_ &&
-                (isset($this->classTable) && $this->classTable->has($node->name)) &&
-                (is_null($this->condClass) || !NameHelper::isSameClass($node->name, $this->condClass)));
+        return (($node instanceof Stmt\Class_ || $node instanceof Stmt\Interface_ || $node instanceof Stmt\Trait_) &&
+                (isset($this->classTable) && $this->classTable->has($node->name)));
     }
 
     public function isNewConst(Node $node)
