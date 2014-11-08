@@ -58,7 +58,7 @@ if (version_compare(PHP_VERSION, '5.5.0-dev', '>=')) {
 
 Prior to PHP 5.5, cases existed where the [self](http://php.net/manual/en/language.oop5.paamayim-nekudotayim.php), [parent](http://php.net/manual/en/language.oop5.paamayim-nekudotayim.php), and [static](http://php.net/manual/en/language.oop5.paamayim-nekudotayim.php) keywords were treated in a case sensitive fashion. These have now been resolved, and these keywords are always handled case insensitively: `SELF::CONSTANT` is now treated identically to `self::CONSTANT`.
 
-- [ ] **PHP logo GUIDs removed**
+- [x] **PHP logo GUIDs removed**
 
 The GUIDs that previously resulted in PHP outputting various logos have been removed. This includes the removal of the functions to return those GUIDs. The removed functions are:
     - [php_logo_guid()](http://php.net/manual/en/function.php-logo-guid.php)
@@ -66,7 +66,7 @@ The GUIDs that previously resulted in PHP outputting various logos have been rem
     - php_real_logo_guid()
     - [zend_logo_guid()](http://php.net/manual/en/function.zend-logo-guid.php)
 
-- [ ] **Internal execution changes**
+- [ignore] **Internal execution changes**
 
 Extension authors should note that the zend_execute() function can no longer be overridden, and that numerous changes have been made to the execute_data struct and related function and method handling opcodes.
 
