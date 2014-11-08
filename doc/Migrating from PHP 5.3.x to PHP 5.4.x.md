@@ -27,7 +27,8 @@ Any applications that rely on safe mode may need adjustment, in terms of securit
 - [ ] **[Magic quotes](http://php.net/manual/en/security.magicquotes.php) has been removed.**
 Applications relying on this feature may need to be updated, to avoid security issues. [get_magic_quotes_gpc()](http://php.net/manual/en/function.get-magic-quotes-gpc.php) and [get_magic_quotes_runtime()](http://php.net/manual/en/function.get-magic-quotes-runtime.php) now always return `FALSE`. [set_magic_quotes_runtime()](http://php.net/manual/en/function.set-magic-quotes-runtime.php) raises an `E_CORE_ERROR` level error on trying to enable [Magic quotes](http://php.net/manual/en/security.magicquotes.php).
 
-- [ ] **The [register_globals](http://php.net/manual/en/ini.core.php#ini.register-globals) and [register_long_arrays](http://php.net/manual/en/ini.core.php#ini.register-long-arrays) php.ini directives have been removed.**
+- [x] **The [register_globals](http://php.net/manual/en/ini.core.php#ini.register-globals) and [register_long_arrays](http://php.net/manual/en/ini.core.php#ini.register-long-arrays) php.ini directives have been removed.**
+> Only `register_long_arrays` will be checked, you should check `register_globals` manual
 
 - [ ] mbstring.script_encoding directives have been removed.
 Use [zend.script_encoding](http://php.net/manual/en/ini.core.php#ini.zend.script-encoding) instead.
