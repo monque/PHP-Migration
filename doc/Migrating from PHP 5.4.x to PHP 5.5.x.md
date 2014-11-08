@@ -78,18 +78,22 @@ Most extension authors are unlikely to be affected, but those writing extensions
 
 ## Deprecated features [link](http://php.net/manual/en/migration55.deprecated.php)
 
-- [ ] **ext/mysql deprecation**
-The original MySQL extension is now deprecated, and will generate E_DEPRECATED errors when connecting to a database. Instead, use the MySQLi or PDO_MySQL extensions.
+### {**Done**} [ext/mysql](http://php.net/manual/en/book.mysql.php) deprecation
 
-- [ ] **preg_replace() /e modifier**
-The preg_replace() /e modifier is now deprecated. Instead, use the preg_replace_callback() function.
+The [original MySQL extension](http://php.net/manual/en/book.mysql.php) is now deprecated, and will generate `E_DEPRECATED` errors when connecting to a database. Instead, use the [MySQLi](http://php.net/manual/en/book.mysqli.php) or [PDO_MySQL](http://php.net/manual/en/ref.pdo-mysql.php) extensions.
 
-- [ ] **intl deprecations**
-IntlDateFormatter::setTimeZoneID() and datefmt_set_timezone_id() are now deprecated. Instead, use the IntlDateFormatter::setTimeZone() method and datefmt_set_timezone() function, respectively.
+### {**Done**} [preg_replace()](http://php.net/manual/en/function.preg-replace.php) /e modifier
 
-- [ ] **mcrypt deprecations**
+The [preg_replace()](http://php.net/manual/en/function.preg-replace.php) /e modifier is now deprecated. Instead, use the [preg_replace_callback()](http://php.net/manual/en/function.preg-replace-callback.php) function.
+
+### {**Done**} [intl](http://php.net/manual/en/book.intl.php) deprecations
+
+[IntlDateFormatter::setTimeZoneID()](http://php.net/manual/en/intldateformatter.settimezoneid.php) and [datefmt_set_timezone_id()](http://php.net/manual/en/intldateformatter.settimezoneid.php) are now deprecated. Instead, use the [IntlDateFormatter::setTimeZone()](http://php.net/manual/en/intldateformatter.settimezone.php) method and [datefmt_set_timezone()](http://php.net/manual/en/intldateformatter.settimezone.php) function, respectively.
+
+### {**Done**} [mcrypt](http://php.net/manual/en/book.mcrypt.php) deprecations
+
 The following functions have been deprecated:
-    - mcrypt_cbc()
-    - mcrypt_cfb()
-    - mcrypt_ecb()
-    - mcrypt_ofb()
+- [mcrypt_cbc()](http://php.net/manual/en/function.mcrypt-cbc.php)
+- [mcrypt_cfb()](http://php.net/manual/en/function.mcrypt-cfb.php)
+- [mcrypt_ecb()](http://php.net/manual/en/function.mcrypt-ecb.php)
+- [mcrypt_ofb()](http://php.net/manual/en/function.mcrypt-ofb.php)
