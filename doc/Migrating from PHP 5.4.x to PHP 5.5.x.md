@@ -34,9 +34,13 @@ This may cause issues for code that uses case insensitive matches for non-ASCII 
 Changes were made to [pack()](http://php.net/manual/en/functions.pack.php) and [unpack()](http://php.net/manual/en/function.unpack.php) to make them more compatible with Perl:
 
 [pack()](http://php.net/manual/en/functions.pack.php) now supports the "Z" format code, which behaves identically to "a".
+
 [unpack()](http://php.net/manual/en/function.unpack.php) now support the "Z" format code for NULL padded strings, and behaves as "a" did in previous versions: it will strip trailing NULL bytes.
+
 [unpack()](http://php.net/manual/en/function.unpack.php) now keeps trailing NULL bytes when the "a" format code is used.
+
 [unpack()](http://php.net/manual/en/function.unpack.php) now strips all trailing ASCII whitespace when the "A" format code is used.
+
 Writing backward compatible code that uses the "a" format code with [unpack()](http://php.net/manual/en/function.unpack.php) requires the use of [version_compare()](http://php.net/manual/en/function.version-compare.php), due to the backward compatibility break.
 
 For example:
