@@ -5,6 +5,7 @@
         "to53", "to54"
     ],
     "changes": [
+        "v5dot5\\IncompCaseInsensitive",
         "v5dot5\\Introduced"
     ]
 }

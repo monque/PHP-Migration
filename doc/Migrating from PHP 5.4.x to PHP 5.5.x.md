@@ -19,7 +19,7 @@ Lists below describes which will be check and not.
 - [ignore] [Changes to PHP Internals](http://php.net/manual/en/migration55.internals.php)
 
 ## Backward Incompatible Changes [link](http://php.net/manual/en/migration55.incompatible.php)
-- [ ] **Windows XP and 2003 support dropped**
+- [ignore] **Windows XP and 2003 support dropped**
 
 Support for Windows XP and 2003 has been dropped. Windows builds of PHP now require Windows Vista or newer.
 
@@ -54,7 +54,7 @@ if (version_compare(PHP_VERSION, '5.5.0-dev', '>=')) {
 ?>
 ```
 
-- [ ] **`self`, `parent` and `static` are now always case insensitive**
+- [x] **`self`, `parent` and `static` are now always case insensitive**
 
 Prior to PHP 5.5, cases existed where the [self](http://php.net/manual/en/language.oop5.paamayim-nekudotayim.php), [parent](http://php.net/manual/en/language.oop5.paamayim-nekudotayim.php), and [static](http://php.net/manual/en/language.oop5.paamayim-nekudotayim.php) keywords were treated in a case sensitive fashion. These have now been resolved, and these keywords are always handled case insensitively: `SELF::CONSTANT` is now treated identically to `self::CONSTANT`.
 
