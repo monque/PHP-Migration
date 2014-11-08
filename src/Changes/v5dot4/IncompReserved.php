@@ -15,7 +15,7 @@ use PhpMigration\Utils\ParserHelper;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Stmt;
 
-class Reserved extends Change
+class IncompReserved extends Change
 {
     protected static $version = '5.4.0';
 
