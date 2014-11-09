@@ -13,7 +13,7 @@ Lists below describes which will be check and not.
 - [ ] [Changed Functions](http://php.net/manual/en/migration54.parameters.php)
 - [x] [New Functions](http://php.net/manual/en/migration54.functions.php)
 - [x] [New Classes and Interfaces](http://php.net/manual/en/migration54.classes.php)
-- [ ] [New Methods](http://php.net/manual/en/migration54.methods.php)
+- [x] [New Methods](http://php.net/manual/en/migration54.methods.php)
 - [ ] [Removed Extensions](http://php.net/manual/en/migration54.removed-extensions.php)
 - [ ] [Other changes to extensions](http://php.net/manual/en/migration54.extensions-other.php)
 - [x] [New Global Constants](http://php.net/manual/en/migration54.global-constants.php)

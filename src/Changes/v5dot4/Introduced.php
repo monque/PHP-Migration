@@ -47,6 +47,42 @@ class Introduced extends AbstractIntroduced
         'zlib_decode', 'zlib_encode',
     );
 
+    protected $methodTable = array(
+        // XSL
+        'XsltProcessor::setSecurityPrefs',
+        'XsltProcessor::getSecurityPrefs',
+
+        // SPL
+        'RegexIterator::getRegex',
+        'SplObjectStorage::getHash',
+        'DirectoryIterator::getExtension',
+        'SplDoublyLinkedList::serialize',
+        'SplDoublyLinkedList::unserialize',
+        'SplFileInfo::getExtension',
+        'SplFileObject::fputcsv',
+        'SplQueue::serialize',
+        'SplQueue::unserialize',
+        'SplStack::serialize',
+        'SplStack::unserialize',
+        'SplTempFileObject::fputcsv',
+
+        // Reflection
+        'ReflectionExtension::isPersistent',
+        'ReflectionExtension::isTemporary',
+        'ReflectionClass::isCloneable',
+
+        // Closure
+        'Closure::bind',
+        'Closure::bindTo',
+
+        // PDO_dblib
+        'PDO::newRowset',
+
+        // StreamWrapper
+        'StreamWrapper::stream_metadata',
+        'StreamWrapper::stream_truncate',
+    );
+
     protected $classTable = array(
         // SPL
         'CallbackFilterIterator', 'RecursiveCallbackFilterIterator',
@@ -125,6 +161,7 @@ class Introduced extends AbstractIntroduced
     protected function loadTable()
     {
         $this->funcTable  = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
+        $this->methodTable  = new SymbolTable(array_flip($this->methodTable), SymbolTable::IC);
         $this->classTable = new SymbolTable(array_flip($this->classTable), SymbolTable::IC);
         $this->constTable = new SymbolTable(array_flip($this->constTable), SymbolTable::CS);
     }
