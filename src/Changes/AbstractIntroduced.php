@@ -22,6 +22,8 @@ abstract class AbstractIntroduced extends Change
 
     protected $funcTable;
 
+    protected $methodTable;
+
     protected $classTable;
 
     protected $constTable;
@@ -54,6 +56,14 @@ abstract class AbstractIntroduced extends Change
         if ($this->isNewFunc($node)) {
             $this->addSpot('FATAL', sprintf('Cannot redeclare %s()', $node->name));
 
+        // Method
+        } elseif ($this->isNewMethod($node)) {
+            $this->addSpot('WARNING', sprintf(
+                'Method %s::%s() will override a built-in method',
+                $this->visitor->getClassname(),
+                $node->name
+            ));
+
         // Class, Interface, Trait
         } elseif ($this->isNewClass($node)) {
             $this->addSpot('FATAL', sprintf('Cannot redeclare class %s', $node->name));
@@ -80,6 +90,19 @@ abstract class AbstractIntroduced extends Change
         return ($node instanceof Stmt\Function_ &&
                 (isset($this->funcTable) && $this->funcTable->has($node->name)) &&
                 (is_null($this->condFunc) || !NameHelper::isSameFunc($node->name, $this->condFunc)));
+    }
+
+    public function isNewMethod($node)
+    {
+        if (!($node instanceof Stmt\ClassMethod) || !isset($this->methodTable)) {
+            return false;
+        }
+        $name = $this->visitor->getClass()->extends;
+        if (!$name) {
+            return false;
+        }
+        $mname = $name.'::'.$node->name;
+        return $this->methodTable->has($mname);
     }
 
     public function isNewClass(Node $node)

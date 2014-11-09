@@ -7,17 +7,17 @@ Lists below describes which will be check and not.
 
 
 ## Overview
-- [ ] [Backward Incompatible Changes](http://php.net/manual/en/migration55.incompatible.php)
-- [ ] [New features](http://php.net/manual/en/migration55.new-features.php)
+- [x] [Backward Incompatible Changes](http://php.net/manual/en/migration55.incompatible.php)
+- [~~Ignore~~] [New features](http://php.net/manual/en/migration55.new-features.php)
 - [x] [Deprecated features](http://php.net/manual/en/migration55.deprecated.php)
-- [ ] [Changed Functions](http://php.net/manual/en/migration55.changed-functions.php)
+- [~~Ignore~~] [Changed Functions](http://php.net/manual/en/migration55.changed-functions.php)
 - [x] [New Functions](http://php.net/manual/en/migration55.new-functions.php)
 - [x] [New Classes and Interfaces](http://php.net/manual/en/migration55.classes.php)
-- [ ] [New Methods](http://php.net/manual/en/migration55.new-methods.php)
-- [*Ignore*] [Other changes to extensions](http://php.net/manual/en/migration55.extensions-other.php)
+- [x] [New Methods](http://php.net/manual/en/migration55.new-methods.php)
+- [~~Ignore~~] [Other changes to extensions](http://php.net/manual/en/migration55.extensions-other.php)
 - [x] [New Global Constants](http://php.net/manual/en/migration55.global-constants.php)
-- [*Ignore*] [Changes to INI file handling](http://php.net/manual/en/migration55.ini.php)
-- [*Ignore*] [Changes to PHP Internals](http://php.net/manual/en/migration55.internals.php)
+- [~~Ignore~~] [Changes to INI file handling](http://php.net/manual/en/migration55.ini.php)
+- [~~Ignore~~] [Changes to PHP Internals](http://php.net/manual/en/migration55.internals.php)
 
 
 ## Backward Incompatible Changes [link](http://php.net/manual/en/migration55.incompatible.php)
