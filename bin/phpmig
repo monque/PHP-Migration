@@ -30,7 +30,7 @@ Options:
   -h, --help        Show this screen
 
 Development:
-  --export-posbit   Export build-in function posbit list
+  --export-posbit   Export built-in function posbit list
 EOT;
 $args = Docopt::handle($usage);
 

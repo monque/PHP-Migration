@@ -27,7 +27,7 @@ class IncompByReference extends Change
 
     public static $methodTable;
 
-    protected static $buildinTable = array(
+    protected static $builtinTable = array(
         // This list is exported by running `phpmig --export-posbit <docfile>`
         'apc_dec'                                =>    4, // 001
         'apc_fetch'                              =>    2, // 01
@@ -247,7 +247,7 @@ class IncompByReference extends Change
     {
         if (!static::$prepared) {
             static::$callList = array();
-            static::$declareTable = new SymbolTable(static::$buildinTable, SymbolTable::IC);
+            static::$declareTable = new SymbolTable(static::$builtinTable, SymbolTable::IC);
             static::$methodTable = new SymbolTable(array(), SymbolTable::IC);
         }
     }
