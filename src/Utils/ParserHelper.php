@@ -32,7 +32,7 @@ class ParserHelper
         }
     }
 
-    protected static function isConditionalDeclare($node, $testfunc)
+    protected static function isConditionalDeclare(Node $node, $testfunc)
     {
         if (!($node instanceof Stmt\If_ && $node->cond instanceof Expr\BooleanNot)) {
             return false;
@@ -42,12 +42,12 @@ class ParserHelper
         return $expr instanceof Expr\FuncCall && NameHelper::isSameFunc($expr->name, $testfunc);
     }
 
-    public static function isConditionalFunc($node)
+    public static function isConditionalFunc(Node $node)
     {
         return static::isConditionalDeclare($node, 'function_exists');
     }
 
-    public static function getConditionalName($node)
+    public static function getConditionalName(Node $node)
     {
         return $node->cond->expr->args[0]->value->value;
     }
