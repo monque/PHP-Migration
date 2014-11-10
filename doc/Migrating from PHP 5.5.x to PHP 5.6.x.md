@@ -22,7 +22,7 @@ Lists below describes which will be check and not.
 Although most existing PHP 5 code should work without changes, please take note
 of some backward incompatible changes:
 
-#### {*Todo*} Array keys won't be overwritten when defining an array as a property of a class via an array literal
+#### {**Done**} Array keys won't be overwritten when defining an array as a property of a class via an array literal
 
 Previously, arrays declared as class properties which mixed explicit and
 implicit keys could have array elements silently overwritten if an explicit key

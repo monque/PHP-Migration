@@ -1,0 +1,10 @@
+{
+    "desc": "Migrating to PHP 5.6.x",
+    "link": "http://php.net/manual/en/migration56.php",
+    "depend": [
+        "to53", "to54", "to55"
+    ],
+    "changes": [
+        "v5dot6\\IncompPropertyArray"
+    ]
+}
