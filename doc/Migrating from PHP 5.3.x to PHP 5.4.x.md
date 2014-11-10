@@ -5,6 +5,7 @@ Changes are collected from
 
 Lists below describes which will be check and not.
 
+
 ## Overview
 - [x] [Backward Incompatible Changes](http://php.net/manual/en/migration54.incompatible.php)
 - [~~Ignore~~] [New features](http://php.net/manual/en/migration54.new-features.php)
@@ -19,6 +20,7 @@ Lists below describes which will be check and not.
 - [x] [New Global Constants](http://php.net/manual/en/migration54.global-constants.php)
 - [~~Ignore~~] [Changes to INI file handling](http://php.net/manual/en/migration54.ini.php)
 - [*Todo*] [Other changes](http://php.net/manual/en/migration54.other.php)
+
 
 ## Backward Incompatible Changes [link](http://php.net/manual/en/migration53.incompatible.php)
 
