@@ -47,11 +47,11 @@ class IncompMisc extends Change
 
             /*
              * {Description}
-             * realpath() is now fully platform-independent. Consequence of 
-             * this is that invalid relative paths such as __FILE__ . "/../x" 
+             * realpath() is now fully platform-independent. Consequence of
+             * this is that invalid relative paths such as __FILE__ . "/../x"
              * do not work anymore.
-             * Prior to this release, if only the last path component did not 
-             * exist, realpath() would not fail on *BSD systems. realpath() now 
+             * Prior to this release, if only the last path component did not
+             * exist, realpath() would not fail on *BSD systems. realpath() now
              * fails in this case.
              *
              * {Reference}
@@ -63,9 +63,9 @@ class IncompMisc extends Change
 
             /*
              * {Description}
-             * The array functions natsort(), natcasesort(), usort(), uasort(), 
-             * uksort(), array_flip(), and array_unique() no longer accept 
-             * objects passed as arguments. To apply these functions to an 
+             * The array functions natsort(), natcasesort(), usort(), uasort(),
+             * uksort(), array_flip(), and array_unique() no longer accept
+             * objects passed as arguments. To apply these functions to an
              * object, cast the object to an array first.
              *
              * {Reference}
@@ -76,8 +76,8 @@ class IncompMisc extends Change
 
             /*
              * {Description}
-             * call_user_func_array() no longer accepts null as a second 
-             * parameter and calls the function. It now emits a warning and 
+             * call_user_func_array() no longer accepts null as a second
+             * parameter and calls the function. It now emits a warning and
              * does not call the function.
              *
              * {Reference}
@@ -88,6 +88,17 @@ class IncompMisc extends Change
                 if (!($node->args[1]->value instanceof Expr\Array_)) {
                     $this->addSpot('NOTICE', sprintf('%s() no longer accept non-array passed as arguments', $node->name));
                 }
+
+            /*
+             * {Description}
+             * Image Processing and GD The "JPG Support" index returned from
+             * gd_info() has been renamed to "JPEG Support".
+             *
+             * {Reference}
+             * http://php.net/manual/en/migration53.extensions-other.php
+             */
+            } elseif (NameHelper::isSameFunc($node->name, 'gd_info')) {
+                $this->addSpot('NOTICE', 'gd_info() JPG Support attribute renamed to JPEG Support');
             }
         }
     }

@@ -23,8 +23,7 @@ class Deprecated extends Change
         'call_user_method'          => 'use call_user_func() instead',
         'call_user_method_array'    => 'use call_user_func_array() instead',
         'define_syslog_variables'   => '',
-        // dl() advice copy from http://php.net/manual/en/migration53.sapi.php
-        'dl'                        => 'available only under CLI, CGI, and embed SAPIs',
+        // 'dl'                        => 'available only under CLI, CGI, and embed SAPIs', // dl() is moved to Removed
         'ereg'                      => 'use preg_match() instead',
         'ereg_replace'              => 'use preg_replace() instead',
         'eregi'                     => 'use preg_match() with the "i" modifier instead',
@@ -69,11 +68,7 @@ class Deprecated extends Change
              * {Reference}
              * http://php.net/manual/en/migration53.deprecated.php
              */
-            if ($node->name == 'dl') {
-                $this->addSpot('FATAL', $errmsg);
-            } else {
-                $this->addSpot('DEPRECATED', $errmsg);
-            }
+            $this->addSpot('DEPRECATED', $errmsg);
 
         // Assign new instance
         } elseif ($this->isAssignNewByRef($node)) {

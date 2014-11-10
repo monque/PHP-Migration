@@ -1,8 +1,18 @@
 # PHP Migration
 
 ## TODO
-- 对着doc中5.3-5.4的部分捋
+- 是否检查的原则
+    宁可错杀一万也不错过一个
+- 程度上的原则
+    - 新版本中会导致崩溃的 (Fatal)
+    - 新版本中产生行为变化的 (Warning, Notice)
+    - 新版本中废弃但未移除的功能 (Deprecated)
+    - 新版本中引入的新功能、特性 (New)
+        提供建议性的信息
 - ChangeVisitor改名为CheckVisitor
+- 做一个功能助手类的visitor，负责以下功能
+    - 类继承关系记录
+    - 变量在scope内的类型推测，值记录
 
 ### TODO 8
 - Output using markdown
