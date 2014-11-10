@@ -123,6 +123,7 @@ and may not be used as names by functions, classes, etc.
 - [insteadof](http://php.net/manual/en/language.oop5.traits.php)
 
 #### {**Done**} The following functions have been removed from PHP:
+
 - [define_syslog_variables()](http://php.net/manual/en/function.define-syslog-variables.php)
 - [import_request_variables()](http://php.net/manual/en/function.import-request-variables.php)
 - [session_is_registered()](http://php.net/manual/en/function.session-is-registered.php)
