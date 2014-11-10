@@ -24,7 +24,7 @@ Usage: phpmig [options] <file>...
 
 Options:
   -l, --list        List all migration sets
-  -s, --set=NAME    The name of migration set to use [default: to54]
+  -s, --set=NAME    The name of migration set to use [default: to55]
   -d, --dump        Dump abstract syntax tree
   -v, --verbose
   -h, --help        Show this screen
