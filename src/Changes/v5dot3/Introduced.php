@@ -61,6 +61,33 @@ class Introduced extends AbstractIntroduced
         'msg_queue_exists', 'shm_has_var',
     );
 
+    protected $methodTable = array(
+        // Date/Time
+        'DateTime::add', 'DateTime::createFromFormat', 'DateTime::diff',
+        'DateTime::getLastErrors', 'DateTime::sub',
+
+        // Exception
+        'Exception::getPrevious',
+
+        // DOM
+        'DOMNode::getLineNo',
+
+        // PDO_FIREBIRD
+        'PDO::setAttribute',
+
+        // Reflection
+        'ReflectionClass::getNamespaceName', 'ReflectionClass::getShortName',
+        'ReflectionClass::inNamespace', 'ReflectionFunction::getNamespaceName',
+        'ReflectionFunction::getShortName', 'ReflectionFunction::inNamespace',
+        'ReflectionProperty::setAccessible',
+
+        // SPL
+        'SplObjectStorage::addAll', 'SplObjectStorage::removeAll',
+
+        // XSL
+        'XSLTProcessor::setProfiling',
+    );
+
     protected $classTable = array(
         // Date/Time
         'DateInterval', 'DatePeriod',
@@ -149,6 +176,7 @@ class Introduced extends AbstractIntroduced
     protected function loadTable()
     {
         $this->funcTable  = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
+        $this->methodTable  = new SymbolTable(array_flip($this->methodTable), SymbolTable::IC);
         $this->classTable = new SymbolTable(array_flip($this->classTable), SymbolTable::IC);
         $this->constTable = new SymbolTable(array_flip($this->constTable), SymbolTable::CS);
 
