@@ -13,13 +13,42 @@ use PhpMigration\Change;
 use PhpMigration\Utils\NameHelper;
 use PhpParser\Node\Expr;
 
-class IncompHtmlFunc extends Change
+class IncompMisc extends Change
 {
     protected static $version = '5.4.0';
 
     public function leaveNode($node)
     {
-        if ($node instanceof Expr\FuncCall) {
+        // array_combine()
+        if ($node instanceof Expr\FuncCall && NameHelper::isSameFunc($node->name, 'array_combine')) {
+            /**
+             * {Description}
+             * array_combine() now returns array() instead of FALSE when two empty 
+             * arrays are provided as parameters.
+             *
+             * {Reference}
+             * http://php.net/manual/en/migration54.incompatible.php
+             */
+            $this->addSpot('NOTICE', 'array_combine() now returns array() instead of FALSE when two empty arrays given');
+
+        // ob_start()
+        } elseif ($node instanceof Expr\FuncCall && NameHelper::isSameFunc($node->name, 'ob_start') &&
+                isset($node->args[2])) {
+            /**
+             * {Description}
+             * The third parameter of ob_start() has changed from boolean erase
+             * to integer flags. Note that code that explicitly set erase to
+             * FALSE will no longer behave as expected in PHP 5.4: please
+             * follow this example to write code that is compatible with PHP
+             * 5.3 and 5.4.
+             *
+             * {Reference}
+             * http://php.net/manual/en/function.ob-start.php
+             * http://php.net/manual/en/migration54.incompatible.php
+             */
+            $this->addSpot('WARNING', 'The third parameter of ob_start() has changed');
+
+        } elseif ($node instanceof Expr\FuncCall) {
             /**
              * {Description}
              * If you use htmlentities() with asian character sets, it works 

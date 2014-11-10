@@ -25,12 +25,12 @@ Lists below describes which will be check and not.
 Although most existing PHP 5 code should work without changes, please take
 note of some backward incompatible changes:
 
-#### {*Todo*} [Safe mode](http://php.net/manual/en/features.safe-mode.php) is no longer supported
+#### {~~Ignore~~} [Safe mode](http://php.net/manual/en/features.safe-mode.php) is no longer supported
 
 Any applications that rely on safe mode may need adjustment, in terms of
 security.
 
-#### {*Todo*} [Magic quotes](http://php.net/manual/en/security.magicquotes.php) has been removed
+#### {~~Ignore~~} [Magic quotes](http://php.net/manual/en/security.magicquotes.php) has been removed
 
 Applications relying on this feature may need to be updated, to avoid security
 issues.
@@ -43,15 +43,16 @@ now always return `FALSE`.
 raises an `E_CORE_ERROR` level error on trying to enable
 [Magic quotes](http://php.net/manual/en/security.magicquotes.php).
 
-#### {*Todo*} [register_globals](http://php.net/manual/en/ini.core.php#ini.register-globals) and [register_long_arrays](http://php.net/manual/en/ini.core.php#ini.register-long-arrays) php.ini directives have been removed
+#### {~~Ignore~~} [register_globals](http://php.net/manual/en/ini.core.php#ini.register-globals) and [register_long_arrays](http://php.net/manual/en/ini.core.php#ini.register-long-arrays) php.ini directives have been removed
+> Only `register_long_arrays` will be checked
 
-#### {*Todo*} mbstring.script_encoding directives have been removed
+#### {~~Ignore~~} mbstring.script_encoding directives have been removed
 
 Use [zend.script_encoding](http://php.net/manual/en/ini.core.php#ini.zend.script-encoding) instead.
 
-#### {*Todo*} [Call-time pass by reference](http://php.net/manual/en/language.references.pass.php) has been removed
+#### {**Done**} [Call-time pass by reference](http://php.net/manual/en/language.references.pass.php) has been removed
 
-#### {*Todo*} [break](http://php.net/manual/en/control-structures.break.php) and [continue](http://php.net/manual/en/control-structures.continue.php) statements no longer accept variable arguments
+#### {**Done**} [break](http://php.net/manual/en/control-structures.break.php) and [continue](http://php.net/manual/en/control-structures.continue.php) statements no longer accept variable arguments
 
 (e.g., `break 1 + foo() * $bar;`).  Static arguments still work, such as break
 2;. As a side effect of this change `break 0;` and `continue 0;` are no longer
@@ -85,26 +86,26 @@ $str='abc';
 var_dump(isset($str['x'])); // false for PHP 5.4 or later, but true for 5.3 or less
 ```
 
-#### {*Todo*} Converting array to string will generate an `E_NOTICE` level error
+#### {~~Ignore~~} Converting array to string will generate an `E_NOTICE` level error
 
 but the result of the cast will still be the string "Array".
 
-#### {*Todo*} Turning `NULL`, `FALSE`, or an empty string into an object by adding a property will now emit an `E_WARNING` level error, instead of `E_STRICT`
+#### {~~Ignore~~} Turning `NULL`, `FALSE`, or an empty string into an object by adding a property will now emit an `E_WARNING` level error, instead of `E_STRICT`
 
-#### {*Todo*} Parameter names that shadow super globals now cause a fatal error
+#### {**Done**} Parameter names that shadow super globals now cause a fatal error
 
 This prohibits code like `function foo($_GET, $_POST) {}`.
 
-#### {*Todo*} The Salsa10 and Salsa20 [hash algorithms](http://php.net/manual/en/book.hash.php) have been removed
+#### {~~Ignore~~} The Salsa10 and Salsa20 [hash algorithms](http://php.net/manual/en/book.hash.php) have been removed
 
-#### [array_combine()](http://php.net/manual/en/function.array-combine.php) now returns array() instead of `FALSE` when two empty arrays are provided as parameters
+#### {**Done**} [array_combine()](http://php.net/manual/en/function.array-combine.php) now returns array() instead of `FALSE` when two empty arrays are provided as parameters
 
-#### {*Todo*} If you use [htmlentities()](http://php.net/manual/en/function.htmlentities.php) with asian character sets, it works like [htmlspecialchars()](http://php.net/manual/en/function.htmlspecialchars.php)
+#### {**Done**} If you use [htmlentities()](http://php.net/manual/en/function.htmlentities.php) with asian character sets, it works like [htmlspecialchars()](http://php.net/manual/en/function.htmlspecialchars.php)
 
 this has always been the case in previous versions of PHP, but now an
 `E_STRICT` level error is emitted.
 
-#### {*Todo*} The third parameter of [ob_start()](http://php.net/manual/en/function.ob-start.php) has changed
+#### {**Done**} The third parameter of [ob_start()](http://php.net/manual/en/function.ob-start.php) has changed
 
 changed from [boolean](http://php.net/manual/en/language.types.boolean.php)
 erase to [integer](http://php.net/manual/en/language.types.integer.php) flags.
@@ -113,7 +114,7 @@ expected in PHP 5.4: please follow [this
 example](http://php.net/manual/en/function.ob-start.php#function.ob-start.flags-bc)
 to write code that is compatible with PHP 5.3 and 5.4.
 
-#### {*Todo*} The following keywords are now [reserved](http://php.net/manual/en/reserved.php)
+#### {**Done**} The following keywords are now [reserved](http://php.net/manual/en/reserved.php)
 
 and may not be used as names by functions, classes, etc.
 
@@ -121,7 +122,7 @@ and may not be used as names by functions, classes, etc.
 - [callable](http://php.net/manual/en/language.types.callable.php)
 - [insteadof](http://php.net/manual/en/language.oop5.traits.php)
 
-#### {*Todo*} The following functions have been removed from PHP:
+#### {**Done**} The following functions have been removed from PHP:
 - [define_syslog_variables()](http://php.net/manual/en/function.define-syslog-variables.php)
 - [import_request_variables()](http://php.net/manual/en/function.import-request-variables.php)
 - [session_is_registered()](http://php.net/manual/en/function.session-is-registered.php)
