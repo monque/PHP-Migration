@@ -36,7 +36,7 @@ abstract class AbstractRemoved extends Change
             $this->funcTable = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
         }
         if (isset($this->constTable)) {
-            $this->constTable = new SymbolTable(array_flip($this->constTable), SymbolTable::IC);
+            $this->constTable = new SymbolTable(array_flip($this->constTable), SymbolTable::CS);
         }
     }
 

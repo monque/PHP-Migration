@@ -31,7 +31,10 @@ class SymbolTable implements \Iterator
     public function has($key)
     {
         // Compatible with almost all type key
-        if (!is_string($key) && !method_exists($key, '__toString')) {
+        if (method_exists($key, '__toString')) {
+            $key = (string) $key;
+        }
+        if (!is_string($key)) {
             return false;
         }
 
