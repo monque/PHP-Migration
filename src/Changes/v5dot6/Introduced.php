@@ -10,7 +10,6 @@ namespace PhpMigration\Changes\v5dot6;
  */
 
 use PhpMigration\Changes\AbstractIntroduced;
-use PhpMigration\SymbolTable;
 
 class Introduced extends AbstractIntroduced
 {
@@ -74,11 +73,4 @@ class Introduced extends AbstractIntroduced
         'PGSQL_POLLING_FAILED', 'PGSQL_POLLING_OK', 'PGSQL_POLLING_READING', 
         'PGSQL_POLLING_WRITING',
     );
-
-    protected function loadTable()
-    {
-        $this->funcTable  = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
-        $this->methodTable  = new SymbolTable(array_flip($this->methodTable), SymbolTable::IC);
-        $this->constTable = new SymbolTable(array_flip($this->constTable), SymbolTable::CS);
-    }
 }

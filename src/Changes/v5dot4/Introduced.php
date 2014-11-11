@@ -10,7 +10,6 @@ namespace PhpMigration\Changes\v5dot4;
  */
 
 use PhpMigration\Changes\AbstractIntroduced;
-use PhpMigration\SymbolTable;
 
 class Introduced extends AbstractIntroduced
 {
@@ -157,12 +156,4 @@ class Introduced extends AbstractIntroduced
         'JSON_PRETTY_PRINT', 'JSON_UNESCAPED_SLASHES', 'JSON_NUMERIC_CHECK', 
         'JSON_UNESCAPED_UNICODE', 'JSON_BIGINT_AS_STRING',
     );
-
-    protected function loadTable()
-    {
-        $this->funcTable  = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
-        $this->methodTable  = new SymbolTable(array_flip($this->methodTable), SymbolTable::IC);
-        $this->classTable = new SymbolTable(array_flip($this->classTable), SymbolTable::IC);
-        $this->constTable = new SymbolTable(array_flip($this->constTable), SymbolTable::CS);
-    }
 }

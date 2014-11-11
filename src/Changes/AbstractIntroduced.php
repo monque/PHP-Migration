@@ -10,6 +10,7 @@ namespace PhpMigration\Changes;
  */
 
 use PhpMigration\Change;
+use PhpMigration\SymbolTable;
 use PhpMigration\Utils\NameHelper;
 use PhpMigration\Utils\ParserHelper;
 use PhpParser\Node;
@@ -32,13 +33,27 @@ abstract class AbstractIntroduced extends Change
 
     protected $condFunc = null;
 
-    abstract protected function loadTable();
-
     public function prepare()
     {
         if (!$this->tableLoaded) {
             $this->loadTable();
             $this->tableLoaded = true;
+        }
+    }
+
+    public function loadTable()
+    {
+        if (isset($this->funcTable)) {
+            $this->funcTable = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
+        }
+        if (isset($this->methodTable)) {
+            $this->methodTable  = new SymbolTable(array_flip($this->methodTable), SymbolTable::IC);
+        }
+        if (isset($this->classTable)) {
+            $this->classTable = new SymbolTable(array_flip($this->classTable), SymbolTable::IC);
+        }
+        if (isset($this->constTable)) {
+            $this->constTable = new SymbolTable(array_flip($this->constTable), SymbolTable::CS);
         }
     }
 
