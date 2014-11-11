@@ -7,11 +7,11 @@ Lists below describes which will be check and not.
 
 
 ## Overview
-- [ ] [Backward incompatible changes](http://php.net/manual/en/migration56.incompatible.php)
-- [ ] [New features](http://php.net/manual/en/migration56.new-features.php)
-- [ ] [Deprecated features](http://php.net/manual/en/migration56.deprecated.php)
-- [ ] [Changed functions](http://php.net/manual/en/migration56.changed-functions.php)
-- [ ] [New functions](http://php.net/manual/en/migration56.new-functions.php)
+- [x] [Backward incompatible changes](http://php.net/manual/en/migration56.incompatible.php)
+- [~~Ignore~~] [New features](http://php.net/manual/en/migration56.new-features.php)
+- [x] [Deprecated features](http://php.net/manual/en/migration56.deprecated.php)
+- [~~Ignore~~] [Changed functions](http://php.net/manual/en/migration56.changed-functions.php)
+- [x] [New functions](http://php.net/manual/en/migration56.new-functions.php)
 - [ ] [OpenSSL changes](http://php.net/manual/en/migration56.openssl.php)
 - [ ] [Other changes to extensions](http://php.net/manual/en/migration56.extensions.php)
 - [ ] [New global constants](http://php.net/manual/en/migration56.constants.php)

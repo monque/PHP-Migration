@@ -40,14 +40,16 @@ class Introduced extends AbstractIntroduced
         // PostgreSQL
         'pg_connect_poll', 'pg_consume_input', 'pg_flush', 'pg_socket',
 
-        // PDO_PGSQL
-        // 'PDO::pgsqlGetNotify', 'PDO::pgsqlGetPid', // FIXME
-
         // Session
         'session_abort', 'session_reset',
+    );
+
+    protected $methodTable = array(
+        // PDO_PGSQL
+        'PDO::pgsqlGetNotify', 'PDO::pgsqlGetPid',
 
         // Zip
-        // 'ZipArchive::setPassword', // FIXME
+        'ZipArchive::setPassword',
     );
 
     protected $constTable = array(
@@ -76,6 +78,7 @@ class Introduced extends AbstractIntroduced
     protected function loadTable()
     {
         $this->funcTable  = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
+        $this->methodTable  = new SymbolTable(array_flip($this->methodTable), SymbolTable::IC);
         $this->constTable = new SymbolTable(array_flip($this->constTable), SymbolTable::CS);
     }
 }
