@@ -66,7 +66,7 @@ array(3) {
 }
 ```
 
-#### {*Todo*} [json_decode()](http://php.net/manual/en/function.json-decode.php) strictness
+#### {**Done**} [json_decode()](http://php.net/manual/en/function.json-decode.php) strictness
 [json_decode()](http://php.net/manual/en/function.json-decode.php) now rejects
 non-lowercase variants of the JSON literals *true*, *false* and *null* at all
 times, as per the JSON specification, and sets

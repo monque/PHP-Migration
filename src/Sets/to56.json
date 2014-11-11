@@ -5,6 +5,7 @@
         "to53", "to54", "to55"
     ],
     "changes": [
-        "v5dot6\\IncompPropertyArray"
+        "v5dot6\\IncompPropertyArray",
+        "v5dot6\\IncompMisc"
     ]
 }
