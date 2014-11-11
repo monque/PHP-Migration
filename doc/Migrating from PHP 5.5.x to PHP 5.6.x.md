@@ -120,3 +120,64 @@ block cipher modes that require IVs will now fail if an IV isn't provided.
 - [mcrypt_ecb()](http://php.net/manual/en/function.mcrypt-ecb.php)
 - [mcrypt_generic()](http://php.net/manual/en/function.mcrypt-generic.php)
 - [mcrypt_ofb()](http://php.net/manual/en/function.mcrypt-ofb.php)
+
+
+## Deprecated features [link](http://php.net/manual/en/migration56.deprecated.php)
+
+#### {~~Ignore~~} Calls from incompatible context
+
+Methods called from an incompatible context are now deprecated, and will
+generate `E_DEPRECATED` errors when invoked instead of `E_STRICT`. Support for
+these calls will be removed in a future version of PHP.
+
+An example of such a call is:
+
+```php
+<?php
+class A {
+    function f() { echo get_class($this); }
+}
+
+class B {
+    function f() { A::f(); }
+}
+
+(new B)->f();
+?>
+```
+
+The above example will output:
+
+```
+Deprecated: Non-static method A::f() should not be called statically, assuming $this from incompatible context in - on line 7
+B
+```
+
+#### {**Done**} [$HTTP_RAW_POST_DATA](http://php.net/manual/en/reserved.variables.httprawpostdata.php) and [always_populate_raw_post_data](http://php.net/manual/en/ini.core.php#ini.always-populate-raw-post-data)
+
+[always_populate_raw_post_data](http://php.net/manual/en/ini.core.php#ini.always-populate-raw-post-data)
+will now generate an `E_DEPRECATED` error when used.  New code should use
+[*php://input*](http://php.net/manual/en/wrappers.php.php#wrappers.php.input)
+instead of
+[$HTTP_RAW_POST_DATA](http://php.net/manual/en/reserved.variables.httprawpostdata.php),
+which will be removed in a future release. You can opt in for the new behaviour
+(in which
+[$HTTP_RAW_POST_DATA](http://php.net/manual/en/reserved.variables.httprawpostdata.php)
+is never defined) by setting
+[always_populate_raw_post_data](http://php.net/manual/en/ini.core.php#ini.always-populate-raw-post-data)
+to *-1*.
+
+#### {~~Ignore~~} [iconv](http://php.net/manual/en/book.iconv.php) and [mbstring](http://php.net/manual/en/book.mbstring.php) encoding settings
+
+The [iconv](http://php.net/manual/en/book.iconv.php) and
+[mbstring](http://php.net/manual/en/book.mbstring.php) configuration options
+related to encoding have been deprecated in favour of
+[default_charset](http://php.net/manual/en/ini.core.php#ini.default-charset).
+The deprecated options are:
+
+- [iconv.input_encoding](http://php.net/manual/en/iconv.configuration.php#ini.iconv.input-encoding)
+- [iconv.output_encoding](http://php.net/manual/en/iconv.configuration.php#ini.iconv.output-encoding)
+- [iconv.internal_encoding](http://php.net/manual/en/iconv.configuration.php#ini.iconv.internal-encoding)
+- [mbstring.http_input](http://php.net/manual/en/mbstring.configuration.php#ini.mbstring.http-input)
+- [mbstring.http_output](http://php.net/manual/en/mbstring.configuration.php#ini.mbstring.http-output)
+- [mbstring.internal_encoding](http://php.net/manual/en/mbstring.configuration.php#ini.mbstring.internal-encoding)

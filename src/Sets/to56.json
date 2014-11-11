@@ -6,6 +6,7 @@
     ],
     "changes": [
         "v5dot6\\IncompPropertyArray",
-        "v5dot6\\IncompMisc"
+        "v5dot6\\IncompMisc",
+        "v5dot6\\Deprecated"
     ]
 }
