@@ -9,27 +9,21 @@ namespace PhpMigration\Changes\v5dot3;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-use PhpMigration\Change;
-use PhpMigration\Utils\NameHelper;
-use PhpParser\Node\Expr;
+use PhpMigration\Changes\AbstractRemoved;
 
-class Removed extends Change
+class Removed extends AbstractRemoved
 {
     protected static $version = '5.3.0';
 
-    public function leaveNode($node)
-    {
-        // Function call
-        if ($node instanceof Expr\FuncCall && NameHelper::isSameFunc($node->name, 'dl')) {
-            /*
-             * {Description}
-             * The dl() function is now disabled by default, and is now 
-             * available only under the CLI, CGI, and embed SAPIs.
-             *
-             * {Reference}
-             * http://php.net/manual/en/migration53.sapi.php
-             */
-            $this->addSpot('FATAL', 'Function dl() is disabled by default');
-        }
-    }
+    /**
+     * {Description}
+     * The dl() function is now disabled by default, and is now available
+     * only under the CLI, CGI, and embed SAPIs.
+     *
+     * {Reference}
+     * http://php.net/manual/en/migration53.sapi.php
+     */
+    protected $funcTable = array(
+        'dl'
+    );
 }

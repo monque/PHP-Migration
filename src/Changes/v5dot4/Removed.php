@@ -9,16 +9,16 @@ namespace PhpMigration\Changes\v5dot4;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-use PhpMigration\Change;
-use PhpMigration\SymbolTable;
-use PhpParser\Node\Expr;
+use PhpMigration\Changes\AbstractRemoved;
 
-class Removed extends Change
+class Removed extends AbstractRemoved
 {
     protected static $version = '5.4.0';
 
-    protected $tableLoaded = false;
-
+    /**
+     * {Reference}
+     * http://php.net/manual/en/migration54.incompatible.php
+     */
     protected $funcTable = array(
         'define_syslog_variables',
         'import_request_variables',
@@ -33,32 +33,4 @@ class Removed extends Change
         'mysqli_get_metadata',
         'mysqli_send_long_data',
     );
-
-    public function prepare()
-    {
-        if (!$this->tableLoaded) {
-            $this->funcTable = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
-            $this->tableLoaded = true;
-        }
-    }
-
-    public function leaveNode($node)
-    {
-        // Function call
-        if ($this->isRemovedFunc($node)) {
-            /*
-             * {Errmsg}
-             * Fatal error: Call to undefined function {function}
-             *
-             * {Reference}
-             * http://php.net/manual/en/migration54.incompatible.php
-             */
-            $this->addSpot('FATAL', sprintf('Function %s() is removed', $node->name));
-        }
-    }
-
-    public function isRemovedFunc($node)
-    {
-        return ($node instanceof Expr\FuncCall && $this->funcTable->has($node->name));
-    }
 }

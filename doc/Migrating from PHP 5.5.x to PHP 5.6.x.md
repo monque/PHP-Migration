@@ -12,9 +12,9 @@ Lists below describes which will be check and not.
 - [x] [Deprecated features](http://php.net/manual/en/migration56.deprecated.php)
 - [~~Ignore~~] [Changed functions](http://php.net/manual/en/migration56.changed-functions.php)
 - [x] [New functions](http://php.net/manual/en/migration56.new-functions.php)
-- [ ] [OpenSSL changes](http://php.net/manual/en/migration56.openssl.php)
+- [*Todo*] [OpenSSL changes](http://php.net/manual/en/migration56.openssl.php)
 - [ ] [Other changes to extensions](http://php.net/manual/en/migration56.extensions.php)
-- [ ] [New global constants](http://php.net/manual/en/migration56.constants.php)
+- [x] [New global constants](http://php.net/manual/en/migration56.constants.php)
 
 
 ## Backward Incompatible Changes [link](http://php.net/manual/en/migration56.incompatible.php)
