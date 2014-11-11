@@ -79,7 +79,7 @@ This change will only affect cases where invalid JSON was being passed to
 [json_decode()](http://php.net/manual/en/function.json-decode.php): valid JSON
 input is unaffected and will continue to be parsed normally.
 
-#### {*Todo*} Stream wrappers now verify peer certificates and host names by default when using SSL/TLS
+#### {~~Ignore~~} Stream wrappers now verify peer certificates and host names by default when using SSL/TLS
 
 All encrypted client streams now enable peer verification by default. By
 default, this will use OpenSSL's default CA bundle to verify the peer
@@ -101,7 +101,7 @@ context option to `FALSE`, and to disable peer name validation by setting the
 [verify_peer_name](http://php.net/manual/en/context.ssl.php#context.ssl.verify-peer-name)
 context option to `FALSE`.
 
-#### {*Todo*} [GMP](http://php.net/manual/en/book.gmp.php) resources are now objects
+#### {**Done**} [GMP](http://php.net/manual/en/book.gmp.php) resources are now objects
 
 [GMP](http://php.net/manual/en/book.gmp.php) resources are now objects. The
 functional API implemented in the GMP extension has not changed, and code
