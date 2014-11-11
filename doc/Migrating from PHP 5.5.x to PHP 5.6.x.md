@@ -108,7 +108,7 @@ functional API implemented in the GMP extension has not changed, and code
 should run unmodified unless it checks explicitly for a resource using
 [is_resource()](http://php.net/manual/en/function.is-resource.php) or similar.
 
-#### {*Todo*} [Mcrypt](http://php.net/manual/en/book.mcrypt.php) functions now require valid keys and IVs
+#### {**Done**} [Mcrypt](http://php.net/manual/en/book.mcrypt.php) functions now require valid keys and IVs
 
 Theses functions will no longer accept keys or IVs with incorrect sizes, and
 block cipher modes that require IVs will now fail if an IV isn't provided.

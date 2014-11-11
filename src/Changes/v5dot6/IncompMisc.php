@@ -33,10 +33,16 @@ class IncompMisc extends Change
         'gmp_testbit', 'gmp_xor',
     );
 
+    protected $mcryptTable = array(
+        'mcrypt_encrypt', 'mcrypt_decrypt', 'mcrypt_cbc', 'mcrypt_cfb',
+        'mcrypt_ecb', 'mcrypt_generic', 'mcrypt_ofb',
+    );
+
     public function prepare()
     {
         if (!$this->tableLoaded) {
             $this->gmpTable = new SymbolTable(array_flip($this->gmpTable), SymbolTable::IC);
+            $this->mcryptTable = new SymbolTable(array_flip($this->mcryptTable), SymbolTable::IC);
             $this->tableLoaded = true;
         }
     }
@@ -75,6 +81,20 @@ class IncompMisc extends Change
              * http://php.net/manual/en/migration56.incompatible.php#migration56.incompatible.gmp
              */
             $this->addSpot('NOTICE', 'GMP resource is now object, do not use is_resource() to test');
+
+        // Mcrypt
+        } elseif ($node instanceof Expr\FuncCall && $this->mcryptTable->has($node->name)) {
+            /**
+             * {Description}
+             * mcrypt_encrypt(), mcrypt_decrypt(), mcrypt_cbc(), mcrypt_cfb(),
+             * mcrypt_ecb(), mcrypt_generic() and mcrypt_ofb() will no longer
+             * accept keys or IVs with incorrect sizes, and block cipher modes
+             * that require IVs will now fail if an IV isn't provided.
+             *
+             * {Reference}
+             * http://php.net/manual/en/migration56.incompatible.php#migration56.incompatible.mcrypt
+             */
+            $this->addSpot('NOTICE', $node->name.'() no longer accept keys or IVs with incorrect size');
         }
     }
 }
