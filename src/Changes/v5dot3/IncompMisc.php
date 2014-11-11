@@ -1,7 +1,7 @@
 <?php
 namespace PhpMigration\Changes\v5dot3;
 
-/*
+/**
  * @author Yuchen Wang <phobosw@gmail.com>
  *
  * Code is compliant with PSR-1 and PSR-2 standards
@@ -35,7 +35,7 @@ class IncompMisc extends Change
     public function leaveNode($node)
     {
         if ($node instanceof Expr\FuncCall) {
-            /*
+            /**
              * {Description}
              * clearstatcache() no longer clears the realpath cache by default.
              *
@@ -45,7 +45,7 @@ class IncompMisc extends Change
             if (NameHelper::isSameFunc($node->name, 'clearstatcache')) {
                 $this->addSpot('NOTICE', 'clearstatcache() no longer clears the realpath cache by default');
 
-            /*
+            /**
              * {Description}
              * realpath() is now fully platform-independent. Consequence of
              * this is that invalid relative paths such as __FILE__ . "/../x"
@@ -61,7 +61,7 @@ class IncompMisc extends Change
             } elseif (NameHelper::isSameFunc($node->name, 'realpath')) {
                 $this->addSpot('NOTICE', 'realpath() is now fully platform-independent, especially on *BSD.');
 
-            /*
+            /**
              * {Description}
              * The array functions natsort(), natcasesort(), usort(), uasort(),
              * uksort(), array_flip(), and array_unique() no longer accept
@@ -74,7 +74,7 @@ class IncompMisc extends Change
             } elseif (static::$arrFuncTable->has($node->name)) {
                 $this->addSpot('NOTICE', sprintf('%s() no longer accept objects passed as arguments', $node->name));
 
-            /*
+            /**
              * {Description}
              * call_user_func_array() no longer accepts null as a second
              * parameter and calls the function. It now emits a warning and
@@ -89,7 +89,7 @@ class IncompMisc extends Change
                     $this->addSpot('NOTICE', sprintf('%s() no longer accept non-array passed as arguments', $node->name));
                 }
 
-            /*
+            /**
              * {Description}
              * Image Processing and GD The "JPG Support" index returned from
              * gd_info() has been renamed to "JPEG Support".

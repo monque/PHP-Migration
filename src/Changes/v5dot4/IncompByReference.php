@@ -1,7 +1,7 @@
 <?php
 namespace PhpMigration\Changes\v5dot4;
 
-/*
+/**
  * @author Yuchen Wang <phobosw@gmail.com>
  *
  * Code is compliant with PSR-1 and PSR-2 standards
@@ -19,7 +19,7 @@ class IncompByReference extends Change
     public function leaveNode($node)
     {
         if ($this->isCallTimePassByRef($node)) {
-            /*
+            /**
              * {Description}
              * Call-time pass by reference has been removed.
              *

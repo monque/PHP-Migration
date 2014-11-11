@@ -1,7 +1,7 @@
 <?php
 namespace PhpMigration\Changes\v5dot3;
 
-/*
+/**
  * @author Yuchen Wang <phobosw@gmail.com>
  *
  * Code is compliant with PSR-1 and PSR-2 standards
@@ -293,7 +293,7 @@ class IncompByReference extends Change
 
     protected function emitSpot($call, $suspect = null)
     {
-        /*
+        /**
          * {Description}
          * The behaviour of functions with by-reference parameters called by
          * value has changed. Where previously the function would accept the

@@ -1,7 +1,7 @@
 <?php
 namespace PhpMigration;
 
-/*
+/**
  * @author Yuchen Wang <phobosw@gmail.com>
  *
  * Code is compliant with PSR-1 and PSR-2 standards
@@ -13,7 +13,7 @@ class Logging
 {
     protected static $logger;
 
-    /*
+    /**
      * Handle dynamic, static calls to the object.
      * inspired by Laravel's Illuminate/Support/Facades/Facade.php
      */

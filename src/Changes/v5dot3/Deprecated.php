@@ -1,7 +1,7 @@
 <?php
 namespace PhpMigration\Changes\v5dot3;
 
-/*
+/**
  * @author Yuchen Wang <phobosw@gmail.com>
  *
  * Code is compliant with PSR-1 and PSR-2 standards
@@ -61,7 +61,7 @@ class Deprecated extends Change
             } else {
                 $errmsg = sprintf('Function %s() is deprecated', $node->name);
             }
-            /*
+            /**
              * {Errmsg}
              * Deprecated: Function {function} is deprecated
              *
@@ -72,7 +72,7 @@ class Deprecated extends Change
 
         // Assign new instance
         } elseif ($this->isAssignNewByRef($node)) {
-            /*
+            /**
              * {Description}
              * Assigning the return value of new by reference is now deprecated.
              *
@@ -86,7 +86,7 @@ class Deprecated extends Change
 
         // Call-time pass-by-reference
         } elseif ($this->isCallTimePassByRef($node)) {
-            /*
+            /**
              * {Description}
              * Call-time pass-by-reference is now deprecated
              *

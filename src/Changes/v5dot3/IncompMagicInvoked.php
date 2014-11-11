@@ -1,7 +1,7 @@
 <?php
 namespace PhpMigration\Changes\v5dot3;
 
-/*
+/**
  * @author Yuchen Wang <phobosw@gmail.com>
  *
  * Code is compliant with PSR-1 and PSR-2 standards
@@ -19,7 +19,7 @@ class IncompMagicInvoked extends Change
 
     protected function emitSpot($node, $non_public)
     {
-        /*
+        /**
          * {Description}
          * The __call() magic method is now invoked on access to private and
          * protected methods.

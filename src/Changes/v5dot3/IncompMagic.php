@@ -1,7 +1,7 @@
 <?php
 namespace PhpMigration\Changes\v5dot3;
 
-/*
+/**
  * @author Yuchen Wang <phobosw@gmail.com>
  *
  * Code is compliant with PSR-1 and PSR-2 standards
@@ -34,7 +34,7 @@ class IncompMagic extends Change
 
     protected function emitNonPub($node)
     {
-        /*
+        /**
          * {Description}
          * The magic methods __get(), __set(), __isset(), __unset(), and
          * __call() must always be public and can no longer be static. Method
@@ -57,7 +57,7 @@ class IncompMagic extends Change
 
     protected function emitToString($node)
     {
-        /*
+        /**
          * {Description}
          * The __toString() magic method can no longer accept arguments.
          *

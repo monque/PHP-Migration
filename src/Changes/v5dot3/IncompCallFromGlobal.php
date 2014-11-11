@@ -1,7 +1,7 @@
 <?php
 namespace PhpMigration\Changes\v5dot3;
 
-/*
+/**
  * @author Yuchen Wang <phobosw@gmail.com>
  *
  * Code is compliant with PSR-1 and PSR-2 standards
@@ -33,7 +33,7 @@ class IncompCallFromGlobal extends Change
 
     protected function emitSpot($node)
     {
-        /*
+        /**
          * {Description}
          * func_get_arg(), func_get_args() and func_num_args() can no longer be
          * called from the outermost scope of a file that has been included by

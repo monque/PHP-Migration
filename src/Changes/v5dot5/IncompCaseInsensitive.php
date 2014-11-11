@@ -1,7 +1,7 @@
 <?php
 namespace PhpMigration\Changes\v5dot5;
 
-/*
+/**
  * @author Yuchen Wang <phobosw@gmail.com>
  *
  * Code is compliant with PSR-1 and PSR-2 standards
