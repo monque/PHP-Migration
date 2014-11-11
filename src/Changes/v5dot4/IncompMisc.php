@@ -23,7 +23,7 @@ class IncompMisc extends Change
         if ($node instanceof Expr\FuncCall && NameHelper::isSameFunc($node->name, 'array_combine')) {
             /**
              * {Description}
-             * array_combine() now returns array() instead of FALSE when two empty 
+             * array_combine() now returns array() instead of FALSE when two empty
              * arrays are provided as parameters.
              *
              * {Reference}
@@ -51,9 +51,9 @@ class IncompMisc extends Change
         } elseif ($node instanceof Expr\FuncCall) {
             /**
              * {Description}
-             * If you use htmlentities() with asian character sets, it works 
-             * like htmlspecialchars() - this has always been the case in 
-             * previous versions of PHP, but now an E_STRICT level error is 
+             * If you use htmlentities() with asian character sets, it works
+             * like htmlspecialchars() - this has always been the case in
+             * previous versions of PHP, but now an E_STRICT level error is
              * emitted.
              *
              * The default character set for htmlspecialchars() and

@@ -19,7 +19,7 @@ class IncompParamName extends Change
 
     protected static $prepared = false;
 
-    protected static $autoGlobals = array( 
+    protected static $autoGlobals = array(
         '_SESSION', '_GET', '_POST', '_COOKIE', '_SERVER', '_ENV', '_REQUEST', '_FILES'
     );
 
@@ -35,7 +35,7 @@ class IncompParamName extends Change
     {
         /**
          * {Description}
-         * Parameter names that shadow super globals now cause a fatal error. 
+         * Parameter names that shadow super globals now cause a fatal error.
          * This prohibits code like function foo($_GET, $_POST) {}.
          *
          * {Errmsg}

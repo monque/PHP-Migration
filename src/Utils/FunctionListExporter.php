@@ -76,7 +76,8 @@ class FunctionListExporter
             $class = $element->attributes()->class;
 
             $xml = $element->asXML();
-            if ($element->getName() == 'code') {  // Strip CDATA
+            if ($element->getName() == 'code') {
+                // Strip CDATA
                 $xml = preg_replace('/<!\[CDATA\[(.*)\]\]>/', '$1', $xml);
             }
             $text = strip_tags($xml);

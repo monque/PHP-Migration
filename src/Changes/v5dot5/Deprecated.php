@@ -58,27 +58,27 @@ class Deprecated extends Change
 
     public function leaveNode($node)
     {
-        /**
-         * {Description}
-         * The original MySQL extension is now deprecated, and will generate
-         * E_DEPRECATED errors when connecting to a database. Instead, use the
-         * MySQLi or PDO_MySQL extensions.
-         *
-         * {Reference}
-         * http://php.net/manual/en/migration55.deprecated.php#migration55.deprecated.mysql
-         */
         if ($node instanceof Expr\FuncCall && $this->mysqlTable->has($node->name)) {
+            /**
+             * {Description}
+             * The original MySQL extension is now deprecated, and will generate
+             * E_DEPRECATED errors when connecting to a database. Instead, use the
+             * MySQLi or PDO_MySQL extensions.
+             *
+             * {Reference}
+             * http://php.net/manual/en/migration55.deprecated.php#migration55.deprecated.mysql
+             */
             $this->addSpot('DEPRECATED', 'The original MySQL extension is deprecated, use MySQLi or PDO_MySQL extensions instead');
 
-        /**
-         * {Description}
-         * The preg_replace() /e modifier is now deprecated. Instead, use the
-         * preg_replace_callback() function.
-         *
-         * {Reference}
-         * http://php.net/manual/en/migration55.deprecated.php#migration55.deprecated.preg-replace-e
-         */
         } elseif ($node instanceof Expr\FuncCall && NameHelper::isSameFunc($node->name, 'preg_replace')) {
+            /**
+             * {Description}
+             * The preg_replace() /e modifier is now deprecated. Instead, use the
+             * preg_replace_callback() function.
+             *
+             * {Reference}
+             * http://php.net/manual/en/migration55.deprecated.php#migration55.deprecated.preg-replace-e
+             */
             $affected = true;
 
             $pattern = $node->args[0]->value;
@@ -105,17 +105,15 @@ class Deprecated extends Change
                 $this->addSpot('DEPRECATED', 'preg_replace() /e modifier is deprecated, use preg_replace_callback() instead');
             }
 
-        /**
-         * TODO: how to check IntlDateFormatter::setTimeZoneId
-         *
-         * {Reference}
-         * http://php.net/manual/en/migration55.deprecated.php#migration55.deprecated.intl
-         * http://php.net/manual/en/migration55.deprecated.php#migration55.deprecated.mcrypt
-         */
         } elseif ($node instanceof Expr\FuncCall && $this->funcTable->has($node->name)) {
+            /**
+             * TODO: how to check IntlDateFormatter::setTimeZoneId
+             *
+             * {Reference}
+             * http://php.net/manual/en/migration55.deprecated.php#migration55.deprecated.intl
+             * http://php.net/manual/en/migration55.deprecated.php#migration55.deprecated.mcrypt
+             */
             $this->addSpot('DEPRECATED', 'Function '.$node->name.'() is deprecated');
         }
     }
 }
-
-

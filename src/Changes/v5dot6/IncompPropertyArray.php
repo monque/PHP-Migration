@@ -21,11 +21,12 @@ class IncompPropertyArray extends Change
     {
         /**
          * {Description}
-         * Array keys won't be overwritten when defining an array as a property of a class via an array literal ¶
+         * Array keys won't be overwritten when defining an array as a property
+         * of a class via an array literal
          *
-         * Previously, arrays declared as class properties which mixed explicit 
-         * and implicit keys could have array elements silently overwritten if 
-         * an explicit key was the same as a sequential implicit key. For 
+         * Previously, arrays declared as class properties which mixed explicit
+         * and implicit keys could have array elements silently overwritten if
+         * an explicit key was the same as a sequential implicit key. For
          * example:
          *
          * {Reference}

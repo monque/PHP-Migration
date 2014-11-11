@@ -21,13 +21,13 @@ class IncompBreakContinue extends Change
     {
         /**
          * {Description}
-         * The break and continue statements no longer accept variable 
-         * arguments (e.g., break 1 + foo() * $bar;). Static arguments 
-         * still work, such as break 2;. As a side effect of this change 
+         * The break and continue statements no longer accept variable
+         * arguments (e.g., break 1 + foo() * $bar;). Static arguments
+         * still work, such as break 2;. As a side effect of this change
          * break 0; and continue 0; are no longer allowed.
          *
          * {Errmsg}
-         * Fatal error: 'break' operator with non-constant operand is no longer supported 
+         * Fatal error: 'break' operator with non-constant operand is no longer supported
          * Fatal error: 'break' operator accepts only positive numbers
          *
          * {Reference}

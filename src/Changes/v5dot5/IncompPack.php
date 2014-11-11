@@ -44,7 +44,7 @@ class IncompPack extends Change
             $affected = true;
             $format = $node->args[0]->value;
 
-            // Try to check arg $format 
+            // Try to check arg $format
             if ($format instanceof Scalar\String && stripos($format->value, 'a') === false) {
                 $affected = false;
             }
@@ -55,4 +55,3 @@ class IncompPack extends Change
         }
     }
 }
-

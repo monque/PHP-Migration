@@ -23,10 +23,10 @@ class Deprecated extends Change
     {
         /**
          * {Description}
-         * always_populate_raw_post_data will now generate an E_DEPRECATED 
-         * error when used. New code should use php://input instead of 
-         * $HTTP_RAW_POST_DATA, which will be removed in a future release. You 
-         * can opt in for the new behaviour (in which $HTTP_RAW_POST_DATA is 
+         * always_populate_raw_post_data will now generate an E_DEPRECATED
+         * error when used. New code should use php://input instead of
+         * $HTTP_RAW_POST_DATA, which will be removed in a future release. You
+         * can opt in for the new behaviour (in which $HTTP_RAW_POST_DATA is
          * never defined) by setting always_populate_raw_post_data to -1.
          *
          * {Reference}
