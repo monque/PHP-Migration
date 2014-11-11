@@ -9,7 +9,6 @@
     - 新版本中废弃但未移除的功能 (Deprecated)
     - 新版本中引入的新功能、特性 (New)
         提供建议性的信息
-- ChangeVisitor改名为CheckVisitor
 - 做一个功能助手类的visitor，负责以下功能
     - 类继承关系记录
     - 变量在scope内的类型推测，值记录

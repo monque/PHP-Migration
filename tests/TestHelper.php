@@ -9,7 +9,7 @@ namespace PhpMigration;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-use PhpMigration\ChangeVisitor;
+use PhpMigration\CheckVisitor;
 use PhpParser\Lexer;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
@@ -51,7 +51,7 @@ class TestHelper
 
     public static function runChange($change, $code)
     {
-        $visitor = new ChangeVisitor(array($change));
+        $visitor = new CheckVisitor(array($change));
 
         $traverser = new NodeTraverser;
         $traverser->addVisitor(new NameResolver);

@@ -13,7 +13,7 @@ use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
 use PhpParser\Node\Stmt;
 
-class ChangeVisitor extends NodeVisitorAbstract
+class CheckVisitor extends NodeVisitorAbstract
 {
     protected $spots;
 

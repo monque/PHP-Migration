@@ -24,7 +24,7 @@ Usage: phpmig [options] <file>...
 
 Options:
   -l, --list        List all migration sets
-  -s, --set=NAME    The name of migration set to use [default: to55]
+  -s, --set=NAME    The name of migration set to use [default: to56]
   -d, --dump        Dump abstract syntax tree
   -v, --verbose
   -h, --help        Show this screen
@@ -121,7 +121,7 @@ if (true) {
         }
     }
     $chglist = array_reverse($chglist);  // FIXME: use a better method making load order correct
-    $chgvisitor = new PhpMigration\ChangeVisitor($chglist);
+    $chgvisitor = new PhpMigration\CheckVisitor($chglist);
 
     // Instance parser
     $parser = new PhpParser\Parser(new PhpParser\Lexer\Emulative);

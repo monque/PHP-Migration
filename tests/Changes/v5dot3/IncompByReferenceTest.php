@@ -9,7 +9,7 @@ namespace PhpMigration\Changes\v5dot3;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-use PhpMigration\ChangeVisitor;
+use PhpMigration\CheckVisitor;
 use PhpMigration\TestHelper;
 
 class IncompByReferenceTest extends \PHPUnit_Framework_TestCase
@@ -42,7 +42,7 @@ class IncompByReferenceTest extends \PHPUnit_Framework_TestCase
 
         // Emulate entering class
         $classnode = TestHelper::getNodeByCode('class phpmig {}');
-        $visitor = new ChangeVisitor();
+        $visitor = new CheckVisitor();
         $visitor->enterNode($classnode);
         $this->change->setVisitor($visitor);
 
