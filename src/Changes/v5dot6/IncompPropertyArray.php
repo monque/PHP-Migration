@@ -51,7 +51,7 @@ class IncompPropertyArray extends Change
             foreach ($arrayList as $arr) {
                 foreach ($arr->items as $item) {
                     if ($item->key instanceof Expr\ClassConstFetch) {
-                        $this->addSpot('WARNING', 'Array keys won\'t be overwritten when defining as a property', $arr->getLine());
+                        $this->addSpot('WARNING', 'Array key may be overwritten when defining as a property and using constants', $arr->getLine());
                         continue 2;
                     }
                 }
