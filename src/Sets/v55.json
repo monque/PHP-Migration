@@ -1,0 +1,11 @@
+{
+    "desc": "Migrating from PHP 5.4.x to PHP 5.5.x",
+    "link": "http://php.net/manual/en/migration55.php",
+    "changes": [
+        "v5dot5\\IncompCaseInsensitive",
+        "v5dot5\\IncompPack",
+        "v5dot5\\Removed",
+        "v5dot5\\Deprecated",
+        "v5dot5\\Introduced"
+    ]
+}
