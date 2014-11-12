@@ -40,10 +40,15 @@ ini_set('memory_limit', '4096m');
 // Routine: show set list
 $setpath = __DIR__.'/../src/Sets';
 if ($args['--list']) {
-    $iterator = new DirectoryIterator($setpath);
-    $iterator = new RegexIterator($iterator, '/\.json$/');
-    foreach ($iterator as $setfile) {
-        $info = json_decode(file_get_contents($setfile->getRealpath()));
+    $setlist = iterator_to_array(
+        new RegexIterator(
+            new FilesystemIterator($setpath),
+            '/\.json$/'
+        )
+    );
+    ksort($setlist);
+    foreach ($setlist as $setfile) {
+        $info = json_decode(file_get_contents($setfile));
         printf("%s: %s\n", strstr($setfile->getBasename(), '.', true), $info->desc);
     }
     exit(0);
