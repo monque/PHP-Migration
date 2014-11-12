@@ -1,8 +1,8 @@
 {
-    "desc": "Migrating to PHP 5.5.x",
+    "desc": "Migrating from ANY version to PHP 5.5.x",
     "link": "http://php.net/manual/en/migration55.php",
     "depend": [
-        "to53", "to54"
+        "to54"
     ],
     "changes": [
         "v5dot5\\IncompCaseInsensitive",

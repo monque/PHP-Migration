@@ -1,5 +1,5 @@
 {
-    "desc": "Migrating to PHP 5.3.x",
+    "desc": "Migrating from ANY version to PHP 5.3.x",
     "link": "http://php.net/manual/en/migration53.php",
     "changes": [
         "v5dot3\\IncompByReference",

@@ -1,5 +1,5 @@
 {
-    "desc": "Migrating to PHP 5.4.x",
+    "desc": "Migrating from ANY version to PHP 5.4.x",
     "link": "http://php.net/manual/en/migration54.php",
     "depend": [
         "to53"
