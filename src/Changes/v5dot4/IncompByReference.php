@@ -16,6 +16,11 @@ class IncompByReference extends Change
 {
     protected static $version = '5.4.0';
 
+    public function prepare()
+    {
+        $this->visitor->callChange('v5dot3\Deprecated', 'skipCallTimePassByRef', true);
+    }
+
     public function leaveNode($node)
     {
         if ($this->isCallTimePassByRef($node)) {

@@ -36,6 +36,22 @@ class CheckVisitor extends NodeVisitorAbstract
         $this->filename = $this->class = $this->method = $this->function = null;
     }
 
+    /**
+     * Supply a method to allow a Change call another Change's method
+     */
+    public function callChange($name, $method, $args)
+    {
+        if (!is_array($args)) {
+            $args = array($args);
+        }
+
+        foreach ($this->changes as $change) {
+            if ($name == substr(get_class($change), -strlen($name))) {
+                return call_user_func_array(array($change, $method), $args);
+            }
+        }
+    }
+
     public function setFile(\SplFileInfo $file)
     {
         $this->file = $file;

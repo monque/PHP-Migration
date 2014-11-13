@@ -43,6 +43,17 @@ class Deprecated extends Change
         // The is_dst parameter to mktime(). Use the new timezone handling functions instead.
     );
 
+    protected $checkCallTimePassByRef = true;
+
+    /**
+     * For another Changes to set whether skip the check for Call-time
+     * Pass-by-ref
+     */
+    public function skipCallTimePassByRef($off)
+    {
+        $this->checkCallTimePassByRef = !$off;
+    }
+
     public function prepare()
     {
         if (!static::$prepared) {
@@ -85,7 +96,7 @@ class Deprecated extends Change
             $this->addSpot('DEPRECATED', 'Assigning the return value of new by reference is deprecated');
 
         // Call-time pass-by-reference
-        } elseif ($this->isCallTimePassByRef($node)) {
+        } elseif ($this->checkCallTimePassByRef && $this->isCallTimePassByRef($node)) {
             /**
              * {Description}
              * Call-time pass-by-reference is now deprecated
