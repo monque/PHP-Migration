@@ -10,6 +10,7 @@ namespace PhpMigration\Changes\v5dot6;
  */
 
 use PhpMigration\Change;
+use PhpParser\Node\Scalar;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Stmt;
 
@@ -33,27 +34,65 @@ class IncompPropertyArray extends Change
          * http://php.net/manual/en/migration56.incompatible.php#migration56.incompatible.array-keys
          */
         if ($node instanceof Stmt\Class_) {
-            $arrayList = array();
+            $array_list = array();
+            $const_table = array();
 
-            // Gather all array property
+            // Gather all array property, save class const
             foreach ($node->stmts as $stmt) {
                 if ($stmt instanceof Stmt\Property) {
                     foreach ($stmt->props as $prop) {
                         if ($prop instanceof Stmt\PropertyProperty &&
                                 $prop->default instanceof Expr\Array_) {
-                            $arrayList[] = $prop->default;
+                            $array_list[] = $prop->default;
+                        }
+                    }
+                } elseif ($stmt instanceof Stmt\ClassConst) {
+                    foreach ($stmt->consts as $const) {
+                        if ($const->value instanceof Scalar) {
+                            $const_table['self::'.$const->name] = $const->value->value;
                         }
                     }
                 }
             }
 
             // Check keys in array
-            foreach ($arrayList as $arr) {
+            foreach ($array_list as $arr) {
+                // Emulate array key initialization
+                $keylist = array();
+                $has = array(
+                    'scalar'    => false,
+                    'const'     => false,
+                    'null'      => false,
+                    'unfetched' => false,
+                );
+                $counter = 0;
                 foreach ($arr->items as $item) {
                     if ($item->key instanceof Expr\ClassConstFetch) {
-                        $this->addSpot('WARNING', 'Array key may be overwritten when defining as a property and using constants', $arr->getLine());
-                        continue 2;
+                        $has['const'] = true;
+                        // Try to fetch const value
+                        $const_name = $item->key->class.'::'.$item->key->name;
+                        if (isset($const_table[$const_name])) {
+                            $keylist[] = 'V:'.$const_table[$const_name];
+                        } else {
+                            $has['unfetched'] = true;
+                            $keylist[] = 'C:'.$const_name;
+                        }
+                    } elseif ($item->key instanceof Expr\ConstFetch) {
+                        $has['const'] = true;
+                        $keylist[] = 'C:'.$item->key->name->toString();
+                    } elseif (is_null($item->key)) {
+                        $has['null'] = true;
+                        $keylist[] = 'N:'.$counter++;
+                    } else {
+                        $has['scalar'] = true;
+                        $keylist[] = 'V:'.$item->key->value;
                     }
+                }
+                $has['duplicated'] = count($keylist) != count(array_unique($keylist));
+
+                // Check condition
+                if ($has['const'] && ($has['null'] || $has['unfetched'] || $has['duplicated'])) {
+                    $this->addSpot('WARNING', 'Array key may be overwritten when defining as a property and using constants', $arr->getLine());
                 }
             }
         }
