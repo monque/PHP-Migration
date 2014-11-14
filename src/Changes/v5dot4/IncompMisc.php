@@ -48,7 +48,8 @@ class IncompMisc extends Change
              */
             $this->addSpot('WARNING', 'The third parameter of ob_start() has changed');
 
-        } elseif ($node instanceof Expr\FuncCall) {
+        } elseif ($node instanceof Expr\FuncCall &&
+            (NameHelper::isSameFunc($node->name, 'htmlentities') || NameHelper::isSameFunc($node->name, 'htmlspecialchars'))) {
             /**
              * {Description}
              * If you use htmlentities() with asian character sets, it works
@@ -74,10 +75,21 @@ class IncompMisc extends Change
              * http://php.net/manual/en/migration54.other.php
              * http://php.net/manual/en/migration54.incompatible.php
              */
+            $level = false;
+            $msgbox = array();
+
             if (NameHelper::isSameFunc($node->name, 'htmlentities')) {
-                $this->addSpot('WARNING', 'htmlentities() never encode asian character sets, and default encoding was changed');
-            } elseif (NameHelper::isSameFunc($node->name, 'htmlspecialchars')) {
-                $this->addSpot('NOTICE', 'htmlspecialchars() default encoding was changed');
+                $level = 'WARNING';
+                $msgbox[] = 'won\'t encode asian character sets';
+            }
+
+            if (!isset($node->args[2])) {  // Set encoding
+                $level = 'NOTICE';
+                $msgbox[] = 'default encoding was changed';
+            }
+
+            if ($level) {
+                $this->addSpot($level, $node->name.'() '.implode(', ', $msgbox));
             }
         }
     }
