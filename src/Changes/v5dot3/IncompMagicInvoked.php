@@ -44,6 +44,7 @@ class IncompMagicInvoked extends Change
             foreach ($node->getMethods() as $mnode) {
                 if (NameHelper::isSameFunc($mnode->name, '__call')) {
                     $has_magic_call = true;
+                    $magic_node = $mnode;
                 } elseif (!$mnode->isPublic()) {
                     $non_public[] = $mnode->name;
                 }
@@ -51,7 +52,7 @@ class IncompMagicInvoked extends Change
         }
 
         if ($has_magic_call && $non_public) {
-            $this->emitSpot($node, $non_public);
+            $this->emitSpot($magic_node, $non_public);
         }
     }
 }
