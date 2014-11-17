@@ -11,6 +11,7 @@ namespace PhpMigration\Changes\v5dot5;
 
 use PhpMigration\Change;
 use PhpMigration\SymbolTable;
+use PhpParser\Node;
 use PhpParser\Node\Expr;
 
 class IncompCaseInsensitive extends Change
@@ -47,7 +48,8 @@ class IncompCaseInsensitive extends Change
          * {Reference}
          * http://php.net/manual/en/migration55.incompatible.php#migration55.incompatible.self-parent-static
          */
-        if ($node instanceof Expr\StaticCall || $node instanceof Expr\StaticPropertyFetch) {
+        if (($node instanceof Expr\StaticCall || $node instanceof Expr\StaticPropertyFetch)
+                && $node->class instanceof Node\Name) {
             $name = $node->class->toString();
             if ($this->keywords->has($name) && $this->keywords->get($name) != $name) {
                 $this->addSpot('NOTICE', $name.' will be case insensitive, treated identically to '.strtolower($name));
