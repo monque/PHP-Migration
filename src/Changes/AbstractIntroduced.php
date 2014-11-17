@@ -72,11 +72,12 @@ abstract class AbstractIntroduced extends Change
             $this->addSpot('FATAL', sprintf('Cannot redeclare %s()', $node->name));
 
         // Method
-        } elseif ($this->isNewMethod($node)) {
+        } elseif ($this->isNewMethod($node, $method_name)) {
             $this->addSpot('WARNING', sprintf(
-                'Method %s::%s() will override a built-in method',
+                'Method %s::%s() will override built-in method %s()',
                 $this->visitor->getClassname(),
-                $node->name
+                $node->name,
+                $method_name
             ));
 
         // Class, Interface, Trait
@@ -107,7 +108,7 @@ abstract class AbstractIntroduced extends Change
                 (is_null($this->condFunc) || !NameHelper::isSameFunc($node->name, $this->condFunc)));
     }
 
-    public function isNewMethod($node)
+    public function isNewMethod($node, &$mname = null)
     {
         if (!($node instanceof Stmt\ClassMethod) || !isset($this->methodTable)) {
             return false;
