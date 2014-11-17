@@ -33,6 +33,8 @@ abstract class AbstractIntroduced extends Change
 
     protected $condFunc = null;
 
+    protected $condConst = null;
+
     public function prepare()
     {
         if (!$this->tableLoaded) {
@@ -62,6 +64,8 @@ abstract class AbstractIntroduced extends Change
         // Support the simplest conditional declaration
         if (ParserHelper::isConditionalFunc($node)) {
             $this->condFunc = ParserHelper::getConditionalName($node);
+        } elseif (ParserHelper::isConditionalConst($node)) {
+            $this->condConst = ParserHelper::getConditionalName($node);
         }
     }
 
@@ -102,6 +106,8 @@ abstract class AbstractIntroduced extends Change
         // Conditional declaration clear
         if (ParserHelper::isConditionalFunc($node)) {
             $this->condFunc = null;
+        } elseif (ParserHelper::isConditionalConst($node)) {
+            $this->condConst = null;
         }
     }
 
@@ -133,10 +139,10 @@ abstract class AbstractIntroduced extends Change
 
     public function isNewConst(Node $node)
     {
-        if ($node instanceof Expr\FuncCall && isset($this->constTable) &&
-                NameHelper::isSameFunc($node->name, 'define')) {
+        if (isset($this->constTable) && $node instanceof Expr\FuncCall && NameHelper::isSameFunc($node->name, 'define')) {
             $constname = $node->args[0]->value->value;
-            return $this->constTable->has($constname);
+            return $this->constTable->has($constname) &&
+                    (is_null($this->condConst) || $constname != $this->condConst);
         }
         return false;
     }
