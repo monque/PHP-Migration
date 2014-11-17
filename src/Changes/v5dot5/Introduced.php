@@ -17,8 +17,16 @@ class Introduced extends AbstractIntroduced
 
     protected $funcTable = array(
         // PHP Core
-        'array_column', 'boolval', 'json_last_error_msg', 'password_get_info',
-        'password_hash', 'password_needs_rehash', 'password_verify',
+        'array_column', 'boolval', 'json_last_error_msg',
+
+        /**
+         * There is a lib named ircmaxell/password-compat and its description
+         * is "A Compatibility library with PHP 5.5's simplified password
+         * hashing API". It provide 4 functions that duplicated with below
+         * list, but not using function_exists to test whether the function
+         * declared.
+         */
+        'password_get_info', 'password_hash', 'password_needs_rehash', 'password_verify',
 
         // Hash
         'hash_pbkdf2',
