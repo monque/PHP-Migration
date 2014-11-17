@@ -1,15 +1,19 @@
 # PHP Migration
 
 ## TODO
-- 做一个功能助手类的visitor，负责以下功能
-    - 类继承关系记录
-    - 变量在scope内的类型推测，值记录
-- Output using markdown
+- Spot output
+    - Using markdown
+    - 报出的问题是精准确认的？还是可能的？
+    - 解决方法
     - 引用注释
-- 用statis还是self，是否有必要用静态
-    同一个change是否可能有多个实例？比如在两个不同set中
+- 做一个功能助手类的visitor，负责以下功能
+    - 类继承的树状关系
+    - 变量在scope内的类型、赋值记录
+    - object所属的class名称记录
 
 ### TODO 9
+- 用statis还是self，是否有必要用静态
+    同一个change是否可能有多个实例？比如在两个不同set中
 - 目录结构
     - Abstract类放在哪（同层|上层|专门目录）
         之前很多时候叫基类BaseXXX，其实是个偷懒的叫法和用法
