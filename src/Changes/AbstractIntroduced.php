@@ -82,6 +82,10 @@ abstract class AbstractIntroduced extends Change
 
         // Class, Interface, Trait
         } elseif ($this->isNewClass($node)) {
+            /**
+             * TODO: We should check namespaced name instead literal
+             * Predis/Session/SessionHandler.php in Predis will be affteced
+             */
             $this->addSpot('FATAL', sprintf('Cannot redeclare class %s', $node->name));
 
         // Constant
