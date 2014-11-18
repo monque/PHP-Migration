@@ -1,30 +1,45 @@
 # PHP Migration
 
-## TODO
-- Spot output
-    - Using markdown
-    - 报出的问题是精准确认的？还是可能的？
-    - 解决方法
-    - 引用注释
-- 做一个功能助手类的visitor，负责以下功能
-    - 类继承的树状关系
-    - 变量在scope内的类型、赋值记录
-    - object所属的class名称记录
+This is a static analyzer for PHP version migration.
 
-### TODO 9
-- 用statis还是self，是否有必要用静态
-    同一个change是否可能有多个实例？比如在两个不同set中
-- 目录结构
-    - Abstract类放在哪（同层|上层|专门目录）
-        之前很多时候叫基类BaseXXX，其实是个偷懒的叫法和用法
-        很多Base类其实都包含了：抽象或接口的约定限制(abstract)，快捷方法(trait)，原形定义
-        按照Laravel的套路拆开吧
-    - 目录是否为复数名称
-- 是否检查的原则
-    宁可错杀一万也不错过一个
-- 程度上的原则
-    - 新版本中会导致崩溃的 (Fatal)
-    - 新版本中产生行为变化的 (Warning, Notice)
-    - 新版本中废弃但未移除的功能 (Deprecated)
-    - 新版本中引入的新功能、特性 (New)
-        提供建议性的信息
+### Chinese - 中文
+
+这是一个用于PHP版本迁移的静态分析器。
+
+它的主要功能是检查当前代码在新版本PHP下的兼容性并提供相关的建议及处理方法。
+
+**注意：该项目目前仍处于开发阶段**
+
+#### 安装
+
+首先，将整个项目clone到本地，并进入项目目录
+```
+git clone git@github.com:monque/PHP-Migration.git php-migration
+cd php-migration
+```
+
+执行下面命令来安装 [Composer](https://getcomposer.org/download/)
+```
+curl -sS https://getcomposer.org/installer | php
+```
+
+最后通过Composer安装项目所需的依赖
+```
+php composer.phar install
+```
+
+你可以将执行目录添加到环境变量`PATH`中，这样就可以直接通过命令`phpmig`来运行本程序了
+```
+# 临时添加（登出后失效）
+export PATH="`pwd`/bin:$PATH"
+
+# 傻瓜式添加
+echo "export PATH=\"`pwd`/bin:\$PATH\"" >> ~/.bashrc
+```
+
+#### 使用
+
+执行以下命令即可进行代码版本兼容性的检查
+```
+phpmig ~/workspace/your-project
+```
