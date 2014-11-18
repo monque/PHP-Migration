@@ -11,6 +11,9 @@
 
 use PhpMigration\Logging;
 
+// Set xdebug max nesting level
+ini_set('xdebug.max_nesting_level', 2000);
+
 // Autoload
 require __DIR__.'/../vendor/autoload.php';
 
