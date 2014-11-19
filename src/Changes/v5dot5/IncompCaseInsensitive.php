@@ -9,12 +9,12 @@ namespace PhpMigration\Changes\v5dot5;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-use PhpMigration\Change;
+use PhpMigration\Changes\AbstractChange;
 use PhpMigration\SymbolTable;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 
-class IncompCaseInsensitive extends Change
+class IncompCaseInsensitive extends AbstractChange
 {
     protected static $version = '5.5.0';
 

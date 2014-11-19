@@ -9,11 +9,11 @@ namespace PhpMigration\Changes\v5dot3;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-use PhpMigration\Change;
+use PhpMigration\Changes\AbstractChange;
 use PhpMigration\Utils\NameHelper;
 use PhpParser\Node\Stmt;
 
-class IncompMagicInvoked extends Change
+class IncompMagicInvoked extends AbstractChange
 {
     protected static $version = '5.3.0';
 

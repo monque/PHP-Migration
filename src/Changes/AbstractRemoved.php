@@ -9,12 +9,11 @@ namespace PhpMigration\Changes;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-use PhpMigration\Change;
 use PhpMigration\SymbolTable;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 
-abstract class AbstractRemoved extends Change
+abstract class AbstractRemoved extends AbstractChange
 {
     protected $tableLoaded = false;
 

@@ -9,10 +9,10 @@ namespace PhpMigration\Changes\v5dot4;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-use PhpMigration\Change;
+use PhpMigration\Changes\AbstractChange;
 use PhpParser\Node\Expr;
 
-class IncompRegister extends Change
+class IncompRegister extends AbstractChange
 {
     protected static $version = '5.4.0';
 

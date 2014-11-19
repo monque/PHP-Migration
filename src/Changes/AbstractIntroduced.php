@@ -9,7 +9,6 @@ namespace PhpMigration\Changes;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-use PhpMigration\Change;
 use PhpMigration\SymbolTable;
 use PhpMigration\Utils\NameHelper;
 use PhpMigration\Utils\ParserHelper;
@@ -17,7 +16,7 @@ use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Stmt;
 
-abstract class AbstractIntroduced extends Change
+abstract class AbstractIntroduced extends AbstractChange
 {
     protected $tableLoaded = false;
 

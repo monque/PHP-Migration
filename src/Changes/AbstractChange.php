@@ -1,5 +1,5 @@
 <?php
-namespace PhpMigration;
+namespace PhpMigration\Changes;
 
 /**
  * @author Yuchen Wang <phobosw@gmail.com>
@@ -11,7 +11,7 @@ namespace PhpMigration;
 
 use PhpParser\Node;
 
-class Change
+abstract class AbstractChange
 {
     /**
      * Version represents when this change do perform
