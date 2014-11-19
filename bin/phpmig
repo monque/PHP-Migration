@@ -9,7 +9,7 @@
  * http://www.php-fig.org/psr/psr-2/
  */
 
-use PhpMigration\Logging;
+use PhpMigration\Utils\Logging;
 
 // Set xdebug max nesting level
 ini_set('xdebug.max_nesting_level', 2000);

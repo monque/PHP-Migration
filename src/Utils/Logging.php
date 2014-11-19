@@ -1,5 +1,5 @@
 <?php
-namespace PhpMigration;
+namespace PhpMigration\Utils;
 
 /**
  * @author Yuchen Wang <phobosw@gmail.com>
@@ -8,6 +8,8 @@ namespace PhpMigration;
  * http://www.php-fig.org/psr/psr-1/
  * http://www.php-fig.org/psr/psr-2/
  */
+
+use PhpMigration\Logger;
 
 class Logging
 {
