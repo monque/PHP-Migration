@@ -52,7 +52,7 @@ class IncompMagic extends Change
             $this->visitor->getClassname(),
             $node->name
         );
-        $this->addSpot('WARNING', $message, $node->getLine());
+        $this->addSpot('WARNING', true, $message, $node->getLine());
     }
 
     protected function emitToString($node)
@@ -72,7 +72,7 @@ class IncompMagic extends Change
             'Method %s::__tostring() cannot take arguments',
             $this->visitor->getClassname()
         );
-        $this->addSpot('FATAL', $message, $node->getLine());
+        $this->addSpot('FATAL', true, $message, $node->getLine());
     }
 
     public function leaveNode($node)

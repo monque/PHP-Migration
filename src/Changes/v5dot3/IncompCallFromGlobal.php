@@ -51,7 +51,7 @@ class IncompCallFromGlobal extends Change
             '%s() Called from the global scope - no function context',
             $node->name
         );
-        $this->addSpot('WARNING', $message);
+        $this->addSpot('WARNING', true, $message);
     }
 
     public function enterNode($node)

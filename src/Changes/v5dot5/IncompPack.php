@@ -42,15 +42,17 @@ class IncompPack extends Change
          */
         if ($node instanceof Expr\FuncCall && NameHelper::isSameFunc($node->name, 'unpack')) {
             $affected = true;
-            $format = $node->args[0]->value;
+            $certain = false;
 
             // Try to check arg $format
-            if ($format instanceof Scalar\String && stripos($format->value, 'a') === false) {
-                $affected = false;
+            $format = $node->args[0]->value;
+            if ($format instanceof Scalar\String) {
+                // using stripos for both "a" and "A"
+                $certain = $affected = (stripos($format->value, 'a') !== false);
             }
 
             if ($affected) {
-                $this->addSpot('WARNING', 'Behavior of pack() with "a", "A" in format is changed');
+                $this->addSpot('WARNING', $certain, 'Behavior of pack() with "a", "A" in format is changed');
             }
         }
     }

@@ -34,7 +34,7 @@ class Deprecated extends Change
          */
         if ($node instanceof Expr\Variable && !($node->name instanceof Expr\Variable) &&
                 $node->name == 'HTTP_RAW_POST_DATA') {
-            $this->addSpot('DEPRECATED', '$HTTP_RAW_POST_DATA is deprecated, use php://input instead');
+            $this->addSpot('DEPRECATED', true, '$HTTP_RAW_POST_DATA is deprecated, use php://input instead');
         }
     }
 }

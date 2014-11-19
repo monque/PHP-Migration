@@ -48,7 +48,7 @@ class IncompParamName extends Change
 
         if (($node instanceof Stmt\Function_ || $node instanceof Stmt\ClassMethod)
                 && $this->hasParamShadowGlobal($node)) {
-            $this->addSpot('FATAL', 'Cannot re-assign auto-global variable');
+            $this->addSpot('FATAL', true, 'Cannot re-assign auto-global variable');
         }
     }
 

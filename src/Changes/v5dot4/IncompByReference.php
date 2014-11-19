@@ -35,7 +35,7 @@ class IncompByReference extends Change
              * http://php.net/manual/en/language.references.pass.php
              * http://php.net/manual/en/migration54.incompatible.php
              */
-            $this->addSpot('FATAL', 'Call-time pass-by-reference has been removed');
+            $this->addSpot('FATAL', true, 'Call-time pass-by-reference has been removed');
         }
     }
 

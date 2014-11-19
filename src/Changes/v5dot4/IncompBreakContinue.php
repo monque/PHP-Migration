@@ -45,9 +45,9 @@ class IncompBreakContinue extends Change
         }
 
         if (!is_null($node->num) && !($node->num instanceof Scalar\LNumber)) {
-            $this->addSpot('FATAL', $operator.' operator with non-constant operand is no longer supported');
+            $this->addSpot('FATAL', true, $operator.' operator with non-constant operand is no longer supported');
         } elseif ($node->num instanceof Scalar\LNumber && $node->num->value < 1) {
-            $this->addSpot('FATAL', $operator.' operator accepts only positive numbers');
+            $this->addSpot('FATAL', true, $operator.' operator accepts only positive numbers');
         }
     }
 }

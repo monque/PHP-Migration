@@ -29,7 +29,7 @@ class IncompMisc extends Change
              * {Reference}
              * http://php.net/manual/en/migration54.incompatible.php
              */
-            $this->addSpot('NOTICE', 'array_combine() now returns array() instead of FALSE when two empty arrays given');
+            $this->addSpot('NOTICE', false, 'array_combine() now returns array() instead of FALSE when two empty arrays given');
 
         // ob_start()
         } elseif ($node instanceof Expr\FuncCall && NameHelper::isSameFunc($node->name, 'ob_start') &&
@@ -46,7 +46,7 @@ class IncompMisc extends Change
              * http://php.net/manual/en/function.ob-start.php
              * http://php.net/manual/en/migration54.incompatible.php
              */
-            $this->addSpot('WARNING', 'The third parameter of ob_start() has changed');
+            $this->addSpot('WARNING', true, 'The third parameter of ob_start() has changed');
 
         } elseif ($node instanceof Expr\FuncCall &&
             (NameHelper::isSameFunc($node->name, 'htmlentities') || NameHelper::isSameFunc($node->name, 'htmlspecialchars'))) {
@@ -89,7 +89,7 @@ class IncompMisc extends Change
             }
 
             if ($level) {
-                $this->addSpot($level, $node->name.'() '.implode(', ', $msgbox));
+                $this->addSpot($level, false, $node->name.'() '.implode(', ', $msgbox));
             }
         }
     }

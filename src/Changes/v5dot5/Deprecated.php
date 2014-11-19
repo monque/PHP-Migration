@@ -68,7 +68,7 @@ class Deprecated extends Change
              * {Reference}
              * http://php.net/manual/en/migration55.deprecated.php#migration55.deprecated.mysql
              */
-            $this->addSpot('DEPRECATED', 'The original MySQL extension is deprecated, use MySQLi or PDO_MySQL extensions instead');
+            $this->addSpot('DEPRECATED', true, 'The original MySQL extension is deprecated, use MySQLi or PDO_MySQL extensions instead');
 
         } elseif ($node instanceof Expr\FuncCall && NameHelper::isSameFunc($node->name, 'preg_replace')) {
             /**
@@ -80,6 +80,7 @@ class Deprecated extends Change
              * http://php.net/manual/en/migration55.deprecated.php#migration55.deprecated.preg-replace-e
              */
             $affected = true;
+            $certain = false;
 
             $pattern = $node->args[0]->value;
 
@@ -98,11 +99,11 @@ class Deprecated extends Change
             // Guess whether e in modifier
             if (is_string($pattern)) {
                 $modifier = strrchr($pattern, '/');
-                $affected = strpos($modifier, 'e') !== false;
+                $certain = $affected = (strpos($modifier, 'e') !== false);
             }
 
             if ($affected) {
-                $this->addSpot('DEPRECATED', 'preg_replace() /e modifier is deprecated, use preg_replace_callback() instead');
+                $this->addSpot('DEPRECATED', $certain, 'preg_replace() /e modifier is deprecated, use preg_replace_callback() instead');
             }
 
         } elseif ($node instanceof Expr\FuncCall && $this->funcTable->has($node->name)) {
@@ -113,7 +114,7 @@ class Deprecated extends Change
              * http://php.net/manual/en/migration55.deprecated.php#migration55.deprecated.intl
              * http://php.net/manual/en/migration55.deprecated.php#migration55.deprecated.mcrypt
              */
-            $this->addSpot('DEPRECATED', 'Function '.$node->name.'() is deprecated');
+            $this->addSpot('DEPRECATED', true, 'Function '.$node->name.'() is deprecated');
         }
     }
 }

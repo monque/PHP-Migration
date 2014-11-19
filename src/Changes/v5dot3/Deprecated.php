@@ -79,7 +79,7 @@ class Deprecated extends Change
              * {Reference}
              * http://php.net/manual/en/migration53.deprecated.php
              */
-            $this->addSpot('DEPRECATED', $errmsg);
+            $this->addSpot('DEPRECATED', true, $errmsg);
 
         // Assign new instance
         } elseif ($this->isAssignNewByRef($node)) {
@@ -93,7 +93,7 @@ class Deprecated extends Change
              * {Reference}
              * http://php.net/manual/en/migration53.deprecated.php
              */
-            $this->addSpot('DEPRECATED', 'Assigning the return value of new by reference is deprecated');
+            $this->addSpot('DEPRECATED', true, 'Assigning the return value of new by reference is deprecated');
 
         // Call-time pass-by-reference
         } elseif ($this->checkCallTimePassByRef && $this->isCallTimePassByRef($node)) {
@@ -105,7 +105,7 @@ class Deprecated extends Change
              * http://php.net/manual/en/language.references.pass.php
              * http://php.net/manual/en/migration53.deprecated.php
              */
-            $this->addSpot('DEPRECATED', 'Call-time pass-by-reference is deprecated');
+            $this->addSpot('DEPRECATED', true, 'Call-time pass-by-reference is deprecated');
         }
     }
 

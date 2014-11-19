@@ -44,11 +44,11 @@ abstract class AbstractRemoved extends Change
     {
         // Function
         if ($this->isRemovedFunc($node)) {
-            $this->addSpot('FATAL', sprintf('Function %s() is removed', $node->name));
+            $this->addSpot('FATAL', true, sprintf('Function %s() is removed', $node->name));
 
         // Constant
         } elseif ($this->isRemovedConst($node)) {
-            $this->addSpot('WARNING', sprintf('Constant %s is removed', $node->name));
+            $this->addSpot('WARNING', true, sprintf('Constant %s is removed', $node->name));
         }
     }
 

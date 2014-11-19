@@ -27,6 +27,7 @@ Usage: phpmig [options] <file>...
 
 Options:
   -l, --list        List all migration sets
+  -q, --quite       Only output certain spot, ignore all uncertain
   -s, --set=NAME    The name of migration set to use [default: to56]
   -d, --dump        Dump abstract syntax tree
   -v, --verbose
@@ -173,7 +174,7 @@ if (true) {
         try {
             $stmts = $parser->parse($code);
         } catch (PhpParser\Error $e) {
-            $chgvisitor->addSpot('PARSE', $e->getMessage(), '', $e->getRawLine());
+            $chgvisitor->addSpot('PARSE', true, $e->getMessage(), 'NONE', $e->getRawLine());
             if ($args['--verbose']) {
                 Logging::warning('Parse error {file}, error message "{exception}"', array(
                     'exception' => $e,
@@ -190,6 +191,18 @@ if (true) {
 
     // Display
     foreach ($chgvisitor->getSpots() as $spotlist) {
+        // Skip uncertain
+        if ($args['--quite']) {
+            foreach ($spotlist as $key => $spot) {
+                if (!$spot['certain']) {
+                    unset($spotlist[$key]);
+                }
+            }
+            if (!$spotlist) {
+                continue;
+            }
+        }
+
         usort($spotlist, function ($a, $b) {
             return $a['line'] - $b['line'];
         });
@@ -199,7 +212,14 @@ if (true) {
         echo "File: ".$spot['file']."\n";
         echo "--------------------------------------------------------------------------------\n";
         foreach ($spotlist as $spot) {
-            printf("%5d | %-10s | %s | %s\n", $spot['line'], $spot['cate'], $spot['version'], $spot['message']);
+            printf(
+                "%5d | %-10s | %1s | %s | %s\n",
+                $spot['line'],
+                $spot['cate'],
+                $spot['certain'] ? '*' : ' ',
+                $spot['version'],
+                $spot['message']
+            );
         }
         echo "--------------------------------------------------------------------------------\n";
     }

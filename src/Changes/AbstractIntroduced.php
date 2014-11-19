@@ -73,11 +73,11 @@ abstract class AbstractIntroduced extends Change
     {
         // Function
         if ($this->isNewFunc($node)) {
-            $this->addSpot('FATAL', sprintf('Cannot redeclare %s()', $node->name));
+            $this->addSpot('FATAL', true, sprintf('Cannot redeclare %s()', $node->name));
 
         // Method
         } elseif ($this->isNewMethod($node, $method_name)) {
-            $this->addSpot('WARNING', sprintf(
+            $this->addSpot('WARNING', true, sprintf(
                 'Method %s::%s() will override built-in method %s()',
                 $this->visitor->getClassname(),
                 $node->name,
@@ -90,17 +90,17 @@ abstract class AbstractIntroduced extends Change
              * TODO: We should check namespaced name instead literal
              * Predis/Session/SessionHandler.php in Predis will be affteced
              */
-            $this->addSpot('FATAL', sprintf('Cannot redeclare class %s', $node->name));
+            $this->addSpot('FATAL', true, sprintf('Cannot redeclare class %s', $node->name));
 
         // Constant
         } elseif ($this->isNewConst($node)) {
             $constname = $node->args[0]->value->value;
-            $this->addSpot('WARNING', sprintf('Constant %s already defined', $constname));
+            $this->addSpot('WARNING', true, sprintf('Constant %s already defined', $constname));
 
         // Parameter
         } elseif ($this->isNewParam($node)) {
             $advice = $this->paramTable->get($node->name);
-            $this->addSpot('NEW', sprintf('Function %s() has new parameter, %s', $node->name, $advice));
+            $this->addSpot('NEW', false, sprintf('Function %s() has new parameter, %s', $node->name, $advice));
         }
 
         // Conditional declaration clear

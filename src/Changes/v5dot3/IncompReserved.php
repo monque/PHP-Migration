@@ -57,7 +57,7 @@ class IncompReserved extends Change
             $name = $node->name->toString();
         }
         if (!is_null($name) && static::$keywords->has($name)) {
-            $this->addSpot('FATAL', 'Keyword '.$name.' is reserved');
+            $this->addSpot('FATAL', true, 'Keyword '.$name.' is reserved');
         }
     }
 }

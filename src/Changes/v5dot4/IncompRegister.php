@@ -28,7 +28,7 @@ class IncompRegister extends Change
          */
         if ($node instanceof Expr\Variable && is_string($node->name) &&
                 preg_match('/^HTTP_[a-zA-Z_]+?_VARS$/', $node->name)) {
-            $this->addSpot('WARNING', 'The register_long_arrays is removed, $'.$node->name.' no longer available');
+            $this->addSpot('WARNING', true, 'The register_long_arrays is removed, $'.$node->name.' no longer available');
         }
     }
 }

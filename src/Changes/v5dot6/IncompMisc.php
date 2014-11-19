@@ -66,7 +66,7 @@ class IncompMisc extends Change
              * {Reference}
              * http://php.net/manual/en/migration56.incompatible.php#migration56.incompatible.json-decode
              */
-            $this->addSpot('NOTICE', 'json_decode() rejects non-lowercase variants of true, false, null');
+            $this->addSpot('NOTICE', false, 'json_decode() rejects non-lowercase variants of true, false, null');
 
         // GMP
         } elseif ($node instanceof Expr\FuncCall && $this->gmpTable->has($node->name)) {
@@ -80,7 +80,7 @@ class IncompMisc extends Change
              * {Reference}
              * http://php.net/manual/en/migration56.incompatible.php#migration56.incompatible.gmp
              */
-            $this->addSpot('NOTICE', 'GMP resource is now object, do not use is_resource() to test');
+            $this->addSpot('NOTICE', false, 'GMP resource is now object, do not use is_resource() to test');
 
         // Mcrypt
         } elseif ($node instanceof Expr\FuncCall && $this->mcryptTable->has($node->name)) {
@@ -94,7 +94,7 @@ class IncompMisc extends Change
              * {Reference}
              * http://php.net/manual/en/migration56.incompatible.php#migration56.incompatible.mcrypt
              */
-            $this->addSpot('NOTICE', $node->name.'() no longer accept keys or IVs with incorrect size');
+            $this->addSpot('NOTICE', false, $node->name.'() no longer accept keys or IVs with incorrect size');
         }
     }
 }

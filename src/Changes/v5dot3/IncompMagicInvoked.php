@@ -32,7 +32,7 @@ class IncompMagicInvoked extends Change
             'The __call() magic method will be invoked on access to non-public mehtods in %s',
             $this->visitor->getClassname()
         );
-        $this->addSpot('NOTICE', $message, $node->getLine());
+        $this->addSpot('NOTICE', false, $message, $node->getLine());
     }
 
     public function leaveNode($node)

@@ -43,7 +43,7 @@ class IncompMisc extends Change
                  * {Reference}
                  * http://php.net/manual/en/migration53.incompatible.php
                  */
-                $this->addSpot('NOTICE', 'clearstatcache() no longer clears the realpath cache by default');
+                $this->addSpot('NOTICE', false, 'clearstatcache() no longer clears the realpath cache by default');
 
             } elseif (NameHelper::isSameFunc($node->name, 'realpath')) {
                 /**
@@ -59,7 +59,7 @@ class IncompMisc extends Change
                  * http://php.net/manual/en/function.realpath.php
                  * http://php.net/manual/en/migration53.incompatible.php
                  */
-                $this->addSpot('NOTICE', 'realpath() is now fully platform-independent, especially on *BSD.');
+                $this->addSpot('NOTICE', false, 'realpath() is now fully platform-independent, especially on *BSD.');
 
             } elseif (static::$arrFuncTable->has($node->name)) {
                 /**
@@ -72,7 +72,7 @@ class IncompMisc extends Change
                  * {Reference}
                  * http://php.net/manual/en/migration53.incompatible.php
                  */
-                $this->addSpot('NOTICE', sprintf('%s() no longer accept objects passed as arguments', $node->name));
+                $this->addSpot('NOTICE', false, sprintf('%s() no longer accept objects passed as arguments', $node->name));
 
             } elseif (NameHelper::isSameFunc($node->name, 'call_user_func_array')) {
                 /**
@@ -86,7 +86,7 @@ class IncompMisc extends Change
                  * http://php.net/manual/en/migration53.incompatible.php
                  */
                 if (!($node->args[1]->value instanceof Expr\Array_)) {
-                    $this->addSpot('NOTICE', sprintf('%s() no longer accept non-array passed as arguments', $node->name));
+                    $this->addSpot('NOTICE', false, sprintf('%s() no longer accept non-array passed as arguments', $node->name));
                 }
 
             } elseif (NameHelper::isSameFunc($node->name, 'gd_info')) {
@@ -98,7 +98,7 @@ class IncompMisc extends Change
                  * {Reference}
                  * http://php.net/manual/en/migration53.extensions-other.php
                  */
-                $this->addSpot('NOTICE', 'gd_info() JPG Support attribute renamed to JPEG Support');
+                $this->addSpot('NOTICE', false, 'gd_info() JPG Support attribute renamed to JPEG Support');
             }
         }
     }

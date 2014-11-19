@@ -29,10 +29,11 @@ class Change
     /**
      * Quick method to add spot to visitor
      */
-    public function addSpot($cate, $message, $line = null, $file = null)
+    public function addSpot($cate, $certain, $message, $line = null, $file = null)
     {
         $this->visitor->addSpot(
             $cate,
+            $certain,
             $message,
             static::$version,
             $line,

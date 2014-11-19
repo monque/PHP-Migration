@@ -43,7 +43,7 @@ class Deprecated extends Change
              * {Reference}
              * http://php.net/manual/en/migration54.deprecated.php
              */
-            $this->addSpot('WARNING', sprintf('Function %s() is deprecated', $node->name));
+            $this->addSpot('WARNING', true, sprintf('Function %s() is deprecated', $node->name));
         }
     }
 
