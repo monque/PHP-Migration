@@ -54,6 +54,17 @@ class Deprecated extends Change
         $this->checkCallTimePassByRef = !$off;
     }
 
+    public function skipMysqlFunc($off)
+    {
+        if (!static::$prepared) {
+            unset(static::$funcTable['mysql_db_query']);
+            unset(static::$funcTable['mysql_escape_string']);
+        } else {
+            static::$funcTable->del('mysql_db_query');
+            static::$funcTable->del('mysql_escape_string');
+        }
+    }
+
     public function prepare()
     {
         if (!static::$prepared) {

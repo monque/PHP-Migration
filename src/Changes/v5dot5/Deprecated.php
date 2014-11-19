@@ -54,6 +54,8 @@ class Deprecated extends Change
             $this->mysqlTable = new SymbolTable(array_flip($this->mysqlTable), SymbolTable::IC);
             $this->tableLoaded = true;
         }
+
+        $this->visitor->callChange('v5dot3\Deprecated', 'skipMysqlFunc', true);
     }
 
     public function leaveNode($node)
