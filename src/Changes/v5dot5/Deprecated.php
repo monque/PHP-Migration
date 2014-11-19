@@ -11,7 +11,7 @@ namespace PhpMigration\Changes\v5dot5;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\SymbolTable;
-use PhpMigration\Utils\NameHelper;
+use PhpMigration\Utils\ParserHelper;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Scalar;
 
@@ -72,7 +72,7 @@ class Deprecated extends AbstractChange
              */
             $this->addSpot('DEPRECATED', true, 'The original MySQL extension is deprecated, use MySQLi or PDO_MySQL extensions instead');
 
-        } elseif ($node instanceof Expr\FuncCall && NameHelper::isSameFunc($node->name, 'preg_replace')) {
+        } elseif ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'preg_replace')) {
             /**
              * {Description}
              * The preg_replace() /e modifier is now deprecated. Instead, use the

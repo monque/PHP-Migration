@@ -11,7 +11,7 @@ namespace PhpMigration\Changes\v5dot3;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\SymbolTable;
-use PhpMigration\Utils\NameHelper;
+use PhpMigration\Utils\ParserHelper;
 use PhpParser\Node\Stmt;
 
 class IncompMagic extends AbstractChange
@@ -84,7 +84,7 @@ class IncompMagic extends AbstractChange
         foreach ($node->getMethods() as $mnode) {
             if ((!$mnode->isPublic() || $mnode->isStatic()) && $this->funcTable->has($mnode->name)) {
                 $this->emitNonPub($mnode);
-            } elseif (NameHelper::isSameFunc($mnode->name, '__toString') && count($mnode->params) > 0) {
+            } elseif (ParserHelper::isSameFunc($mnode->name, '__toString') && count($mnode->params) > 0) {
                 $this->emitToString($mnode);
             }
         }

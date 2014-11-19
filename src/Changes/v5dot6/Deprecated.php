@@ -11,7 +11,6 @@ namespace PhpMigration\Changes\v5dot6;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\SymbolTable;
-use PhpMigration\Utils\NameHelper;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Scalar;
 

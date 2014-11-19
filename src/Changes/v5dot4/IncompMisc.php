@@ -10,7 +10,7 @@ namespace PhpMigration\Changes\v5dot4;
  */
 
 use PhpMigration\Changes\AbstractChange;
-use PhpMigration\Utils\NameHelper;
+use PhpMigration\Utils\ParserHelper;
 use PhpParser\Node\Expr;
 
 class IncompMisc extends AbstractChange
@@ -20,7 +20,7 @@ class IncompMisc extends AbstractChange
     public function leaveNode($node)
     {
         // array_combine()
-        if ($node instanceof Expr\FuncCall && NameHelper::isSameFunc($node->name, 'array_combine')) {
+        if ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'array_combine')) {
             /**
              * {Description}
              * array_combine() now returns array() instead of FALSE when two empty
@@ -32,7 +32,7 @@ class IncompMisc extends AbstractChange
             $this->addSpot('NOTICE', false, 'array_combine() now returns array() instead of FALSE when two empty arrays given');
 
         // ob_start()
-        } elseif ($node instanceof Expr\FuncCall && NameHelper::isSameFunc($node->name, 'ob_start') &&
+        } elseif ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'ob_start') &&
                 isset($node->args[2])) {
             /**
              * {Description}
@@ -49,7 +49,7 @@ class IncompMisc extends AbstractChange
             $this->addSpot('WARNING', true, 'The third parameter of ob_start() has changed');
 
         } elseif ($node instanceof Expr\FuncCall &&
-            (NameHelper::isSameFunc($node->name, 'htmlentities') || NameHelper::isSameFunc($node->name, 'htmlspecialchars'))) {
+            (ParserHelper::isSameFunc($node->name, 'htmlentities') || ParserHelper::isSameFunc($node->name, 'htmlspecialchars'))) {
             /**
              * {Description}
              * If you use htmlentities() with asian character sets, it works
@@ -78,7 +78,7 @@ class IncompMisc extends AbstractChange
             $level = false;
             $msgbox = array();
 
-            if (NameHelper::isSameFunc($node->name, 'htmlentities')) {
+            if (ParserHelper::isSameFunc($node->name, 'htmlentities')) {
                 $level = 'WARNING';
                 $msgbox[] = 'won\'t encode asian character sets';
             }

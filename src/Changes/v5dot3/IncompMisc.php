@@ -11,7 +11,7 @@ namespace PhpMigration\Changes\v5dot3;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\SymbolTable;
-use PhpMigration\Utils\NameHelper;
+use PhpMigration\Utils\ParserHelper;
 use PhpParser\Node\Expr;
 
 class IncompMisc extends AbstractChange
@@ -35,7 +35,7 @@ class IncompMisc extends AbstractChange
     public function leaveNode($node)
     {
         if ($node instanceof Expr\FuncCall) {
-            if (NameHelper::isSameFunc($node->name, 'clearstatcache')) {
+            if (ParserHelper::isSameFunc($node->name, 'clearstatcache')) {
                 /**
                  * {Description}
                  * clearstatcache() no longer clears the realpath cache by default.
@@ -45,7 +45,7 @@ class IncompMisc extends AbstractChange
                  */
                 $this->addSpot('NOTICE', false, 'clearstatcache() no longer clears the realpath cache by default');
 
-            } elseif (NameHelper::isSameFunc($node->name, 'realpath')) {
+            } elseif (ParserHelper::isSameFunc($node->name, 'realpath')) {
                 /**
                  * {Description}
                  * realpath() is now fully platform-independent. Consequence of
@@ -74,7 +74,7 @@ class IncompMisc extends AbstractChange
                  */
                 $this->addSpot('NOTICE', false, sprintf('%s() no longer accept objects passed as arguments', $node->name));
 
-            } elseif (NameHelper::isSameFunc($node->name, 'call_user_func_array')) {
+            } elseif (ParserHelper::isSameFunc($node->name, 'call_user_func_array')) {
                 /**
                  * {Description}
                  * call_user_func_array() no longer accepts null as a second
@@ -89,7 +89,7 @@ class IncompMisc extends AbstractChange
                     $this->addSpot('NOTICE', false, sprintf('%s() no longer accept non-array passed as arguments', $node->name));
                 }
 
-            } elseif (NameHelper::isSameFunc($node->name, 'gd_info')) {
+            } elseif (ParserHelper::isSameFunc($node->name, 'gd_info')) {
                 /**
                  * {Description}
                  * Image Processing and GD The "JPG Support" index returned from

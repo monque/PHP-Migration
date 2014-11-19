@@ -10,7 +10,7 @@ namespace PhpMigration\Changes\v5dot5;
  */
 
 use PhpMigration\Changes\AbstractChange;
-use PhpMigration\Utils\NameHelper;
+use PhpMigration\Utils\ParserHelper;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Scalar;
 
@@ -40,7 +40,7 @@ class IncompPack extends AbstractChange
          * {Reference}
          * http://php.net/manual/en/migration55.incompatible.php#migration55.incompatible.pack
          */
-        if ($node instanceof Expr\FuncCall && NameHelper::isSameFunc($node->name, 'unpack')) {
+        if ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'unpack')) {
             $affected = true;
             $certain = false;
 

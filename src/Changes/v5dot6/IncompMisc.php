@@ -11,7 +11,7 @@ namespace PhpMigration\Changes\v5dot6;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\SymbolTable;
-use PhpMigration\Utils\NameHelper;
+use PhpMigration\Utils\ParserHelper;
 use PhpParser\Node\Expr;
 
 class IncompMisc extends AbstractChange
@@ -50,7 +50,7 @@ class IncompMisc extends AbstractChange
     public function leaveNode($node)
     {
         // json_decode()
-        if ($node instanceof Expr\FuncCall && NameHelper::isSameFunc($node->name, 'json_decode')) {
+        if ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'json_decode')) {
             /**
              * {Description}
              * json_decode() now rejects non-lowercase variants of the JSON

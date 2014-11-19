@@ -39,21 +39,39 @@ class ParserHelper
         }
 
         $expr = $node->cond->expr;
-        return $expr instanceof Expr\FuncCall && NameHelper::isSameFunc($expr->name, $testfunc);
+        return $expr instanceof Expr\FuncCall && self::isSameFunc($expr->name, $testfunc);
     }
 
     public static function isConditionalFunc(Node $node)
     {
-        return static::isConditionalDeclare($node, 'function_exists');
+        return self::isConditionalDeclare($node, 'function_exists');
     }
 
     public static function isConditionalConst(Node $node)
     {
-        return static::isConditionalDeclare($node, 'defined');
+        return self::isConditionalDeclare($node, 'defined');
     }
 
     public static function getConditionalName(Node $node)
     {
         return $node->cond->expr->args[0]->value->value;
+    }
+
+    public static function isSameFunc($name, $const)
+    {
+        if (!is_string($name) && !method_exists($name, '__toString')) {
+            return false;
+        }
+
+        return strcasecmp($name, $const) === 0;
+    }
+
+    public static function isSameClass($name, $const)
+    {
+        if (!is_string($name) && !method_exists($name, '__toString')) {
+            return false;
+        }
+
+        return strcasecmp($name, $const) === 0;
     }
 }

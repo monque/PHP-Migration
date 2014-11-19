@@ -10,7 +10,7 @@ namespace PhpMigration\Changes\v5dot3;
  */
 
 use PhpMigration\Changes\AbstractChange;
-use PhpMigration\Utils\NameHelper;
+use PhpMigration\Utils\ParserHelper;
 use PhpParser\Node\Stmt;
 
 class IncompMagicInvoked extends AbstractChange
@@ -42,7 +42,7 @@ class IncompMagicInvoked extends AbstractChange
 
         if ($node instanceof Stmt\Class_) {
             foreach ($node->getMethods() as $mnode) {
-                if (NameHelper::isSameFunc($mnode->name, '__call')) {
+                if (ParserHelper::isSameFunc($mnode->name, '__call')) {
                     $has_magic_call = true;
                     $magic_node = $mnode;
                 } elseif (!$mnode->isPublic()) {
