@@ -9,7 +9,7 @@ namespace PhpMigration;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-class SymbolTable implements \Iterator
+class SymbolTable implements \Iterator, \ArrayAccess
 {
     const CS = true;
     const IC = false;
@@ -42,6 +42,9 @@ class SymbolTable implements \Iterator
         return true;
     }
 
+    /**
+     * Basic operation
+     */
     public function has($key)
     {
         if (!$this->prepareKey($key)) {
@@ -83,7 +86,9 @@ class SymbolTable implements \Iterator
         return true;
     }
 
-    // Iterator
+    /**
+     * Implement Iterator
+     */
     public function current()
     {
         return current($this->data);
@@ -107,5 +112,28 @@ class SymbolTable implements \Iterator
     public function valid()
     {
         return ($this->current() !== false);
+    }
+
+    /**
+     * Implement ArrayAccess
+     */
+    public function offsetExists($offset)
+    {
+        return $this->has($offset);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        return $this->set($offset, $value);
+    }
+
+    public function offsetUnset($offset)
+    {
+        return $this->del($offset);
     }
 }

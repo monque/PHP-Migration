@@ -56,13 +56,8 @@ class Deprecated extends AbstractChange
 
     public function skipMysqlFunc($off)
     {
-        if (!$this->tableLoaded) {
-            unset($this->funcTable['mysql_db_query']);
-            unset($this->funcTable['mysql_escape_string']);
-        } else {
-            $this->funcTable->del('mysql_db_query');
-            $this->funcTable->del('mysql_escape_string');
-        }
+        unset($this->funcTable['mysql_db_query']);
+        unset($this->funcTable['mysql_escape_string']);
     }
 
     public function prepare()
