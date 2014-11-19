@@ -17,17 +17,17 @@ class IncompParamName extends Change
 {
     protected static $version = '5.4.0';
 
-    protected static $prepared = false;
+    protected $tableLoaded = false;
 
-    protected static $autoGlobals = array(
+    protected $autoGlobals = array(
         '_SESSION', '_GET', '_POST', '_COOKIE', '_SERVER', '_ENV', '_REQUEST', '_FILES'
     );
 
     public function prepare()
     {
-        if (!static::$prepared) {
-            static::$autoGlobals = new SymbolTable(array_flip(static::$autoGlobals), SymbolTable::CS);
-            static::$prepared = true;
+        if (!$this->tableLoaded) {
+            $this->autoGlobals = new SymbolTable(array_flip($this->autoGlobals), SymbolTable::CS);
+            $this->tableLoaded = true;
         }
     }
 
@@ -56,7 +56,7 @@ class IncompParamName extends Change
     {
         foreach ($node->params as $param) {
             // auto-global
-            if (static::$autoGlobals->has($param->name)) {
+            if ($this->autoGlobals->has($param->name)) {
                 return true;
 
             // $this

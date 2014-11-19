@@ -19,15 +19,15 @@ class IncompByReference extends Change
 {
     protected static $version = '5.3.0';
 
-    protected static $prepared = false;
+    protected $prepared = false;
 
-    protected static $callList;
+    protected $callList;
 
-    public static $declareTable;
+    public $declareTable;
 
-    public static $methodTable;
+    public $methodTable;
 
-    protected static $builtinTable = array(
+    protected $builtinTable = array(
         // This list is exported by running `phpmig --export-posbit <docfile>`
         'apc_dec'                                =>    4, // 001
         'apc_fetch'                              =>    2, // 01
@@ -245,10 +245,10 @@ class IncompByReference extends Change
 
     public function prepare()
     {
-        if (!static::$prepared) {
-            static::$callList = array();
-            static::$declareTable = new SymbolTable(static::$builtinTable, SymbolTable::IC);
-            static::$methodTable = new SymbolTable(array(), SymbolTable::IC);
+        if (!$this->prepared) {
+            $this->callList = array();
+            $this->declareTable = new SymbolTable($this->builtinTable, SymbolTable::IC);
+            $this->methodTable = new SymbolTable(array(), SymbolTable::IC);
         }
     }
 
@@ -271,15 +271,15 @@ class IncompByReference extends Change
     public function finish()
     {
         // Check all call
-        foreach (static::$callList as $call) {
+        foreach ($this->callList as $call) {
             $cname = $call['name'];
-            if (static::$declareTable->has($cname)) {
-                if ($this->isMismatch(static::$declareTable->get($cname), $call['pos'])) {
+            if ($this->declareTable->has($cname)) {
+                if ($this->isMismatch($this->declareTable->get($cname), $call['pos'])) {
                     $this->emitSpot($call);
                 }
-            } elseif (substr($cname, 0, 2) == '->' && static::$methodTable->has($cname)) {
+            } elseif (substr($cname, 0, 2) == '->' && $this->methodTable->has($cname)) {
                 $suspect = array();
-                foreach (static::$methodTable->get($cname) as $class => $posbit) {
+                foreach ($this->methodTable->get($cname) as $class => $posbit) {
                     if ($this->isMismatch($posbit, $call['pos'])) {
                         $suspect[] = $class;
                     }
@@ -378,16 +378,16 @@ class IncompByReference extends Change
             $fname = $this->visitor->getClassname().'->'.$node->name;
 
             $mname = '->'.$node->name;
-            if (static::$methodTable->has($mname)) {
-                $suspect = static::$methodTable->get($mname);
+            if ($this->methodTable->has($mname)) {
+                $suspect = $this->methodTable->get($mname);
             } else {
                 $suspect = array();
             }
             $suspect[$this->visitor->getClassname()] = $posbit;
-            static::$methodTable->set($mname, $suspect);
+            $this->methodTable->set($mname, $suspect);
         }
 
-        static::$declareTable->set($fname, $posbit);
+        $this->declareTable->set($fname, $posbit);
     }
 
     public function populateCall($node, $type)
@@ -419,7 +419,7 @@ class IncompByReference extends Change
             $callname = $oname.'->'.$node->name;
         }
 
-        static::$callList[] = array(
+        $this->callList[] = array(
             'name' => $callname,
             'pos' => $posbit,
             'file' => $this->visitor->getFile(),

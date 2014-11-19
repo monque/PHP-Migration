@@ -17,9 +17,9 @@ class Deprecated extends Change
 {
     protected static $version = '5.3.0';
 
-    protected static $prepared = false;
+    protected $tableLoaded = false;
 
-    public static $funcTable = array(
+    public $funcTable = array(
         'call_user_method'          => 'use call_user_func() instead',
         'call_user_method_array'    => 'use call_user_func_array() instead',
         'define_syslog_variables'   => '',
@@ -56,20 +56,20 @@ class Deprecated extends Change
 
     public function skipMysqlFunc($off)
     {
-        if (!static::$prepared) {
-            unset(static::$funcTable['mysql_db_query']);
-            unset(static::$funcTable['mysql_escape_string']);
+        if (!$this->tableLoaded) {
+            unset($this->funcTable['mysql_db_query']);
+            unset($this->funcTable['mysql_escape_string']);
         } else {
-            static::$funcTable->del('mysql_db_query');
-            static::$funcTable->del('mysql_escape_string');
+            $this->funcTable->del('mysql_db_query');
+            $this->funcTable->del('mysql_escape_string');
         }
     }
 
     public function prepare()
     {
-        if (!static::$prepared) {
-            static::$funcTable = new SymbolTable(static::$funcTable, SymbolTable::IC);
-            static::$prepared = true;
+        if (!$this->tableLoaded) {
+            $this->funcTable = new SymbolTable($this->funcTable, SymbolTable::IC);
+            $this->tableLoaded = true;
         }
     }
 
@@ -77,7 +77,7 @@ class Deprecated extends Change
     {
         // Function call
         if ($this->isDeprecatedFunc($node)) {
-            $advice = static::$funcTable->get($node->name);
+            $advice = $this->funcTable->get($node->name);
             if ($advice) {
                 $errmsg = sprintf('Function %s() is deprecated, %s', $node->name, $advice);
             } else {
@@ -122,7 +122,7 @@ class Deprecated extends Change
 
     public function isDeprecatedFunc($node)
     {
-        return ($node instanceof Expr\FuncCall && static::$funcTable->has($node->name));
+        return ($node instanceof Expr\FuncCall && $this->funcTable->has($node->name));
     }
 
     public function isAssignNewByRef($node)

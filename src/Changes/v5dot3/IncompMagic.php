@@ -18,17 +18,17 @@ class IncompMagic extends Change
 {
     protected static $version = '5.3.0';
 
-    protected static $prepared = false;
+    protected $tableLoaded = false;
 
-    protected static $funcTable = array(
+    protected $funcTable = array(
         '__get', '__set', '__isset', '__unset', '__call',
     );
 
     public function prepare()
     {
-        if (!static::$prepared) {
-            static::$funcTable  = new SymbolTable(array_flip(static::$funcTable), SymbolTable::IC);
-            static::$prepared = true;
+        if (!$this->tableLoaded) {
+            $this->funcTable  = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
+            $this->tableLoaded = true;
         }
     }
 
@@ -82,7 +82,7 @@ class IncompMagic extends Change
         }
 
         foreach ($node->getMethods() as $mnode) {
-            if ((!$mnode->isPublic() || $mnode->isStatic()) && static::$funcTable->has($mnode->name)) {
+            if ((!$mnode->isPublic() || $mnode->isStatic()) && $this->funcTable->has($mnode->name)) {
                 $this->emitNonPub($mnode);
             } elseif (NameHelper::isSameFunc($mnode->name, '__toString') && count($mnode->params) > 0) {
                 $this->emitToString($mnode);

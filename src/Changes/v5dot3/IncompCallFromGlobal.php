@@ -17,17 +17,17 @@ class IncompCallFromGlobal extends Change
 {
     protected static $version = '5.3.0';
 
-    protected static $prepared = false;
+    protected $tableLoaded = false;
 
-    protected static $funcTable = array(
+    protected $funcTable = array(
         'func_get_arg', 'func_get_args', 'func_num_args'
     );
 
     public function prepare()
     {
-        if (!static::$prepared) {
-            static::$funcTable  = new SymbolTable(array_flip(static::$funcTable), SymbolTable::IC);
-            static::$prepared = true;
+        if (!$this->tableLoaded) {
+            $this->funcTable  = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
+            $this->tableLoaded = true;
         }
     }
 
@@ -58,7 +58,7 @@ class IncompCallFromGlobal extends Change
     {
         // Populate
         if ($node instanceof Expr\FuncCall &&
-                static::$funcTable->has($node->name) &&
+                $this->funcTable->has($node->name) &&
                 !$this->visitor->inMethod() &&
                 !$this->visitor->inFunction()) {
             $this->emitSpot($node);

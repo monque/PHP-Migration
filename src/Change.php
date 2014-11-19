@@ -14,6 +14,11 @@ use PhpParser\Node;
 class Change
 {
     /**
+     * Version represents when this change do perform
+     */
+    protected static $version;
+
+    /**
      * Visitor who hold this change instance
      */
     protected $visitor;

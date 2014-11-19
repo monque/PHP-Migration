@@ -18,17 +18,17 @@ class IncompMisc extends Change
 {
     protected static $version = '5.3.0';
 
-    protected static $prepared = false;
+    protected $tableLoaded = false;
 
-    protected static $arrFuncTable = array(
+    protected $arrFuncTable = array(
         'natsort', 'natcasesort', 'usort', 'uasort', 'uksort', 'array_flip', 'array_unique',
     );
 
     public function prepare()
     {
-        if (!static::$prepared) {
-            static::$arrFuncTable  = new SymbolTable(array_flip(static::$arrFuncTable), SymbolTable::IC);
-            static::$prepared = true;
+        if (!$this->tableLoaded) {
+            $this->arrFuncTable  = new SymbolTable(array_flip($this->arrFuncTable), SymbolTable::IC);
+            $this->tableLoaded = true;
         }
     }
 
@@ -61,7 +61,7 @@ class IncompMisc extends Change
                  */
                 $this->addSpot('NOTICE', false, 'realpath() is now fully platform-independent, especially on *BSD.');
 
-            } elseif (static::$arrFuncTable->has($node->name)) {
+            } elseif ($this->arrFuncTable->has($node->name)) {
                 /**
                  * {Description}
                  * The array functions natsort(), natcasesort(), usort(), uasort(),
