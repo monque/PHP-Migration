@@ -23,9 +23,9 @@ class IncompByReference extends AbstractChange
 
     protected $callList;
 
-    public $declareTable;
+    protected $declareTable;
 
-    public $methodTable;
+    protected $methodTable;
 
     protected $builtinTable = array(
         // This list is exported by running `phpmig --export-posbit <docfile>`
@@ -363,7 +363,7 @@ class IncompByReference extends AbstractChange
         return true && ($define & $call);
     }
 
-    public function populateDefine($node, $type)
+    protected function populateDefine($node, $type)
     {
         $posbit = $this->positionWithRef($node);
         if (!$posbit) {
@@ -390,7 +390,7 @@ class IncompByReference extends AbstractChange
         $this->declareTable->set($fname, $posbit);
     }
 
-    public function populateCall($node, $type)
+    protected function populateCall($node, $type)
     {
         if (ParserHelper::isDynamicCall($node)) {
             return;

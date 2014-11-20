@@ -19,7 +19,7 @@ class Deprecated extends AbstractChange
 
     protected $tableLoaded = false;
 
-    public $funcTable = array(
+    protected $funcTable = array(
         'call_user_method'          => 'use call_user_func() instead',
         'call_user_method_array'    => 'use call_user_func_array() instead',
         'define_syslog_variables'   => '',
@@ -120,17 +120,17 @@ class Deprecated extends AbstractChange
         }
     }
 
-    public function isDeprecatedFunc($node)
+    protected function isDeprecatedFunc($node)
     {
         return ($node instanceof Expr\FuncCall && $this->funcTable->has($node->name));
     }
 
-    public function isAssignNewByRef($node)
+    protected function isAssignNewByRef($node)
     {
         return ($node instanceof Expr\AssignRef && $node->expr instanceof Expr\New_);
     }
 
-    public function isCallTimePassByRef($node)
+    protected function isCallTimePassByRef($node)
     {
         if (!($node instanceof Expr\FuncCall || $node instanceof Expr\StaticCall ||
                 $node instanceof Expr\MethodCall)) {
