@@ -85,7 +85,7 @@ class IncompMisc extends AbstractChange
                  * User Contributed Notes by Chris Bolt
                  * http://php.net/manual/en/migration53.incompatible.php
                  */
-                if (!($node->args[1]->value instanceof Expr\Array_)) {
+                if (isset($node->args[1]) && !($node->args[1]->value instanceof Expr\Array_)) {
                     $this->addSpot('NOTICE', false, sprintf('%s() no longer accept non-array passed as arguments', $node->name));
                 }
 
