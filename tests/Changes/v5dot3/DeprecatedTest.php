@@ -21,38 +21,49 @@ class DeprecatedTest extends \PHPUnit_Framework_TestCase
         $this->change->prepare();
     }
 
-    protected function genFuncCall($name)
+    public function testFunc()
     {
-        $code = sprintf('%s();', $name);
-        return TestHelper::getNodeByCode($code);
-    }
+        // Not-new
+        $code = 'not_new();';
+        $this->assertEmpty(TestHelper::runChange($this->change, $code));
 
-    public function testDeprecatedFunc()
-    {
-        foreach (Deprecated::$funcTable as $name => $dummy) {
+        $table = TestHelper::fetchProperty($this->change, 'funcTable');
+        foreach ($table as $name => $dummy) {
             // Normal name
-            $node = $this->genFuncCall($name);
-            $this->assertTrue($this->change->isDeprecatedFunc($node));
+            $code = sprintf("%s();", $name);
+            $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
 
-            // Messy name
-            $messyname = substr($name, 0, -1).strtoupper(substr($name, -1));
-            $node = $this->genFuncCall($messyname);
-            $this->assertTrue($this->change->isDeprecatedFunc($node));
+            // Case Insensitive name
+            $code = sprintf("%s();", strtoupper($name));
+            $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
         }
 
-        // Indeprecated name
-        $node = $this->genFuncCall('ohshit');
-        $this->assertFalse($this->change->isDeprecatedFunc($node));
+        // Set skip mysql func
+        $code = 'mysql_escape_string();';
+        $this->change->skipMysqlFunc(true); // Skip
+        $this->assertEmpty(TestHelper::runChange($this->change, $code));
+        $this->change->skipMysqlFunc(false); // Dont skip
+        $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
     }
 
     public function testAssignNewByRef()
     {
         // Direct assign
-        $node = TestHelper::getNodeByCode('$o = new Class_();');
-        $this->assertFalse($this->change->isAssignNewByRef($node));
+        $code = '$o = new Class_();';
+        $this->assertEmpty(TestHelper::runChange($this->change, $code));
 
         // By-reference
-        $node = TestHelper::getNodeByCode('$o = &new Class_();');
-        $this->assertTrue($this->change->isAssignNewByRef($node));
+        $code = '$o = &new Class_();';
+        $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
+    }
+
+    public function testCallTimePassByRef()
+    {
+        $code = 'func($a, $b, "asdf");';
+        $this->assertEmpty(TestHelper::runChange($this->change, $code));
+
+        // By-reference
+        $code = 'func($a, &$b, "asdf");';
+        $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
     }
 }
