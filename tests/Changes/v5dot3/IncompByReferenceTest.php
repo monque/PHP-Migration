@@ -22,60 +22,44 @@ class IncompByReferenceTest extends \PHPUnit_Framework_TestCase
         $this->change->prepare();
     }
 
-    public function testPopulateDefine()
+    public function testFunc()
     {
-        // Func
-        $name = 'phpmig_none';
-        $node = TestHelper::getNodeByCode('function '.$name.'($none) {}');
-        $this->change->populateDefine($node, 'func');
-        $this->assertFalse(IncompByReference::$declareTable->has($name));
+        $code = 'function sample($a) {} sample();';
+        $this->assertEmpty(TestHelper::runChange($this->change, $code));
 
-        $name = 'phpmig_first';
-        $node = TestHelper::getNodeByCode('function '.$name.'(&$o) {}');
-        $this->change->populateDefine($node, 'func');
-        $this->assertTrue(IncompByReference::$declareTable->has($name));
+        $code = 'function sample($a, $b, $c, $d) {} sample(1, 2, 3, 4);';
+        $this->assertEmpty(TestHelper::runChange($this->change, $code));
 
-        $name = 'phpmig_second';
-        $node = TestHelper::getNodeByCode('function '.$name.'($o, &$t) {}');
-        $this->change->populateDefine($node, 'func');
-        $this->assertTrue(IncompByReference::$declareTable->has($name));
+        $code = 'function sample($a, $b, &$c, $d) {} sample(1, 2, 3, 4);';
+        $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
 
-        // Emulate entering class
-        $classnode = TestHelper::getNodeByCode('class phpmig {}');
-        $visitor = new CheckVisitor();
-        $visitor->enterNode($classnode);
-        $this->change->setVisitor($visitor);
+        // Case Insensitive
+        $code = 'function sample($a, $b, &$c, $d) {} saMPLe(1, 2, 3, 4);';
+        $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
 
-        // Method
-        $code = <<<'EOC'
-class phpmig
-{
-    static function snone($o) {}
-    static function sfirst(&$o) {}
-    static function ssecond($o, &$t) {}
-    function none($o) {}
-    function first(&$o) {}
-    function second($o, &$t) {}
-}
-EOC;
-        $node = TestHelper::getNodeByCode($code);
-        foreach ($node->getMethods() as $mnode) {
-            $this->change->populateDefine($mnode, 'method');
+        // Built-in
+        $table = TestHelper::fetchProperty($this->change, 'builtinTable');
+        foreach ($table as $name => $dummy) {
+            $code = sprintf('%s($a, $b);', $name);
+            $this->assertEmpty(TestHelper::runChange($this->change, $code));
+
+            $code = sprintf('%s(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);', $name);
+            $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
         }
-        $this->assertFalse(IncompByReference::$declareTable->has('phpmig::snone'));
-        $this->assertTrue(IncompByReference::$declareTable->has('phpmig::sfirst'));
-        $this->assertTrue(IncompByReference::$declareTable->has('phpmig::ssecond'));
-        $this->assertFalse(IncompByReference::$declareTable->has('phpmig->none'));
-        $this->assertTrue(IncompByReference::$declareTable->has('phpmig->first'));
-        $this->assertTrue(IncompByReference::$declareTable->has('phpmig->second'));
-
-        $this->assertFalse(IncompByReference::$methodTable->has('->none'));
-        $this->assertTrue(IncompByReference::$methodTable->has('->first'));
-        $this->assertTrue(IncompByReference::$methodTable->has('->second'));
     }
 
-    public function testPopulateCall()
+    public function testMehtod()
     {
-        // TODO
+        $code = 'class Sample {static function sample($a) {}} Sample::sample();';
+        $this->assertEmpty(TestHelper::runChange($this->change, $code));
+
+        $code = 'class Sample {static function sample($a, $b, $c, $d) {}} Sample::sample(1, 2, 3, 4);';
+        $this->assertEmpty(TestHelper::runChange($this->change, $code));
+
+        $code = 'class Sample {static function sample($a, $b, &$c, $d) {}} Sample::sample(1, 2, 3, 4);';
+        $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
+
+        $code = 'class Sample {static function sample($a, $b, &$c, $d) {}} sAMPLE::saMPLe(1, 2, 3, 4);';
+        $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
     }
 }
