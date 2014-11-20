@@ -18,7 +18,9 @@ class IncompByReference extends AbstractChange
 
     public function prepare()
     {
-        $this->visitor->callChange('v5dot3\Deprecated', 'skipCallTimePassByRef', true);
+        if ($this->visitor) {
+            $this->visitor->callChange('v5dot3\Deprecated', 'skipCallTimePassByRef', true);
+        }
     }
 
     public function leaveNode($node)

@@ -55,7 +55,9 @@ class Deprecated extends AbstractChange
             $this->tableLoaded = true;
         }
 
-        $this->visitor->callChange('v5dot3\Deprecated', 'skipMysqlFunc', true);
+        if ($this->visitor) {
+            $this->visitor->callChange('v5dot3\Deprecated', 'skipMysqlFunc', true);
+        }
     }
 
     public function leaveNode($node)
