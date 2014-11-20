@@ -1,5 +1,5 @@
 <?php
-namespace PhpMigration\Changes\v5dot3;
+namespace PhpMigration\Changes\v5dot6;
 
 /**
  * @author Yuchen Wang <phobosw@gmail.com>
@@ -9,13 +9,13 @@ namespace PhpMigration\Changes\v5dot3;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-use PhpMigration\Changes\AbstractIntroducedTest;
+use PhpMigration\Changes\AbstractRemovedTest;
 
-class IntroducedTest extends AbstractIntroducedTest
+class RemovedTest extends AbstractRemovedTest
 {
     protected function setUp()
     {
-        $this->change = new Introduced();
+        $this->change = new Removed();
         $this->change->prepare();  // Change must be prepared before test
     }
 }

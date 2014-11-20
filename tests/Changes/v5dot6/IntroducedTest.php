@@ -16,6 +16,6 @@ class IntroducedTest extends AbstractIntroducedTest
     protected function setUp()
     {
         $this->change = new Introduced();
-        $this->change->prepare();
+        $this->change->prepare();  // Change must be prepared before test
     }
 }
