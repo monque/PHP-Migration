@@ -28,7 +28,7 @@ class TestHelper
         return self::$parser;
     }
 
-    public static function parseCode($code, $addtag = true)
+    public static function getStmtByCode($code, $addtag = true)
     {
         if ($addtag) {
             $code = '<?php '.$code;
@@ -38,10 +38,10 @@ class TestHelper
 
     public static function getNodeByCode($code, $addtag = true)
     {
-        return current(self::parseCode($code, $addtag));
+        return current(self::getStmtByCode($code, $addtag));
     }
 
-    public static function getProperty($object, $name)
+    public static function fetchProperty($object, $name)
     {
         $reflection = new \ReflectionClass($object);
         $property = $reflection->getProperty($name);
@@ -58,7 +58,7 @@ class TestHelper
         $traverser->addVisitor($visitor);
 
         $visitor->prepare();
-        $traverser->traverse(self::parseCode($code));
+        $traverser->traverse(self::getStmtByCode($code));
         $visitor->finish();
 
         return $visitor->getSpots();

@@ -11,7 +11,7 @@ namespace PhpMigration\Changes;
 
 use PhpMigration\TestHelper;
 
-class AbstractIntroducedTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractIntroducedTest extends \PHPUnit_Framework_TestCase
 {
     protected $change;
 
@@ -21,7 +21,7 @@ class AbstractIntroducedTest extends \PHPUnit_Framework_TestCase
         $code = 'function not_new() {}';
         $this->assertEmpty(TestHelper::runChange($this->change, $code));
 
-        $table = TestHelper::getProperty($this->change, 'funcTable');
+        $table = TestHelper::fetchProperty($this->change, 'funcTable');
         if (is_null($table)) {
             return;
         }
@@ -44,13 +44,37 @@ class AbstractIntroducedTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
     }
 
+    protected function genMethod($class, $method)
+    {
+        return sprintf('class Sample extends %s { public function %s() {} }', $class, $method);
+    }
+
+    public function testNewMethod()
+    {
+        $table = TestHelper::fetchProperty($this->change, 'methodTable');
+        if (is_null($table)) {
+            return;
+        }
+        foreach ($table as $name => $dummy) {
+            list($class, $method) = explode('::', $name);
+
+            // Normal name
+            $code = $this->genMethod($class, $method);
+            $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
+
+            // Case Insensitive name
+            $code = $this->genMethod(strtoupper($class), strtoupper($method));
+            $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
+        }
+    }
+
     public function testNewClass()
     {
         // Not-new
         $code = 'class not_new {}';
         $this->assertEmpty(TestHelper::runChange($this->change, $code));
 
-        $table = TestHelper::getProperty($this->change, 'classTable');
+        $table = TestHelper::fetchProperty($this->change, 'classTable');
         if (is_null($table)) {
             return;
         }
@@ -64,13 +88,10 @@ class AbstractIntroducedTest extends \PHPUnit_Framework_TestCase
             $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
 
             // Conditional name
-            $code = sprintf("if (!class_exists('%s')) { class %s {} }", $name, $name);
-            $this->assertEmpty(TestHelper::runChange($this->change, $code));
+            // Removed, because of autoload it's too rare to see
+            // $code = sprintf("if (!class_exists('%s')) { class %s {} }", $name, $name);
+            // $this->assertEmpty(TestHelper::runChange($this->change, $code));
         }
-
-        // Error-conditional name
-        $code = sprintf("if (!class_exists('nothing')) { class %s {} }", $name);
-        $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
     }
 
     protected function genDefine($name)
@@ -84,7 +105,7 @@ class AbstractIntroducedTest extends \PHPUnit_Framework_TestCase
         $code = $this->genDefine('NOTNEW');
         $this->assertEmpty(TestHelper::runChange($this->change, $code));
 
-        $table = TestHelper::getProperty($this->change, 'constTable');
+        $table = TestHelper::fetchProperty($this->change, 'constTable');
         foreach ($table as $name => $dummy) {
             // Normal name
             $code = $this->genDefine($name);
