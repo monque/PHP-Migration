@@ -13,9 +13,4 @@ use PhpMigration\Changes\AbstractIntroducedTest;
 
 class IntroducedTest extends AbstractIntroducedTest
 {
-    protected function setUp()
-    {
-        $this->change = new Introduced();
-        $this->change->prepare();  // Change must be prepared before test
-    }
 }
