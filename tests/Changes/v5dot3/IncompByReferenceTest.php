@@ -9,57 +9,51 @@ namespace PhpMigration\Changes\v5dot3;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-use PhpMigration\CheckVisitor;
-use PhpMigration\TestHelper;
+use PhpMigration\Changes\AbstractChangeTest;
 
-class IncompByReferenceTest extends \PHPUnit_Framework_TestCase
+class IncompByReferenceTest extends AbstractChangeTest
 {
-    protected $change;
-
-    protected function setUp()
-    {
-        $this->change = new IncompByReference();
-        $this->change->prepare();
-    }
-
     public function testFunc()
     {
-        $code = 'function sample($a) {} sample();';
-        $this->assertEmpty(TestHelper::runChange($this->change, $code));
+        $this->assertNotSpot('function sample() {} sample();');
 
-        $code = 'function sample($a, $b, $c, $d) {} sample(1, 2, 3, 4);';
-        $this->assertEmpty(TestHelper::runChange($this->change, $code));
+        $this->assertNotSpot('function sample() {} sample(1);');
 
-        $code = 'function sample($a, $b, &$c, $d) {} sample(1, 2, 3, 4);';
-        $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
+        $this->assertNotSpot('function sample($a, $b) {} sample(1, 2);');
+
+        $this->assertNotSpot('function sample($a, &$b) {} sample(1, $a);');
+
+        $this->assertHasSpot('function sample($a, &$b) {} sample(1, 2);');
+
+        $this->assertHasSpot('function sample($a, &$b) {} sample(1, "h");');
+
+        $this->assertHasSpot('function sample($a, &$b) {} sample(1, array(1));');
+
+        $this->assertHasSpot('function sample($a, &$b) {} sample(1, true);');
 
         // Case Insensitive
-        $code = 'function sample($a, $b, &$c, $d) {} saMPLe(1, 2, 3, 4);';
-        $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
+        $this->assertHasSpot('function SAMple($a, &$b) {} samPLE(1, "h");');
 
         // Built-in
-        $table = TestHelper::fetchProperty($this->change, 'builtinTable');
-        foreach ($table as $name => $dummy) {
-            $code = sprintf('%s($a, $b);', $name);
-            $this->assertEmpty(TestHelper::runChange($this->change, $code));
+        $this->assertNotSpot('array_shift($a);');
+        $this->assertNotSpot('ksort($a);');
 
-            $code = sprintf('%s(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);', $name);
-            $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
-        }
+        $this->assertHasSpot('array_shift(1);');
+        $this->assertHasSpot('ksort(1);');
     }
 
     public function testMehtod()
     {
         $code = 'class Sample {static function sample($a) {}} Sample::sample();';
-        $this->assertEmpty(TestHelper::runChange($this->change, $code));
+        $this->assertNotSpot($code);
 
-        $code = 'class Sample {static function sample($a, $b, $c, $d) {}} Sample::sample(1, 2, 3, 4);';
-        $this->assertEmpty(TestHelper::runChange($this->change, $code));
+        $code = 'class Sample {static function sample($a, $b) {}} Sample::sample(1, 2);';
+        $this->assertNotSpot($code);
 
-        $code = 'class Sample {static function sample($a, $b, &$c, $d) {}} Sample::sample(1, 2, 3, 4);';
-        $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
+        $code = 'class Sample {static function sample($a, &$b) {}} Sample::sample(1, 2);';
+        $this->assertHasSpot($code);
 
-        $code = 'class Sample {static function sample($a, $b, &$c, $d) {}} sAMPLE::saMPLe(1, 2, 3, 4);';
-        $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
+        $code = 'class Sample {static function sample($a, &$b) {}} sAMPLE::saMPLe(1, 2);';
+        $this->assertHasSpot($code);
     }
 }

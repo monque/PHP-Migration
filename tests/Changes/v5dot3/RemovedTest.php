@@ -13,9 +13,4 @@ use PhpMigration\Changes\AbstractRemovedTest;
 
 class RemovedTest extends AbstractRemovedTest
 {
-    protected function setUp()
-    {
-        $this->change = new Removed();
-        $this->change->prepare();  // Change must be prepared before test
-    }
 }

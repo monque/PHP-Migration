@@ -1,5 +1,5 @@
 <?php
-namespace PhpMigration;
+namespace PhpMigration\Utils;
 
 /**
  * @author Yuchen Wang <phobosw@gmail.com>

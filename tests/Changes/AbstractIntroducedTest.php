@@ -9,17 +9,16 @@ namespace PhpMigration\Changes;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-use PhpMigration\TestHelper;
+use PhpMigration\Changes\AbstractChangeTest;
+use PhpMigration\Utils\TestHelper;
 
-abstract class AbstractIntroducedTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractIntroducedTest extends AbstractChangeTest
 {
-    protected $change;
-
     public function testNewFunc()
     {
         // Not-new
         $code = 'function not_new() {}';
-        $this->assertEmpty(TestHelper::runChange($this->change, $code));
+        $this->assertNotSpot($code);
 
         $table = TestHelper::fetchProperty($this->change, 'funcTable');
         if (is_null($table)) {
@@ -28,20 +27,20 @@ abstract class AbstractIntroducedTest extends \PHPUnit_Framework_TestCase
         foreach ($table as $name => $dummy) {
             // Normal name
             $code = sprintf("function %s() {}", $name);
-            $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
+            $this->assertHasSpot($code);
 
             // Case Insensitive name
             $code = sprintf("function %s() {}", strtoupper($name));
-            $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
+            $this->assertHasSpot($code);
 
             // Conditional name
             $code = sprintf("if (!function_exists('%s')) { function %s() {} }", $name, $name);
-            $this->assertEmpty(TestHelper::runChange($this->change, $code));
+            $this->assertNotSpot($code);
         }
 
         // Error-conditional name
         $code = sprintf("if (!function_exists('nothing')) { function %s() {} }", $name);
-        $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
+        $this->assertHasSpot($code);
     }
 
     protected function genMethod($class, $method)
@@ -60,11 +59,11 @@ abstract class AbstractIntroducedTest extends \PHPUnit_Framework_TestCase
 
             // Normal name
             $code = $this->genMethod($class, $method);
-            $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
+            $this->assertHasSpot($code);
 
             // Case Insensitive name
             $code = $this->genMethod(strtoupper($class), strtoupper($method));
-            $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
+            $this->assertHasSpot($code);
         }
     }
 
@@ -72,7 +71,7 @@ abstract class AbstractIntroducedTest extends \PHPUnit_Framework_TestCase
     {
         // Not-new
         $code = 'class not_new {}';
-        $this->assertEmpty(TestHelper::runChange($this->change, $code));
+        $this->assertNotSpot($code);
 
         $table = TestHelper::fetchProperty($this->change, 'classTable');
         if (is_null($table)) {
@@ -81,16 +80,16 @@ abstract class AbstractIntroducedTest extends \PHPUnit_Framework_TestCase
         foreach ($table as $name => $dummy) {
             // Normal name
             $code = sprintf("class %s {}", $name);
-            $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
+            $this->assertHasSpot($code);
 
             // Case Insensitive name
             $code = sprintf("class %s {}", strtoupper($name));
-            $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
+            $this->assertHasSpot($code);
 
             // Conditional name
             // Removed, because of autoload it's too rare to see
             // $code = sprintf("if (!class_exists('%s')) { class %s {} }", $name, $name);
-            // $this->assertEmpty(TestHelper::runChange($this->change, $code));
+            // $this->assertNotSpot($code);
         }
     }
 
@@ -103,17 +102,17 @@ abstract class AbstractIntroducedTest extends \PHPUnit_Framework_TestCase
     {
         // Not-new
         $code = $this->genDefine('NOTNEW');
-        $this->assertEmpty(TestHelper::runChange($this->change, $code));
+        $this->assertNotSpot($code);
 
         $table = TestHelper::fetchProperty($this->change, 'constTable');
         foreach ($table as $name => $dummy) {
             // Normal name
             $code = $this->genDefine($name);
-            $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
+            $this->assertHasSpot($code);
 
             // Case Insensitive name
             $code = $this->genDefine(strtolower($name));
-            $this->assertEmpty(TestHelper::runChange($this->change, $code));
+            $this->assertNotSpot($code);
         }
     }
 }

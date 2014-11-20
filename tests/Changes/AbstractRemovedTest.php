@@ -9,17 +9,16 @@ namespace PhpMigration\Changes;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-use PhpMigration\TestHelper;
+use PhpMigration\Changes\AbstractChangeTest;
+use PhpMigration\Utils\TestHelper;
 
-abstract class AbstractRemovedTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractRemovedTest extends AbstractChangeTest
 {
-    protected $change;
-
     public function testFunc()
     {
         // Not-new
         $code = 'not_removed();';
-        $this->assertEmpty(TestHelper::runChange($this->change, $code));
+        $this->assertNotSpot($code);
 
         $table = TestHelper::fetchProperty($this->change, 'funcTable');
         if (is_null($table)) {
@@ -28,11 +27,11 @@ abstract class AbstractRemovedTest extends \PHPUnit_Framework_TestCase
         foreach ($table as $name => $dummy) {
             // Normal name
             $code = sprintf("%s();", $name);
-            $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
+            $this->assertHasSpot($code);
 
             // Case Insensitive name
             $code = sprintf("%s();", strtoupper($name));
-            $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
+            $this->assertHasSpot($code);
         }
     }
 
@@ -40,7 +39,7 @@ abstract class AbstractRemovedTest extends \PHPUnit_Framework_TestCase
     {
         // Not-new
         $code = 'NOT_REMOVED;';
-        $this->assertEmpty(TestHelper::runChange($this->change, $code));
+        $this->assertNotSpot($code);
 
         $table = TestHelper::fetchProperty($this->change, 'constTable');
         if (is_null($table)) {
@@ -49,11 +48,11 @@ abstract class AbstractRemovedTest extends \PHPUnit_Framework_TestCase
         foreach ($table as $name => $dummy) {
             // Normal name
             $code = $name.';';
-            $this->assertNotEmpty(TestHelper::runChange($this->change, $code));
+            $this->assertHasSpot($code);
 
             // Case Insensitive name
             $code = strtolower($name).';';
-            $this->assertEmpty(TestHelper::runChange($this->change, $code));
+            $this->assertNotSpot($code);
         }
     }
 }
