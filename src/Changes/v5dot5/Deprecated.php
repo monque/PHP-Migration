@@ -86,6 +86,9 @@ class Deprecated extends AbstractChange
             $affected = true;
             $certain = false;
 
+            if (!isset($node->args[0])) {
+                return;
+            }
             $pattern = $node->args[0]->value;
 
             // TODO: shoud be full tested

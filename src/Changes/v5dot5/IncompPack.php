@@ -44,8 +44,12 @@ class IncompPack extends AbstractChange
             $affected = true;
             $certain = false;
 
-            // Try to check arg $format
+            if (!isset($node->args[0])) {
+                return;
+            }
             $format = $node->args[0]->value;
+
+            // Try to check arg $format
             if ($format instanceof Scalar\String) {
                 // using stripos for both "a" and "A"
                 $certain = $affected = (stripos($format->value, 'a') !== false);
