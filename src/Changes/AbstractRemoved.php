@@ -50,13 +50,13 @@ abstract class AbstractRemoved extends AbstractChange
         }
     }
 
-    public function isRemovedFunc($node)
+    protected function isRemovedFunc($node)
     {
         return ($node instanceof Expr\FuncCall && isset($this->funcTable) &&
                 $this->funcTable->has($node->name));
     }
 
-    public function isRemovedConst($node)
+    protected function isRemovedConst($node)
     {
         return ($node instanceof Expr\ConstFetch && isset($this->constTable) &&
                 $this->constTable->has($node->name));

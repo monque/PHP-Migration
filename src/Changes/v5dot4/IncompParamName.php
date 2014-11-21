@@ -52,7 +52,7 @@ class IncompParamName extends AbstractChange
         }
     }
 
-    public function hasParamShadowGlobal($node)
+    protected function hasParamShadowGlobal($node)
     {
         foreach ($node->params as $param) {
             // auto-global

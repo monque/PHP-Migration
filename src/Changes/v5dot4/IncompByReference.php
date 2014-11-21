@@ -44,7 +44,7 @@ class IncompByReference extends AbstractChange
     /**
      * Duplicated with same method in Changes/v5dot3/Deprecated.php
      */
-    public function isCallTimePassByRef($node)
+    protected function isCallTimePassByRef($node)
     {
         if (!($node instanceof Expr\FuncCall || $node instanceof Expr\StaticCall ||
                 $node instanceof Expr\MethodCall)) {

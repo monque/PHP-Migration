@@ -47,7 +47,7 @@ class Deprecated extends AbstractChange
         }
     }
 
-    public function isDeprecatedFunc($node)
+    protected function isDeprecatedFunc($node)
     {
         return ($node instanceof Expr\FuncCall && $this->funcTable->has($node->name));
     }
