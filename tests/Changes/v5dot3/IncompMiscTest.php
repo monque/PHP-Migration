@@ -22,17 +22,26 @@ class IncompMiscTest extends AbstractChangeTest
 
         $this->assertHasSpot('realpath();');
 
-        $this->assertNotSpot('call_user_func_array();');
-
-        $this->assertNotSpot('call_user_func_array($a, array());');
-
-        $this->assertHasSpot('call_user_func_array($a, $b);');
-
         $this->assertHasSpot('gd_info();');
 
         $table = TestHelper::fetchProperty($this->change, 'arrFuncTable');
         foreach ($table as $name => $dummy) {
             $this->assertHasSpot($name.'();');
         }
+    }
+
+    public function testCallFunc()
+    {
+        $this->assertNotSpot('call_user_func_array();');
+
+        $this->assertNotSpot('call_user_func_array($a, array());');
+
+        $this->assertHasSpot('call_user_func_array($a, $b);');
+
+        $this->assertHasSpot('call_user_func_array($a, null);');
+
+        $this->assertHasSpot('call_user_func_array($a, "str");');
+
+        $this->assertHasSpot('call_user_func_array($a, 123);');
     }
 }

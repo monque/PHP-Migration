@@ -21,5 +21,7 @@ class IncompPackTest extends AbstractChangeTest
         $this->assertHasSpot('unpack("a");');
         $this->assertHasSpot('unpack("A");');
         $this->assertHasSpot('unpack($a);');
+        $this->assertHasSpot('unpack($a."");');
+        $this->assertHasSpot('unpack("$b");');
     }
 }

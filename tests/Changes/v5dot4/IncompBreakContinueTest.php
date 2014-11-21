@@ -18,6 +18,7 @@ class IncompBreakContinueTest extends AbstractChangeTest
         // Break
         $this->assertNotSpot('break;');
         $this->assertNotSpot('break 1;');
+        $this->assertNotSpot('break 100;');
 
         $this->assertHasSpot('break $a;');
         $this->assertHasSpot('break 0;');
@@ -26,6 +27,7 @@ class IncompBreakContinueTest extends AbstractChangeTest
         // Continue
         $this->assertNotSpot('continue;');
         $this->assertNotSpot('continue 1;');
+        $this->assertNotSpot('continue 100;');
 
         $this->assertHasSpot('continue $a;');
         $this->assertHasSpot('continue 0;');

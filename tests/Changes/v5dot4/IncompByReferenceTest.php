@@ -20,5 +20,7 @@ class IncompByReferenceTest extends AbstractChangeTest
         $this->assertNotSpot('func($a);');
 
         $this->assertHasSpot('func(&$a);');
+        $this->assertHasSpot('$obj->func(&$a);');
+        $this->assertHasSpot('Sample::func(&$a);');
     }
 }

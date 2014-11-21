@@ -22,6 +22,7 @@ class IncompMiscTest extends AbstractChangeTest
 
         // ob_start
         $this->assertNotSpot('ob_start();');
+        $this->assertNotSpot('ob_start(1, 2);');
         $this->assertHasSpot('ob_start(1, 2, 3);');
 
         // htmlentities, htmlspecialchars
