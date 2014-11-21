@@ -10,7 +10,6 @@ namespace PhpMigration\Changes;
  */
 
 use PhpMigration\SymbolTable;
-use PhpParser\Node;
 use PhpParser\Node\Expr;
 
 abstract class AbstractRemoved extends AbstractChange
@@ -57,7 +56,7 @@ abstract class AbstractRemoved extends AbstractChange
                 $this->funcTable->has($node->name));
     }
 
-    public function isRemovedConst(Node $node)
+    public function isRemovedConst($node)
     {
         return ($node instanceof Expr\ConstFetch && isset($this->constTable) &&
                 $this->constTable->has($node->name));

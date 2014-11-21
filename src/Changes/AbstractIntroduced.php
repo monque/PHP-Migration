@@ -11,7 +11,6 @@ namespace PhpMigration\Changes;
 
 use PhpMigration\SymbolTable;
 use PhpMigration\Utils\ParserHelper;
-use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Stmt;
 
@@ -109,7 +108,7 @@ abstract class AbstractIntroduced extends AbstractChange
         }
     }
 
-    public function isNewFunc(Node $node)
+    public function isNewFunc($node)
     {
         return ($node instanceof Stmt\Function_ &&
                 (isset($this->funcTable) && $this->funcTable->has($node->name)) &&
@@ -129,13 +128,13 @@ abstract class AbstractIntroduced extends AbstractChange
         return $this->methodTable->has($mname);
     }
 
-    public function isNewClass(Node $node)
+    public function isNewClass($node)
     {
         return (($node instanceof Stmt\Class_ || $node instanceof Stmt\Interface_ || $node instanceof Stmt\Trait_) &&
                 (isset($this->classTable) && $this->classTable->has($node->name)));
     }
 
-    public function isNewConst(Node $node)
+    public function isNewConst($node)
     {
         if (isset($this->constTable) && $node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'define')) {
             $constname = $node->args[0]->value->value;
@@ -145,7 +144,7 @@ abstract class AbstractIntroduced extends AbstractChange
         return false;
     }
 
-    public function isNewParam(Node $node)
+    public function isNewParam($node)
     {
         return ($node instanceof Expr\FuncCall && isset($this->paramTable) &&
                 $this->paramTable->has($node->name));

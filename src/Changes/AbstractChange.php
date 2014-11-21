@@ -9,8 +9,6 @@ namespace PhpMigration\Changes;
  * http://www.php-fig.org/psr/psr-2/
  */
 
-use PhpParser\Node;
-
 abstract class AbstractChange
 {
     /**
@@ -78,14 +76,14 @@ abstract class AbstractChange
     /**
      * Called when Traverser enter a node
      */
-    public function enterNode(Node $node)
+    public function enterNode($node)
     {
     }
 
     /**
      * Called when Traverser leave a node
      */
-    public function leaveNode(Node $node)
+    public function leaveNode($node)
     {
     }
 }
