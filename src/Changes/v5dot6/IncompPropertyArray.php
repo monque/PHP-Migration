@@ -79,6 +79,7 @@ class IncompPropertyArray extends AbstractChange
                         }
                     } elseif ($item->key instanceof Expr\ConstFetch) {
                         $has['const'] = true;
+                        $has['unfetched'] = true;
                         $keylist[] = 'C:'.$item->key->name->toString();
                     } elseif (is_null($item->key)) {
                         $has['null'] = true;
