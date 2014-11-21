@@ -29,7 +29,11 @@ class IncompMisc extends AbstractChange
              * {Reference}
              * http://php.net/manual/en/migration54.incompatible.php
              */
-            $this->addSpot('NOTICE', false, 'array_combine() now returns array() instead of FALSE when two empty arrays given');
+            $this->addSpot(
+                'NOTICE',
+                false,
+                'array_combine() now returns array() instead of FALSE when two empty arrays given'
+            );
 
         // ob_start()
         } elseif ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'ob_start') &&
@@ -49,7 +53,8 @@ class IncompMisc extends AbstractChange
             $this->addSpot('WARNING', true, 'The third parameter of ob_start() has changed');
 
         } elseif ($node instanceof Expr\FuncCall &&
-            (ParserHelper::isSameFunc($node->name, 'htmlentities') || ParserHelper::isSameFunc($node->name, 'htmlspecialchars'))) {
+                (ParserHelper::isSameFunc($node->name, 'htmlentities') ||
+                ParserHelper::isSameFunc($node->name, 'htmlspecialchars'))) {
             /**
              * {Description}
              * If you use htmlentities() with asian character sets, it works

@@ -72,7 +72,11 @@ class IncompMisc extends AbstractChange
                  * {Reference}
                  * http://php.net/manual/en/migration53.incompatible.php
                  */
-                $this->addSpot('NOTICE', false, sprintf('%s() no longer accept objects passed as arguments', $node->name));
+                $this->addSpot(
+                    'NOTICE',
+                    false,
+                    sprintf('%s() no longer accept objects passed as arguments', $node->name)
+                );
 
             } elseif (ParserHelper::isSameFunc($node->name, 'call_user_func_array')) {
                 /**
@@ -86,7 +90,11 @@ class IncompMisc extends AbstractChange
                  * http://php.net/manual/en/migration53.incompatible.php
                  */
                 if (isset($node->args[1]) && !($node->args[1]->value instanceof Expr\Array_)) {
-                    $this->addSpot('NOTICE', false, sprintf('%s() no longer accept non-array passed as arguments', $node->name));
+                    $this->addSpot(
+                        'NOTICE',
+                        false,
+                        sprintf('%s() no longer accept non-array passed as arguments', $node->name)
+                    );
                 }
 
             } elseif (ParserHelper::isSameFunc($node->name, 'gd_info')) {

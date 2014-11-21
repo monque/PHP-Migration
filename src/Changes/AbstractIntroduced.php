@@ -110,14 +110,17 @@ abstract class AbstractIntroduced extends AbstractChange
 
     protected function isNewFunc($node)
     {
-        return ($node instanceof Stmt\Function_ &&
-                (isset($this->funcTable) && $this->funcTable->has($node->name)) &&
-                (is_null($this->condFunc) || !ParserHelper::isSameFunc($node->name, $this->condFunc)));
+        if (!isset($this->funcTable)) {
+            return false;
+        }
+
+        return ($node instanceof Stmt\Function_ && $this->funcTable->has($node->name) &&
+            (is_null($this->condFunc) || !ParserHelper::isSameFunc($node->name, $this->condFunc)));
     }
 
     protected function isNewMethod($node, &$mname = null)
     {
-        if (!($node instanceof Stmt\ClassMethod) || !isset($this->methodTable)) {
+        if (!isset($this->methodTable) || !($node instanceof Stmt\ClassMethod)) {
             return false;
         }
         $name = $this->visitor->getClass()->extends;
@@ -130,13 +133,21 @@ abstract class AbstractIntroduced extends AbstractChange
 
     protected function isNewClass($node)
     {
+        if (!isset($this->classTable)) {
+            return false;
+        }
+
         return (($node instanceof Stmt\Class_ || $node instanceof Stmt\Interface_ || $node instanceof Stmt\Trait_) &&
-                (isset($this->classTable) && $this->classTable->has($node->name)));
+            $this->classTable->has($node->name));
     }
 
     protected function isNewConst($node)
     {
-        if (isset($this->constTable) && $node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'define')) {
+        if (!isset($this->constTable)) {
+            return false;
+        }
+
+        if ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'define')) {
             $constname = $node->args[0]->value->value;
             return $this->constTable->has($constname) &&
                     (is_null($this->condConst) || $constname != $this->condConst);

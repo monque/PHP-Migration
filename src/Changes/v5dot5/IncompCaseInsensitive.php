@@ -52,7 +52,11 @@ class IncompCaseInsensitive extends AbstractChange
                 && $node->class instanceof Node\Name) {
             $name = $node->class->toString();
             if ($this->keywords->has($name) && $this->keywords->get($name) != $name) {
-                $this->addSpot('NOTICE', true, $name.' will be case insensitive, treated identically to '.strtolower($name));
+                $this->addSpot(
+                    'NOTICE',
+                    true,
+                    $name.' will be case insensitive, treated identically to '.strtolower($name)
+                );
             }
         }
     }

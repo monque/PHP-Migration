@@ -18,8 +18,7 @@ class IncompParamNameTest extends AbstractChangeTest
     {
         // Function
         $table = TestHelper::fetchProperty($this->change, 'autoGlobals');
-        foreach ($table as $name => $dummy)
-        {
+        foreach ($table as $name => $dummy) {
             $this->assertHasSpot(sprintf('function f($%s) {}', $name));
             $this->assertHasSpot(sprintf('class Cl { function f($%s) {} }', $name));
 

@@ -93,7 +93,12 @@ class IncompPropertyArray extends AbstractChange
 
                 // Check condition
                 if ($has['const'] && ($has['null'] || $has['unfetched'] || $has['duplicated'])) {
-                    $this->addSpot('WARNING', false, 'Array key may be overwritten when defining as a property and using constants', $arr->getLine());
+                    $this->addSpot(
+                        'WARNING',
+                        false,
+                        'Array key may be overwritten when defining as a property and using constants',
+                        $arr->getLine()
+                    );
                 }
             }
         }

@@ -72,7 +72,11 @@ class Deprecated extends AbstractChange
              * {Reference}
              * http://php.net/manual/en/migration55.deprecated.php#migration55.deprecated.mysql
              */
-            $this->addSpot('DEPRECATED', true, 'The original MySQL extension is deprecated, use MySQLi or PDO_MySQL extensions instead');
+            $this->addSpot(
+                'DEPRECATED',
+                true,
+                'The original MySQL extension is deprecated, use MySQLi or PDO_MySQL extensions instead'
+            );
 
         } elseif ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'preg_replace')) {
             /**
@@ -110,7 +114,11 @@ class Deprecated extends AbstractChange
             }
 
             if ($affected) {
-                $this->addSpot('DEPRECATED', $certain, 'preg_replace() /e modifier is deprecated, use preg_replace_callback() instead');
+                $this->addSpot(
+                    'DEPRECATED',
+                    $certain,
+                    'preg_replace() /e modifier is deprecated, use preg_replace_callback() instead'
+                );
             }
 
         } elseif ($node instanceof Expr\FuncCall && $this->funcTable->has($node->name)) {
