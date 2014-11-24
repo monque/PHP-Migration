@@ -1,0 +1,6 @@
+{
+    "desc": "List contents of classes in a tree-like format",
+    "changes": [
+        "ClassTree"
+    ]
+}
