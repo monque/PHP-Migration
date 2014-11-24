@@ -53,7 +53,7 @@ if ($args['--list']) {
     ksort($setlist);
     foreach ($setlist as $setfile) {
         $info = json_decode(file_get_contents($setfile));
-        printf("%s: %s\n", strstr($setfile->getBasename(), '.', true), $info->desc);
+        printf("%-10s => %s\n", strstr($setfile->getBasename(), '.', true), $info->desc);
     }
     exit(0);
 } elseif ($args['--export-posbit']) {
