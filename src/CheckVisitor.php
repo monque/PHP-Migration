@@ -15,20 +15,44 @@ use PhpParser\Node\Stmt;
 
 class CheckVisitor extends NodeVisitorAbstract
 {
+    /**
+     * All Spots emitted by the Changes during check
+     */
     protected $spots;
 
+    /**
+     * Instances of the Change
+     */
     protected $changes;
 
+    /**
+     * Current fileinfo
+     */
     protected $file;
 
+    /**
+     * Current class, interface, trait
+     */
     protected $class;
 
+    /**
+     * Current method in class
+     */
     protected $method;
 
+    /**
+     * Current function
+     */
     protected $function;
 
+    /**
+     * Current node
+     */
     protected $node;
 
+    /**
+     * Empty spots, current state and save the Changes
+     */
     public function __construct($changes = array())
     {
         $this->spots = array();
@@ -37,7 +61,7 @@ class CheckVisitor extends NodeVisitorAbstract
     }
 
     /**
-     * Supply a method to allow a Change call another Change's method
+     * The interface that allow a Change call another Change's method
      */
     public function callChange($name, $method, $args)
     {
@@ -171,6 +195,9 @@ class CheckVisitor extends NodeVisitorAbstract
         }
     }
 
+    /**
+     * Add a new spot
+     */
     public function addSpot($cate, $certain, $message, $version = '', $line = null, $file = null)
     {
         if (is_null($line) && $this->node instanceof Node) {
@@ -197,6 +224,9 @@ class CheckVisitor extends NodeVisitorAbstract
         );
     }
 
+    /**
+     * Get all spots
+     */
     public function getSpots()
     {
         return $this->spots;
