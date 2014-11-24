@@ -91,9 +91,9 @@ if ($args['--list']) {
 // Routine: main
 if (true) {
     // Load set, change
+    $chglist = array();
     $loaded_sets = array();
     $setstack = array($args['--set']);
-    $chglist = array();
     while (!empty($setstack)) {
         $setname = array_shift($setstack);
 
@@ -121,15 +121,21 @@ if (true) {
         // Instantiate
         if (isset($info->changes)) {
             foreach (array_reverse($info->changes) as $chgname) {
-                $chgname = 'PhpMigration\Changes\\'.$chgname;
-                $chglist[] = new $chgname;
-                if ($args['--verbose']) {
-                    Logging::info('Load change {name}', array('name' => $chgname));
-                }
+                $chglist[] = $chgname;
             }
         }
     }
     $chglist = array_reverse($chglist);  // FIXME: use a better method making load order correct
+
+    // Instantiate change
+    foreach ($chglist as $key => $chgname) {
+        if ($args['--verbose']) {
+            Logging::info('Load change {name}', array('name' => $chgname));
+        }
+        $chgname = 'PhpMigration\Changes\\'.$chgname;
+        $chglist[$key] = new $chgname;
+    }
+
     $chgvisitor = new PhpMigration\CheckVisitor($chglist);
 
     // Instance parser
