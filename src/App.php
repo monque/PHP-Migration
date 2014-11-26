@@ -12,6 +12,7 @@ namespace PhpMigration;
 use PhpMigration\CheckVisitor;
 use PhpMigration\Utils\FunctionListExporter;
 use PhpMigration\Utils\Logging;
+use PhpMigration\Utils\Packager;
 use PhpParser;
 
 class App
@@ -38,6 +39,7 @@ PHP Migration - A static analyzer for PHP version migration
 Usage: phpmig [options] <file>...
        phpmig -l | --list
        phpmig --export-posbit <docfile>
+       phpmig --pack
 
 Options:
   -l, --list        List all migration sets
@@ -49,6 +51,7 @@ Options:
 
 Development:
   --export-posbit   Export built-in function posbit list
+  --pack            Generate an executable single-file phar
 EOT;
 
         $this->args = \Docopt::handle($usage);
@@ -62,6 +65,8 @@ EOT;
             $this->commandList();
         } elseif ($this->args['--export-posbit']) {
             $this->commandExportPosbit();
+        } elseif ($this->args['--pack']) {
+            $this->commandPack();
         } else {
             $this->commandMain();
         }
@@ -112,6 +117,17 @@ EOT;
 
             printf("%-40s => %4u, // %s\n", "'".$method['name']."'", $posbit, strrev(decbin($posbit)));
         }
+    }
+
+    protected function commandPack()
+    {
+        if (ini_get('phar.readonly')) {
+            printf("Phar is current read-only, you should run with \"php -d phar.readonly=0 bin/phpmig --pack\"\n");
+            exit(1);
+        }
+
+        $packager = new Packager;
+        $packager->pack();
     }
 
     protected function commandMain()
