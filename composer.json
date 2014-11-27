@@ -1,7 +1,7 @@
 {
     "name": "monque/php-migration",
-    "description": "A static analyzer for PHP version migration",
-    "keywords": ["migration", "analyzer", "compatibility"],
+    "description": "A static analyzer for PHP version migration and compatibility",
+    "keywords": ["migration", "analyzer", "compatibility", "version"],
     "homepage": "http://github.com/monque/PHP-Migration",
     "license": "MIT",
     "authors": [
