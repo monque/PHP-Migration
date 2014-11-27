@@ -15,33 +15,40 @@
 > 导致缺乏一定的灵活度，致使无法覆盖到某些检查
 > *此处无意贬低，只是客观对比*
 
+**注意：本项目依然处在早期开发阶段，请谨慎用于生产环境**
 
-## 使用
 
-假设下面代码保存在`sample.php`文件中，
-```
-<?php
-array_shift(array(1, 2));  // should pass a variable
+## 安装及使用
 
-parse_str($url, &$data);  // call-time pass-by-reference is forbidden
+1. 你可以通过下面命令直接下载一个已经封装好的[Phar](http://php.net/manual/zh/book.phar.php)文件
+    ```
+    wget http://mo47.com/archive/phpmig.phar
+    ```
 
-define('__DIR__', dirname(__FILE__));  // __DIR__ is pre-defined
-```
+2. 执行下面命令，将会对该文件进行检查，并输出报告
+    ```
+    php phpmig.phar sample.php
+    ```
 
-执行下面命令，将会对该文件进行检查，并输出报告
-```
-php phpmig.phar sample.php
-```
+    假设下面代码保存在`sample.php`文件中，
+    ``` php
+    <?php
+    array_shift(array(1, 2));  // should pass a variable
 
-报告输出内容如下
-```
-File: sample.php
---------------------------------------------------------------------------------
-    3 | FATAL      | * | 5.3.0 | Only variables can be passed by reference
-    5 | FATAL      | * | 5.4.0 | Call-time pass-by-reference has been removed
-    7 | WARNING    | * | 5.3.0 | Constant __DIR__ already defined
---------------------------------------------------------------------------------
-```
+    parse_str($url, &$data);  // call-time pass-by-reference is forbidden
+
+    define('__DIR__', dirname(__FILE__));  // __DIR__ is pre-defined
+    ```
+
+3. 报告输出内容如下
+    ```
+    File: sample.php
+    --------------------------------------------------------------------------------
+        3 | FATAL      | * | 5.3.0 | Only variables can be passed by reference
+        5 | FATAL      | * | 5.4.0 | Call-time pass-by-reference has been removed
+        7 | WARNING    | * | 5.3.0 | Constant __DIR__ already defined
+    --------------------------------------------------------------------------------
+    ```
 
 ### 其他用法：输出类的继承关系树
 
@@ -96,16 +103,7 @@ php phpmig.phar -s classtree .
 `-- PhpMigration\Utils\ParserHelper
 ```
 
-## 安装
-
-### 通过Phar（推荐）
-
-你可以通过下面命令直接下载一个已经封装好的[Phar](http://php.net/manual/zh/book.phar.php)文件，这样你就可以立刻像上面例子中一样使用了
-```
-wget http://mo47.com/archive/phpmig.phar
-```
-
-### 通过源代码
+### 通过源代码安装
 
 首先，将本项目clone到本地，并进入项目目录
 ```
