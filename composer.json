@@ -1,15 +1,17 @@
 {
     "name": "monque/php-migration",
     "description": "A static analyzer for PHP version migration",
-    "keywords": ["migration", "analyzer"],
-    "license": "TODO: Difference between licenses?",
+    "keywords": ["migration", "analyzer", "compatibility"],
+    "homepage": "http://github.com/monque/PHP-Migration",
+    "license": "MIT",
     "authors": [
         {
-            "name": "Yuchen Wang"
+            "name": "Yuchen Wang",
+            "email": "phobosw@gmail.com"
         }
     ],
     "require": {
-        "php": ">=5.3",
+        "php": ">=5.3.0",
         "nikic/php-parser": "~1.0.1",
         "docopt/docopt": "1.0.0-rc1",
         "psr/log": "~1.0"
