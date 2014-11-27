@@ -274,7 +274,8 @@ EOT;
 
         // Dump tree
         if ($this->args['--dump']) {
-            print_r($stmts);
+            $nodeDumper = new PhpParser\NodeDumper;
+            echo $nodeDumper->dump($stmts)."\n";
         }
     }
 }
