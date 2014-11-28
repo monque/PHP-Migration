@@ -10,11 +10,32 @@ namespace PhpMigration\Changes\v5dot4;
  */
 
 use PhpMigration\Changes\AbstractChange;
+use PhpMigration\SymbolTable;
 use PhpParser\Node\Expr;
 
 class IncompRegister extends AbstractChange
 {
     protected static $version = '5.4.0';
+
+    protected $tableLoaded = false;
+
+    protected $longArray = array(
+        'HTTP_POST_VARS',
+        'HTTP_GET_VARS',
+        'HTTP_ENV_VARS',
+        'HTTP_SERVER_VARS',
+        'HTTP_COOKIE_VARS',
+        'HTTP_SESSION_VARS',
+        'HTTP_POST_FILES',
+    );
+
+    public function prepare()
+    {
+        if (!$this->tableLoaded) {
+            $this->longArray = new SymbolTable(array_flip($this->longArray), SymbolTable::CS);
+            $this->tableLoaded = true;
+        }
+    }
 
     public function leaveNode($node)
     {
@@ -26,8 +47,7 @@ class IncompRegister extends AbstractChange
          * {Reference}
          * http://php.net/manual/en/migration54.incompatible.php
          */
-        if ($node instanceof Expr\Variable && is_string($node->name) &&
-                preg_match('/^HTTP_[a-zA-Z_]+?_VARS$/', $node->name)) {
+        if ($node instanceof Expr\Variable && is_string($node->name) && $this->longArray->has($node->name)) {
             $this->addSpot(
                 'WARNING',
                 true,
