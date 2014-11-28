@@ -108,7 +108,7 @@ php phpmig.phar -s classtree .
 
 1. 将本项目clone到本地，并进入项目目录
     ```
-    git clone git@github.com:monque/PHP-Migration.git php-migration
+    git clone https://github.com/monque/PHP-Migration.git php-migration
     cd php-migration
     ```
 

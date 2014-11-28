@@ -112,7 +112,7 @@ Output:
 
 1. Clone this project to your local path
     ```
-    git clone git@github.com:monque/PHP-Migration.git php-migration
+    git clone https://github.com/monque/PHP-Migration.git php-migration
     cd php-migration
     ```
 
