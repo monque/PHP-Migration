@@ -5,10 +5,10 @@
 主要功能是检查当前代码在新版本PHP下的兼容性并提供相关的建议及处理方法。
 
 它有以下特性：
-- 覆盖面广，可以检查PHP 5.3, 5.4, 5.5, 5.6中有兼容性影响的绝大部分改动
+- 覆盖面广，可以检查PHP 5.3, 5.4, 5.5, 5.6中绝大部分改动
 - 零配置，下载后即可使用
 - 可以快速开发适用于个人项目的检查
-- 使用PHP-Parser进行语法解析
+- 使用[PHP-Parser](https://github.com/nikic/PHP-Parser)进行语法解析
 
 > 相比于类似项目[PHP Compatibility](https://github.com/wimg/PHPCompatibility)
 > 因为`PHP Compatibility`是作为代码标准，并基于`PHP_CodeSniff`开发的
@@ -20,7 +20,7 @@
 
 ## 安装及使用
 
-1. 你可以通过下面命令直接下载一个已经封装好的[Phar](http://php.net/manual/zh/book.phar.php)文件
+1. 你可以通过下面命令下载一个封装好的可执行的[Phar](http://php.net/manual/zh/book.phar.php)文件
     ```
     wget http://mo47.com/archive/phpmig.phar
     ```
@@ -41,6 +41,7 @@
     ```
 
 3. 报告输出内容如下
+    表中各列含义如下：行号，问题级别，是否确认，起始版本，详细信息
     ```
     File: sample.php
     --------------------------------------------------------------------------------
@@ -105,22 +106,23 @@ php phpmig.phar -s classtree .
 
 ### 通过源代码安装
 
-首先，将本项目clone到本地，并进入项目目录
+1. 将本项目clone到本地，并进入项目目录
 ```
 git clone git@github.com:monque/PHP-Migration.git php-migration
 cd php-migration
 ```
 
-执行下面命令来安装 [Composer](https://getcomposer.org/download/)，并通过Composer安装项目所需的依赖
+2. 执行下面命令来安装 [Composer](https://getcomposer.org/download/)，并通过Composer安装项目所需的依赖
 ```
 curl -sS https://getcomposer.org/installer | php
 php composer.phar install
 ```
 
-完成后，你可以通过执行下面命令来运行本程序
+3. 可以通过执行下面命令来运行本程序
 ```
 php bin/phpmig
 ```
+
 
 ## 许可
 
