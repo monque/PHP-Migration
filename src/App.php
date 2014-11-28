@@ -17,6 +17,8 @@ use PhpParser;
 
 class App
 {
+    const VERSION = '0.1.1';
+
     protected $setpath;
 
     protected $args;
@@ -53,6 +55,7 @@ Options:
   -d, --dump            Dump abstract syntax tree
   -v, --verbose
   -h, --help            Show this screen
+      --version         Show version
 EOT;
 
         $usage_dev = <<<EOT
@@ -74,6 +77,12 @@ EOT;
         }
     }
 
+    protected function showVersion()
+    {
+        $text = 'PHP Migration '.self::VERSION;
+        echo $text."\n";
+    }
+
     protected function handleArgs()
     {
         // Default
@@ -83,6 +92,7 @@ EOT;
             '--set'             => 'to56',
             '--dump'            => false,
             '--verbose'         => false,
+            '--version'         => false,
             '--help'            => false,
             '<file>'            => array(),
 
@@ -132,6 +142,10 @@ EOT;
                     $args['--verbose'] = true;
                     break;
 
+                case '--version':
+                    $args['--version'] = true;
+                    break;
+
                 case '-h':
                 case '--help':
                     $args['--help'] = true;
@@ -174,6 +188,9 @@ EOT;
 
         if ($this->args['--help']) {
             $this->showUsage('help');
+
+        } elseif ($this->args['--version']) {
+            $this->showVersion();
 
         } elseif ($this->args['--list']) {
             $this->commandList();
