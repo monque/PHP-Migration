@@ -31,44 +31,150 @@ class App
         $this->setpath = __DIR__.'/../src/Sets';
     }
 
-    protected function handleArgs()
+    protected function showUsage($type = 'usage', $halt = true)
     {
         $usage = <<<EOT
-PHP Migration - A static analyzer for PHP version migration
-
 Usage: phpmig [options] <file>...
        phpmig -l | --list
-       phpmig --export-posbit <docfile>
-       phpmig --pack
+EOT;
+        $usage_full = <<<EOT
+PHP Migration - A static analyzer for PHP version migration
+
+$usage
 
 Options:
-  -l, --list        List all migration sets
-  -q, --quite       Only output certain spot, ignore all uncertain
-  -s, --set=NAME    The name of migration set to use [default: to56]
-  -d, --dump        Dump abstract syntax tree
+  -l, --list            List all migration sets
+  -q, --quite           Only output certain spot, ignore all uncertain
+  -s, --set=NAME        The name of migration set to use [default: to56]
+  -d, --dump            Dump abstract syntax tree
   -v, --verbose
-  -h, --help        Show this screen
+  -h, --help            Show this screen
 
 Development:
-  --export-posbit   Export built-in function posbit list
-  --pack            Generate an executable single-file phar
+  --export-posbit <doc> Export built-in function posbit list
+  --pack                Generate an executable phar file
 EOT;
+        if ($type == 'usage') {
+            echo $usage."\n";
+        } else {
+            echo $usage_full."\n";
+        }
 
-        $this->args = \Docopt::handle($usage);
+        if ($halt) {
+            exit(0);
+        }
+    }
+
+    protected function handleArgs()
+    {
+        // Default
+        $args = array(
+            '--list'            => false,
+            '--quite'           => false,
+            '--set'             => 'to56',
+            '--dump'            => false,
+            '--verbose'         => false,
+            '--help'            => false,
+            '<file>'            => array(),
+
+            '--export-posbit'   => false,
+            '--pack'            => false,
+        );
+
+        // Fill args
+        $argv = array_slice($_SERVER['argv'], 1);
+        $has_invalid = false;
+        while ($argv) {
+            $arg = array_shift($argv);
+            if ($arg[0] === chr(1)) {
+                $arg = substr($arg, 1);
+                $is_split = true;
+            } else {
+                $is_split = false;
+            }
+
+            switch ($arg) {
+                case '-l':
+                case '--list':
+                    $args['--list'] = true;
+                    break;
+
+                case '-q':
+                case '--quite':
+                    $args['--quite'] = true;
+                    break;
+
+                case '-s':
+                case '--set':
+                    $next = array_shift($argv);
+                    if ($is_split) {
+                        $next = substr($next, 1);
+                    }
+                    $args['--set'] = $next;
+                    break;
+
+                case '-d':
+                case '--dump':
+                    $args['--dump'] = true;
+                    break;
+
+                case '-v':
+                case '--verbose':
+                    $args['--verbose'] = true;
+                    break;
+
+                case '-h':
+                case '--help':
+                    $args['--help'] = true;
+                    break;
+
+                case '--export-posbit':
+                    $args['--export-posbit'] = true;
+                    break;
+
+                case '--pack':
+                    $args['--pack'] = true;
+                    break;
+
+                default:
+                    if ($arg[0] == '-') {
+                        $arglen = strlen($arg);
+                        if ($arglen > 2 && $arg[1] != '-') {
+                            array_unshift($argv, '-'.substr($arg, 2));
+                            array_unshift($argv, chr(1).substr($arg, 0, 2));
+                        } else {
+                            $has_invalid = true;
+                        }
+                    } else {
+                        $args['<file>'][] = $arg;
+                    }
+                    break;
+            }
+        }
+
+        $this->args = $args;
+
+        return !$has_invalid;
     }
 
     public function run()
     {
-        $this->handleArgs();
+        if (!$this->handleArgs()) {
+            $this->showUsage();
+        }
 
-        if ($this->args['--list']) {
+        if ($this->args['--help']) {
+            $this->showUsage('help');
+        } elseif ($this->args['--list']) {
             $this->commandList();
         } elseif ($this->args['--export-posbit']) {
             $this->commandExportPosbit();
         } elseif ($this->args['--pack']) {
             $this->commandPack();
-        } else {
+        } elseif ($this->args['<file>']) {
             $this->commandMain();
+        } else {
+            $this->showUsage();
         }
     }
 
@@ -89,7 +195,7 @@ EOT;
 
     protected function commandExportPosbit()
     {
-        $docfile = $this->args['<docfile>'];
+        $docfile = current($this->args['<file>']);
         if (!file_exists($docfile)) {
             Logging::error("Unable load docfile {name}", array('name' => $docfile));
             exit(1);
