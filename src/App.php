@@ -228,7 +228,7 @@ EOT;
     protected function commandPack()
     {
         if (ini_get('phar.readonly')) {
-            printf("Phar is current read-only, you should run with \"php -d phar.readonly=0 bin/phpmig --pack\"\n");
+            printf("Phar is current in read-only mode, you should run with \"php -d phar.readonly=0 bin/phpmig --pack\"\n");
             exit(1);
         }
 

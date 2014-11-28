@@ -14,14 +14,16 @@ class Packager
     const NAME = 'phpmig.phar';
 
     protected $filelist = array(
+        'LICENSE',
         'README.md',
+        'README_ZH.md',
         'bin/phpmig',
         'composer.json',
+        'composer.lock',
         'doc/Migrating from PHP 5.2.x to PHP 5.3.x.md',
         'doc/Migrating from PHP 5.3.x to PHP 5.4.x.md',
         'doc/Migrating from PHP 5.4.x to PHP 5.5.x.md',
         'doc/Migrating from PHP 5.5.x to PHP 5.6.x.md',
-        'phpunit.xml',
         'src/App.php',
         'src/Changes/AbstractChange.php',
         'src/Changes/AbstractIntroduced.php',
@@ -70,45 +72,9 @@ class Packager
         'src/SymbolTable.php',
         'src/Utils/FunctionListExporter.php',
         'src/Utils/Logging.php',
+        'src/Utils/Packager.php',
         'src/Utils/ParserHelper.php',
-        'tests/Changes/AbstractChangeTest.php',
-        'tests/Changes/AbstractIntroducedTest.php',
-        'tests/Changes/AbstractRemovedTest.php',
-        'tests/Changes/v5dot3/DeprecatedTest.php',
-        'tests/Changes/v5dot3/IncompByReferenceTest.php',
-        'tests/Changes/v5dot3/IncompCallFromGlobalTest.php',
-        'tests/Changes/v5dot3/IncompMagicInvokedTest.php',
-        'tests/Changes/v5dot3/IncompMagicTest.php',
-        'tests/Changes/v5dot3/IncompMiscTest.php',
-        'tests/Changes/v5dot3/IntroducedTest.php',
-        'tests/Changes/v5dot3/RemovedTest.php',
-        'tests/Changes/v5dot4/DeprecatedTest.php',
-        'tests/Changes/v5dot4/IncompBreakContinueTest.php',
-        'tests/Changes/v5dot4/IncompByReferenceTest.php',
-        'tests/Changes/v5dot4/IncompMiscTest.php',
-        'tests/Changes/v5dot4/IncompParamNameTest.php',
-        'tests/Changes/v5dot4/IncompRegisterTest.php',
-        'tests/Changes/v5dot4/IntroducedTest.php',
-        'tests/Changes/v5dot4/RemovedTest.php',
-        'tests/Changes/v5dot5/DeprecatedTest.php',
-        'tests/Changes/v5dot5/IncompCaseInsensitiveTest.php',
-        'tests/Changes/v5dot5/IncompPackTest.php',
-        'tests/Changes/v5dot5/IntroducedTest.php',
-        'tests/Changes/v5dot5/RemovedTest.php',
-        'tests/Changes/v5dot6/DeprecatedTest.php',
-        'tests/Changes/v5dot6/IncompMiscTest.php',
-        'tests/Changes/v5dot6/IncompPropertyArrayTest.php',
-        'tests/Changes/v5dot6/IntroducedTest.php',
-        'tests/Changes/v5dot6/RemovedTest.php',
-        'tests/SymbolTableTest.php',
-        'tests/Utils/TestHelper.php',
-        'tests/bootstrap.php',
     );
-
-    public function __construct()
-    {
-        chdir(__DIR__.'/../../');
-    }
 
     public function pack()
     {
@@ -145,13 +111,14 @@ EOC;
         }
 
         // Vendor
+        chdir(__DIR__.'/../../');
         $iterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator('vendor'),
             0,
             \RecursiveIteratorIterator::CATCH_GET_CHILD
         );
         foreach ($iterator as $file) {
-            if (!preg_match('/\/(\.|test\/)/', $file)) {
+            if (!preg_match('/\/(\.|test\/)/i', $file)) {
                 $phar->addFile($file);
             }
         }
