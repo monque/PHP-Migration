@@ -1,5 +1,7 @@
 # PHP Migration
 
+> Readme in [Chinese 中文](https://github.com/monque/PHP-Migration/tree/master/README_ZH.md)
+
 This is a static analyzer for PHP version migration and compatibility checking.
 
 It can suppose your current code running under the new version of PHP then do
@@ -61,6 +63,7 @@ output all classes in a tree-like format.
 php phpmig.phar -s classtree .
 ```
 
+Output:
 ```
 |-- PhpMigration\App
 |-- PhpMigration\Changes\AbstractChange
@@ -108,27 +111,22 @@ php phpmig.phar -s classtree .
 ### Manual Installation from Source
 
 1. Clone this project to your local path
-```
-git clone git@github.com:monque/PHP-Migration.git php-migration
-cd php-migration
-```
+    ```
+    git clone git@github.com:monque/PHP-Migration.git php-migration
+    cd php-migration
+    ```
 
 2. Using [Composer](https://getcomposer.org/download/) to install dependencies
-```
-curl -sS https://getcomposer.org/installer | php
-php composer.phar install
-```
+    ```
+    curl -sS https://getcomposer.org/installer | php
+    php composer.phar install
+    ```
 
 3. Verify it works
-```
-php bin/phpmig
-```
+    ```
+    php bin/phpmig
+    ```
 
 
 ## License
 This project is released under the [MIT license](http://opensource.org/licenses/MIT).
-
-
-## Other Language
-
-[Chinese 中文](https://github.com/monque/PHP-Migration/tree/master/README_ZH.md)

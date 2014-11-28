@@ -107,21 +107,21 @@ php phpmig.phar -s classtree .
 ### 通过源代码安装
 
 1. 将本项目clone到本地，并进入项目目录
-```
-git clone git@github.com:monque/PHP-Migration.git php-migration
-cd php-migration
-```
+    ```
+    git clone git@github.com:monque/PHP-Migration.git php-migration
+    cd php-migration
+    ```
 
 2. 执行下面命令来安装 [Composer](https://getcomposer.org/download/)，并通过Composer安装项目所需的依赖
-```
-curl -sS https://getcomposer.org/installer | php
-php composer.phar install
-```
+    ```
+    curl -sS https://getcomposer.org/installer | php
+    php composer.phar install
+    ```
 
 3. 可以通过执行下面命令来运行本程序
-```
-php bin/phpmig
-```
+    ```
+    php bin/phpmig
+    ```
 
 
 ## 许可
