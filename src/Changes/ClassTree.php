@@ -17,6 +17,11 @@ class ClassTree extends AbstractChange
 {
     protected $classTable;
 
+    public function prepare()
+    {
+        $this->classTable = array();
+    }
+
     public function leaveNode($node)
     {
         if ($node instanceof Stmt\Class_) {
@@ -52,7 +57,11 @@ class ClassTree extends AbstractChange
         }
 
         // Output
-        $this->outputTree($this->classTable);
+        if ($this->classTable) {
+            $this->outputTree($this->classTable);
+        } else {
+            echo "No class found\n";
+        }
     }
 
     protected function outputTree($data, $depth = 0, $last_status = array())
