@@ -376,16 +376,21 @@ EOT;
 
         // Display
         foreach ($chgvisitor->getSpots() as $spotlist) {
-            // Skip uncertain
-            if ($this->args['--quite']) {
-                foreach ($spotlist as $key => $spot) {
-                    if (!$spot['certain']) {
-                        unset($spotlist[$key]);
-                    }
+            // Init nums
+            $nums = array('total' => 0, 'certain' => 0);
+
+            $nums['total'] = count($spotlist);
+            foreach ($spotlist as $key => $spot) {
+                if ($spot['certain']) {
+                    $nums['certain']++;
+                } elseif ($this->args['--quite']) {
+                    // Remove uncertain
+                    unset($spotlist[$key]);
                 }
-                if (!$spotlist) {
-                    continue;
-                }
+            }
+
+            if (!$spotlist) {
+                continue;
             }
 
             usort($spotlist, function ($a, $b) {
@@ -395,6 +400,8 @@ EOT;
             $spot = current($spotlist);
             echo "\n";
             echo "File: ".$spot['file']."\n";
+            echo "--------------------------------------------------------------------------------\n";
+            echo "Found ".$nums['total']." spot(s), ".$nums['certain']." identified\n";
             echo "--------------------------------------------------------------------------------\n";
             foreach ($spotlist as $spot) {
                 printf(
