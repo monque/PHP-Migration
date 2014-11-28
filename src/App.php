@@ -21,6 +21,8 @@ class App
 
     protected $args;
 
+    protected $devmode;
+
     public function __construct()
     {
         // Set xdebug max nesting level
@@ -29,18 +31,20 @@ class App
         ini_set('memory_limit', '4096m');
 
         $this->setpath = __DIR__.'/../src/Sets';
+
+        $this->devmode = !defined('PHPMIG_PHAR');
     }
 
     protected function showUsage($type = 'usage', $halt = true)
     {
-        $usage = <<<EOT
+        $usage_simple = <<<EOT
 Usage: phpmig [options] <file>...
        phpmig -l | --list
 EOT;
         $usage_full = <<<EOT
 PHP Migration - A static analyzer for PHP version migration
 
-$usage
+$usage_simple
 
 Options:
   -l, --list            List all migration sets
@@ -49,13 +53,18 @@ Options:
   -d, --dump            Dump abstract syntax tree
   -v, --verbose
   -h, --help            Show this screen
+EOT;
+
+        $usage_dev = <<<EOT
 
 Development:
   --export-posbit <doc> Export built-in function posbit list
   --pack                Generate an executable phar file
 EOT;
         if ($type == 'usage') {
-            echo $usage."\n";
+            echo $usage_simple."\n";
+        } elseif ($this->devmode) {
+            echo $usage_full."\n".$usage_dev."\n";
         } else {
             echo $usage_full."\n";
         }
@@ -165,14 +174,19 @@ EOT;
 
         if ($this->args['--help']) {
             $this->showUsage('help');
+
         } elseif ($this->args['--list']) {
             $this->commandList();
-        } elseif ($this->args['--export-posbit']) {
+
+        } elseif ($this->devmode && $this->args['--export-posbit']) {
             $this->commandExportPosbit();
-        } elseif ($this->args['--pack']) {
+
+        } elseif ($this->devmode && $this->args['--pack']) {
             $this->commandPack();
+
         } elseif ($this->args['<file>']) {
             $this->commandMain();
+
         } else {
             $this->showUsage();
         }

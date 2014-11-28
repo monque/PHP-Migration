@@ -97,6 +97,7 @@ class Packager
 
 Phar::mapPhar('phpmig.phar');
 
+define('PHPMIG_PHAR', true);
 require 'phar://phpmig.phar/vendor/autoload.php';
 $app = new PhpMigration\App();
 $app->run();
