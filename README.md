@@ -2,6 +2,8 @@
 
 > Readme in [Chinese 中文](https://github.com/monque/PHP-Migration/tree/master/README_ZH.md)
 
+[![Build Status](https://travis-ci.org/monque/PHP-Migration.svg)](https://travis-ci.org/monque/PHP-Migration)
+
 This is a static analyzer for PHP version migration and compatibility checking.
 
 It can suppose your current code running under the new version of PHP then do

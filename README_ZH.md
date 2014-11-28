@@ -1,5 +1,7 @@
 # PHP Migration
 
+[![Build Status](https://travis-ci.org/monque/PHP-Migration.svg)](https://travis-ci.org/monque/PHP-Migration)
+
 这是一个用于PHP版本迁移和兼容性检查的静态分析器。
 
 主要功能是检查当前代码在新版本PHP下的兼容性并提供相关的建议及处理方法。
