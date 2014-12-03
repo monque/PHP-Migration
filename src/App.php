@@ -17,7 +17,7 @@ use PhpParser;
 
 class App
 {
-    const VERSION = '0.1.1';
+    const VERSION = '0.1.2-dev';
 
     protected $setpath;
 
@@ -375,6 +375,7 @@ EOT;
         $chgvisitor->finish();
 
         // Display
+        $has_output = false;
         foreach ($chgvisitor->getSpots() as $spotlist) {
             // Skip uncertain
             if ($this->args['--quite']) {
@@ -387,6 +388,7 @@ EOT;
                     continue;
                 }
             }
+            $has_output = true;
 
             usort($spotlist, function ($a, $b) {
                 return $a['line'] - $b['line'];
@@ -407,6 +409,11 @@ EOT;
                 );
             }
             echo "--------------------------------------------------------------------------------\n";
+        }
+
+        // No spot found
+        if (!$has_output) {
+            echo "No spot found\n";
         }
 
         // Dump tree
