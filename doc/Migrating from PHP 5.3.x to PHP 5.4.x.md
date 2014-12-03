@@ -98,7 +98,7 @@ but the result of the cast will still be the string "Array".
 
 This prohibits code like `function foo($_GET, $_POST) {}`.
 
-#### {~~Ignore~~} The Salsa10 and Salsa20 [hash algorithms](http://php.net/manual/en/book.hash.php) have been removed
+#### {**Done**} The Salsa10 and Salsa20 [hash algorithms](http://php.net/manual/en/book.hash.php) have been removed
 
 #### {**Done**} [array_combine()](http://php.net/manual/en/function.array-combine.php) now returns array() instead of `FALSE` when two empty arrays are provided as parameters
 
