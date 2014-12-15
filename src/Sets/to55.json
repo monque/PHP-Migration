@@ -2,13 +2,6 @@
     "desc": "Migrating from ANY version to PHP 5.5.x",
     "link": "http://php.net/manual/en/migration55.php",
     "depend": [
-        "to54"
-    ],
-    "changes": [
-        "v5dot5\\IncompCaseInsensitive",
-        "v5dot5\\IncompPack",
-        "v5dot5\\Removed",
-        "v5dot5\\Deprecated",
-        "v5dot5\\Introduced"
+        "to54", "v55"
     ]
 }
