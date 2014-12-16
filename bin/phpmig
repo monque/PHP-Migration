@@ -9,7 +9,15 @@
  * http://www.php-fig.org/psr/psr-2/
  */
 
+if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+    echo '[ERROR] phpmig should run by PHP >= 5.3.0, not '.PHP_VERSION."\n";
+    exit(1);
+}
+
 require __DIR__.'/../vendor/autoload.php';
 
-$app = new PhpMigration\App();
+// Make it pass syntax parsing when PHP doesn't support namespace
+class_alias('PhpMigration\App', 'PhpMigration_App');
+
+$app = new PhpMigration_App();
 $app->run();
