@@ -35,11 +35,32 @@
     假设下面代码保存在`sample.php`文件中，
     ``` php
     <?php
-    array_shift(array(1, 2));  // should pass a variable
+    // Fatal error: Only variables can be passed by reference
+    array_shift(array(1, 2));
+    sort(array(1, 2, 3));
 
-    parse_str($url, &$data);  // call-time pass-by-reference is forbidden
+    // __DIR__ is pre-defined
+    define('__DIR__', dirname(__FILE__));
 
-    define('__DIR__', dirname(__FILE__));  // __DIR__ is pre-defined
+    // Fatal error: Cannot redeclare class_alias()
+    function class_alias() {}
+    if (!function_exists('class_alias')) {
+        function class_alias() {}
+    }
+
+    // Fatal error: Call-time pass-by-reference has been removed
+    array_map('trim', &$_SERVER);
+
+    // Fatal error: 'break' operator with non-constant operand is no longer supported
+    while (true) {
+        break $a;
+    }
+
+    // Fatal error: Cannot re-assign auto-global variable _GET
+    function ohno($_GET) {}
+
+    // Fatal error:  Call to undefined function php_logo_guid()
+    php_logo_guid();
     ```
 
 3. 报告输出内容如下
@@ -47,9 +68,16 @@
     ```
     File: sample.php
     --------------------------------------------------------------------------------
+    Found 8 spot(s), 8 identified
+    --------------------------------------------------------------------------------
         3 | FATAL      | * | 5.3.0 | Only variables can be passed by reference
-        5 | FATAL      | * | 5.4.0 | Call-time pass-by-reference has been removed
+        4 | FATAL      | * | 5.3.0 | Only variables can be passed by reference
         7 | WARNING    | * | 5.3.0 | Constant __DIR__ already defined
+       10 | FATAL      | * | 5.3.0 | Cannot redeclare class_alias()
+       16 | FATAL      | * | 5.4.0 | Call-time pass-by-reference has been removed
+       20 | FATAL      | * | 5.4.0 | break operator with non-constant operand is no longer supported
+       24 | FATAL      | * | 5.4.0 | Cannot re-assign auto-global variable
+       27 | FATAL      | * | 5.5.0 | Function php_logo_guid() is removed
     --------------------------------------------------------------------------------
     ```
 
