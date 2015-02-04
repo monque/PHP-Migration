@@ -2,18 +2,20 @@
 
 [![Build Status](https://travis-ci.org/monque/PHP-Migration.svg)](https://travis-ci.org/monque/PHP-Migration)
 
-这是一个用于PHP版本迁移和兼容性检查的静态分析器。
+这是一个用于PHP版本迁移和兼容性检查的代码静态分析器。
 
 主要功能是检查当前代码在新版本PHP下的兼容性并提供相关的建议及处理方法。
 
+它能够简化升级PHP版本时的步骤，做到精确检查避免遗漏，最终的目标是代替人工检查代码。
+
 它有以下特性：
-- 覆盖面广，可以检查PHP 5.3, 5.4, 5.5, 5.6中绝大部分改动
-- 零配置，下载后即可使用
+- 检查全面，覆盖PHP 5.3至5.6中绝大部分改动
+- 严谨不遗漏，并做到尽可能精准
+- 零配置，下载即用
 - 可以快速开发适用于个人项目的检查
-- 使用[PHP-Parser](https://github.com/nikic/PHP-Parser)进行语法解析
 
 > 相比于类似项目[PHP Compatibility](https://github.com/wimg/PHPCompatibility)
-> 因为`PHP Compatibility`是作为代码标准，并基于`PHP_CodeSniff`开发的
+> 因为`PHP Compatibility`是作为代码规范，并基于`PHP_CodeSniff`开发的
 > 导致缺乏一定的灵活度，致使无法覆盖到某些检查
 > *此处无意贬低，只是客观对比*
 
@@ -81,15 +83,36 @@
     --------------------------------------------------------------------------------
     ```
 
+### 选择检查组
+
+一个检查组由多个检查点组成，并且检查组可以指定对其他检查组的依赖。
+
+通过`php phpmig.phar -l`列出全部检查组。
+
+```
+classtree  => List contents of classes in a tree-like format
+to53       => Migrating from ANY version to PHP 5.3.x
+to54       => Migrating from ANY version to PHP 5.4.x
+to55       => Migrating from ANY version to PHP 5.5.x
+to56       => Migrating from ANY version to PHP 5.6.x
+v53        => Migrating from PHP 5.2.x to PHP 5.3.x
+v54        => Migrating from PHP 5.3.x to PHP 5.4.x
+v55        => Migrating from PHP 5.4.x to PHP 5.5.x
+v56        => Migrating from PHP 5.5.x to PHP 5.6.x
+```
+
+并通过`php phpmig.phar -s <setname>`选择要使用的检查组。
+
+> **关于检查组设置的说明**
+> 举例说明，`to56`是指从任意版本升级至5.6时所用的检查。
+> 它依赖`v56`和`to55`，其中`v56`**仅包含**了PHP 5.6引入的改动的检查点，`to55`则依赖`v55`和`to54`，以此类推。
+> 通过这种递归依赖的机制，即可实现任意版本到某固定版本的检查。
+
+
 ### 其他用法：输出类的继承关系树
 
-类似于常见的`tree`命令，下面命令会扫描项目中的类继承关系，并输出一个树状的图
+类似于常见的`tree`命令，通过`php phpmig.phar -s classtree .`会扫描项目中的类继承关系，并输出一个树状的图
 
-```
-php phpmig.phar -s classtree .
-```
-
-输出
 ```
 |-- PhpMigration\App
 |-- PhpMigration\Changes\AbstractChange
@@ -152,6 +175,43 @@ php phpmig.phar -s classtree .
     ```
     php bin/phpmig
     ```
+
+
+## 原理、处理流程
+
+### 处理流程
+
+![flow](http://p9.qhimg.com/t010392c0d7e3e01882.png)
+
+### 输出中第三列`是否确认`的含义说明
+
+坦诚的讲，有些存在隐患的改动是永远无法精确检查的。
+比如PHP 5.5中unpack的`'a'`表示的格式发生变化（[官方描述](http://php.net/manual/en/migration55.incompatible.php#migration55.incompatible.pack)），并产生了不向下兼容的影响。
+
+以下面代码为例：
+``` php
+<?php
+unpack($obj->getFormat(), $data); // OMG, What is $obj? How getFormat() works?
+unpack('b3', $data); // Works in new version
+unpack('a3', $data); // Affected
+```
+
+通过对参数值的猜测，能够区分出三种不同级别，并进行不同处理
+| 级别 | 标记确定 | 报错 |
+| ---- | ---- | ---- |
+| 确定产生影响 | 是 | 是 |
+| 确定不会影响 | 否 | 否 |
+| 可能产生影响 | 否 | 是 |
+
+最终输出如下：
+```
+--------------------------------------------------------------------------------
+Found 2 spot(s), 1 identified
+--------------------------------------------------------------------------------
+   2 | WARNING    |   | 5.5.0 | Behavior of pack() with "a", "A" in format is changed
+   4 | WARNING    | * | 5.5.0 | Behavior of pack() with "a", "A" in format is changed
+--------------------------------------------------------------------------------
+```
 
 
 ## 许可
