@@ -9,12 +9,14 @@ This is a static analyzer for PHP version migration and compatibility checking.
 It can suppose your current code running under the new version of PHP then do
 checking, and provide advice and treatment.
 
+And it can simplify the process of upgrading PHP. Its goal is instead of manual
+checking.
+
 Features:
-- Wide coverage, checks most of the changes which introduced in PHP 5.3, 5.4,
-  5.4, 5.6.
+- Wide coverage, checks most of the changes which introduced in PHP 5.3 - 5.6.
+- Strict, without missing any risk.
 - Zero configuration, run directly after download.
 - Simply add custom checks.
-- Using [PHP-Parser](https://github.com/nikic/PHP-Parser) to parse.
 
 > Compare to the similar project [PHP Compatibility](https://github.com/wimg/PHPCompatibility)
 > `PHP Compatibility` is a set of sniffs for `PHP_CodeSniffer`, therefore it
@@ -72,6 +74,8 @@ Features:
     ```
     File: sample.php
     --------------------------------------------------------------------------------
+    Found 8 spot(s), 8 identified
+    --------------------------------------------------------------------------------
         3 | FATAL      | * | 5.3.0 | Only variables can be passed by reference
         4 | FATAL      | * | 5.3.0 | Only variables can be passed by reference
         7 | WARNING    | * | 5.3.0 | Constant __DIR__ already defined
@@ -82,6 +86,30 @@ Features:
        27 | FATAL      | * | 5.5.0 | Function php_logo_guid() is removed
     --------------------------------------------------------------------------------
     ```
+    > The third field `Identified` will be explained at bottom.
+
+
+### Set Selection
+
+A Checking Set contains muiltiple Check Class, and the dependence of Set can be
+specified.
+
+List all sets through command `php phpmig.phar -l`.
+
+```
+classtree  => List contents of classes in a tree-like format
+to53       => Migrating from ANY version to PHP 5.3.x
+to54       => Migrating from ANY version to PHP 5.4.x
+to55       => Migrating from ANY version to PHP 5.5.x
+to56       => Migrating from ANY version to PHP 5.6.x
+v53        => Migrating from PHP 5.2.x to PHP 5.3.x
+v54        => Migrating from PHP 5.3.x to PHP 5.4.x
+v55        => Migrating from PHP 5.4.x to PHP 5.5.x
+v56        => Migrating from PHP 5.5.x to PHP 5.6.x
+```
+
+And add param `-s` like `php phpmig.phar -s <setname>` to select a set to use.
+
 
 ### Utility, print class tree
 
@@ -154,6 +182,46 @@ Output:
     ```
     php bin/phpmig
     ```
+
+
+## Explaination
+
+### Process Flow
+
+![flow](http://p9.qhimg.com/t010392c0d7e3e01882.png)
+
+### About the third field `Identified` in outputing
+
+To be honest, not all code will be checked accurately as you expect.
+
+Some changes will never be checked accurately, also it's has nothing to do with
+someone's ability or technology.
+
+Code below:
+``` php
+<?php
+unpack($obj->getFormat(), $data); // OMG, What is $obj? How getFormat() works?
+unpack('b3', $data); // Works in new version
+unpack('a3', $data); // Affected
+```
+
+But we can guess the value of variables, and make a level table:
+
+| Lvel | Identified | Output |
+| ---- | ---- | ---- |
+| MUST affect | Yes | Yes |
+| MUST NOT affect | No | No |
+| MAY  affect | No | Yes |
+
+So, the final output:
+```
+--------------------------------------------------------------------------------
+Found 2 spot(s), 1 identified
+--------------------------------------------------------------------------------
+   2 | WARNING    |   | 5.5.0 | Behavior of pack() with "a", "A" in format is changed
+   4 | WARNING    | * | 5.5.0 | Behavior of pack() with "a", "A" in format is changed
+--------------------------------------------------------------------------------
+```
 
 
 ## License
