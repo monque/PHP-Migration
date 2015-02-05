@@ -194,11 +194,12 @@ Output:
 
 To be honest, not all code will be checked accurately as you expect.
 
-Some changes will never be checked accurately, also it's has nothing to do with
+Some changes will never be checked accurately, and it's has nothing to do with
 someone's ability or technology.
 
-For example, `unpack()` changes in PHP 5.5, it now keeps trailing NULL bytes
-when the "a" format code is used. [detail](http://php.net/manual/en/migration55.incompatible.php#migration55.incompatible.pack)
+For example, [`unpack()` changes in PHP
+5.5](http://php.net/manual/en/migration55.incompatible.php#migration55.incompatible.pack),
+it now keeps trailing NULL bytes when the "a" format code is used.
 
 Code below:
 ``` php
@@ -210,13 +211,13 @@ unpack('a3', $data); // Affected
 
 But we can guess the value of variables, and make a level table:
 
-| Lvel | Identified | Output |
+| Level | Identified | Output |
 | ---- | ---- | ---- |
 | MUST affect | Yes | Yes |
-| MUST NOT affect | No | No |
+| MUST NOT affect | Yes | No |
 | MAY  affect | No | Yes |
 
-So, the final output:
+So, finally output
 ```
 --------------------------------------------------------------------------------
 Found 2 spot(s), 1 identified
