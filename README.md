@@ -197,6 +197,9 @@ To be honest, not all code will be checked accurately as you expect.
 Some changes will never be checked accurately, also it's has nothing to do with
 someone's ability or technology.
 
+For example, `unpack()` changes in PHP 5.5, it now keeps trailing NULL bytes
+when the "a" format code is used. [detail](http://php.net/manual/en/migration55.incompatible.php#migration55.incompatible.pack)
+
 Code below:
 ``` php
 <?php
