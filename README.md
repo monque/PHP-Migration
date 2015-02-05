@@ -28,7 +28,7 @@ Features:
 
 1. You can download a executable [Phar](http://php.net/manual/en/book.phar.php) file
     ```
-    wget http://mo47.com/archive/phpmig.phar
+    wget http://wangyuchen.org/misc/phpmig.phar
     ```
 
 2. Use the following command to check PHP file
