@@ -68,7 +68,7 @@ Features:
     ```
 
 3. Output report
-    Each columns means: Line Number, Level, Is certain, Version, Message
+    Each columns means: Line Number, Level, Identified, Version, Message
     ```
     File: sample.php
     --------------------------------------------------------------------------------

@@ -198,7 +198,7 @@ class CheckVisitor extends NodeVisitorAbstract
     /**
      * Add a new spot
      */
-    public function addSpot($cate, $certain, $message, $version = '', $line = null, $file = null)
+    public function addSpot($cate, $identified, $message, $version = '', $line = null, $file = null)
     {
         if (is_null($line) && $this->node instanceof Node) {
             $line = $this->node->getLine();
@@ -216,7 +216,7 @@ class CheckVisitor extends NodeVisitorAbstract
         // Add by file
         $this->spots[$filename][] = array(
             'cate' => $cate,
-            'certain' => $certain,
+            'identified' => $identified,
             'message' => $message,
             'version' => $version,
             'line' => $line,

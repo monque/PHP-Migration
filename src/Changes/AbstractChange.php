@@ -32,11 +32,11 @@ abstract class AbstractChange
     /**
      * Quick method to add spot to visitor
      */
-    public function addSpot($cate, $certain, $message, $line = null, $file = null)
+    public function addSpot($cate, $identified, $message, $line = null, $file = null)
     {
         $this->visitor->addSpot(
             $cate,
-            $certain,
+            $identified,
             $message,
             static::$version,
             $line,

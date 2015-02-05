@@ -49,9 +49,9 @@ PHP Migration - A static analyzer for PHP version migration
 $usage_simple
 
 Options:
-  -l, --list            List all migration sets
-  -q, --quite           Only output certain spot, ignore all uncertain
-  -s, --set=NAME        The name of migration set to use [default: to56]
+  -l, --list            List all check sets
+  -q, --quite           Only output identified spots, ignore all uncertain
+  -s, --set=NAME        The name of check set to use [default: to56]
   -d, --dump            Dump abstract syntax tree
   -v, --verbose
   -h, --help            Show this screen
@@ -378,12 +378,12 @@ EOT;
         $has_output = false;
         foreach ($chgvisitor->getSpots() as $spotlist) {
             // Init nums
-            $nums = array('total' => 0, 'certain' => 0);
+            $nums = array('total' => 0, 'identified' => 0);
 
             $nums['total'] = count($spotlist);
             foreach ($spotlist as $key => $spot) {
-                if ($spot['certain']) {
-                    $nums['certain']++;
+                if ($spot['identified']) {
+                    $nums['identified']++;
                 } elseif ($this->args['--quite']) {
                     // Remove uncertain
                     unset($spotlist[$key]);
@@ -403,14 +403,14 @@ EOT;
             echo "\n";
             echo "File: ".$spot['file']."\n";
             echo "--------------------------------------------------------------------------------\n";
-            echo "Found ".$nums['total']." spot(s), ".$nums['certain']." identified\n";
+            echo "Found ".$nums['total']." spot(s), ".$nums['identified']." identified\n";
             echo "--------------------------------------------------------------------------------\n";
             foreach ($spotlist as $spot) {
                 printf(
                     "%5d | %-10s | %1s | %s | %s\n",
                     $spot['line'],
                     $spot['cate'],
-                    $spot['certain'] ? '*' : ' ',
+                    $spot['identified'] ? '*' : ' ',
                     $spot['version'],
                     $spot['message']
                 );
