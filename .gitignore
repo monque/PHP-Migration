@@ -3,5 +3,6 @@ composer.lock
 composer.phar
 php_manual_en.html
 php_manual_en.html.gz
+phpmig.phar
 src/Changes/Dev.php
 src/Sets/dev.json
