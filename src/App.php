@@ -30,7 +30,7 @@ class App
         // Set xdebug max nesting level
         ini_set('xdebug.max_nesting_level', 2000);
 
-        ini_set('memory_limit', '4096m');
+        ini_set('memory_limit', '4M');
 
         $this->setpath = __DIR__.'/../src/Sets';
 
