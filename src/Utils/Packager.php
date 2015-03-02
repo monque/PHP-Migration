@@ -42,6 +42,7 @@ class Packager
         'src/Changes/v5dot4/Deprecated.php',
         'src/Changes/v5dot4/IncompBreakContinue.php',
         'src/Changes/v5dot4/IncompByReference.php',
+        'src/Changes/v5dot4/IncompHashAlgo.php',
         'src/Changes/v5dot4/IncompMisc.php',
         'src/Changes/v5dot4/IncompParamName.php',
         'src/Changes/v5dot4/IncompRegister.php',
