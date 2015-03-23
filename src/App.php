@@ -39,7 +39,6 @@ class App
     {
         $usage_simple = <<<EOT
 Usage: phpmig [options] <file>...
-       phpmig -l | --list
 EOT;
         $usage_full = <<<EOT
 PHP Migration - A static analyzer for PHP version migration
@@ -200,7 +199,7 @@ EOT;
             $this->commandPack();
 
         } elseif ($this->args['<file>']) {
-            $this->commandMain();
+            $this->commandCheck();
 
         } else {
             $this->showUsage();
@@ -265,7 +264,7 @@ EOT;
         $packager->pack();
     }
 
-    protected function commandMain()
+    protected function commandCheck()
     {
         // Load set, change
         $chglist = array();
