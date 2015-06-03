@@ -43,7 +43,7 @@ abstract class AbstractKeywordReserved extends AbstractChange
          * http://php.net/manual/en/reserved.keywords.php
          */
         $name = null;
-        if ($node instanceof Stmt\Class_ || $node instanceof Stmt\Interface_ ||
+        if ($node instanceof Stmt\ClassLike ||
                 $node instanceof Stmt\Function_ || $node instanceof Stmt\ClassMethod ||
                 $node instanceof Expr\MethodCall || $node instanceof Expr\StaticCall) {
             $name = $node->name;

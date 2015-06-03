@@ -141,7 +141,7 @@ class CheckVisitor extends NodeVisitorAbstract
         $this->node = $node;
 
         // Record current
-        if ($node instanceof Stmt\Class_ || $node instanceof Stmt\Interface_ || $node instanceof Stmt\Trait_) {
+        if ($node instanceof Stmt\ClassLike) {
             /**
              * Class, Interface, Trait are stored in one same HashTable (zend_executor_globals.class_table).
              * Their name will be conflict if duplicated (eg, class Demo {} and Interface Demo {})
@@ -170,7 +170,7 @@ class CheckVisitor extends NodeVisitorAbstract
         }
 
         // Clear current
-        if ($node instanceof Stmt\Class_ || $node instanceof Stmt\Interface_ || $node instanceof Stmt\Trait_) {
+        if ($node instanceof Stmt\ClassLike) {
             $this->class = null;
         } elseif ($node instanceof Stmt\ClassMethod) {
             $this->method = null;

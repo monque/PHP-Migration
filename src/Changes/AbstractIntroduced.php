@@ -137,8 +137,7 @@ abstract class AbstractIntroduced extends AbstractChange
             return false;
         }
 
-        return (($node instanceof Stmt\Class_ || $node instanceof Stmt\Interface_ || $node instanceof Stmt\Trait_) &&
-            $this->classTable->has($node->name));
+        return (($node instanceof Stmt\ClassLike) && $this->classTable->has($node->name));
     }
 
     protected function isNewConst($node)
