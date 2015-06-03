@@ -55,7 +55,7 @@ class IncompHashAlgo extends AbstractChange
             }
             $param = $node->args[0]->value;
 
-            if ($param instanceof Scalar\String) {
+            if ($param instanceof Scalar\String_) {
                 $certain = $affected = (strcasecmp($param->value, 'salsa10') === 0 ||
                     strcasecmp($param->value, 'salsa20') === 0);
             }

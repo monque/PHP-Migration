@@ -50,7 +50,7 @@ class IncompPack extends AbstractChange
             $format = $node->args[0]->value;
 
             // Try to check arg $format
-            if ($format instanceof Scalar\String) {
+            if ($format instanceof Scalar\String_) {
                 // using stripos for both "a" and "A"
                 $certain = $affected = (stripos($format->value, 'a') !== false);
             }
