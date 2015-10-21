@@ -17,7 +17,7 @@ use PhpParser;
 
 class App
 {
-    const VERSION = '0.1.2-dev';
+    const VERSION = '0.1.2';
 
     protected $setpath;
 
