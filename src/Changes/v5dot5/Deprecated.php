@@ -104,7 +104,7 @@ class Deprecated extends AbstractChange
                 $pattern = end($pattern->parts);
             }
             // Extract to string
-            if ($pattern instanceof Scalar\String_) {
+            if ($pattern instanceof Scalar\String_ || $pattern instanceof Scalar\EncapsedStringPart) {
                 $pattern = $pattern->value;
             }
             // Guess whether e in modifier

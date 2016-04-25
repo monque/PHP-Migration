@@ -10,10 +10,9 @@ namespace PhpMigration\Utils;
  */
 
 use PhpMigration\CheckVisitor;
-use PhpParser\Lexer;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
-use PhpParser\Parser;
+use PhpParser\ParserFactory;
 
 class TestHelper
 {
@@ -22,7 +21,7 @@ class TestHelper
     public static function getParser()
     {
         if (!isset(self::$parser)) {
-            self::$parser = new Parser(new Lexer\Emulative);
+            self::$parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP5);
         }
 
         return self::$parser;

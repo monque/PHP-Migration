@@ -13,11 +13,15 @@ use PhpMigration\CheckVisitor;
 use PhpMigration\Utils\FunctionListExporter;
 use PhpMigration\Utils\Logging;
 use PhpMigration\Utils\Packager;
-use PhpParser;
+use PhpParser\Error as PhpParserError;
+use PhpParser\NodeDumper;
+use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor\NameResolver;
+use PhpParser\ParserFactory;
 
 class App
 {
-    const VERSION = '0.1.2';
+    const VERSION = '0.1.3';
 
     protected $setpath;
 
@@ -316,9 +320,9 @@ EOT;
         $chgvisitor = new CheckVisitor($chglist);
 
         // Instance parser
-        $parser = new PhpParser\Parser(new PhpParser\Lexer\Emulative);
-        $traverser = new PhpParser\NodeTraverser;
-        $traverser->addVisitor(new PhpParser\NodeVisitor\NameResolver);
+        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP5);
+        $traverser = new NodeTraverser;
+        $traverser->addVisitor(new NameResolver);
         $traverser->addVisitor($chgvisitor);
 
         // Prepare filelist
@@ -356,7 +360,7 @@ EOT;
 
             try {
                 $stmts = $parser->parse($code);
-            } catch (PhpParser\Error $e) {
+            } catch (PhpParserError $e) {
                 $chgvisitor->addSpot('PARSE', true, $e->getMessage(), 'NONE', $e->getRawLine());
                 if ($this->args['--verbose']) {
                     Logging::warning('Parse error {file}, error message "{exception}"', array(
@@ -423,7 +427,7 @@ EOT;
 
         // Dump tree
         if ($this->args['--dump']) {
-            $nodeDumper = new PhpParser\NodeDumper;
+            $nodeDumper = new NodeDumper;
             echo $nodeDumper->dump($stmts)."\n";
         }
     }
