@@ -1,5 +1,5 @@
 Changes are collected from
-- [PHP Manual > Migrating from PHP 5.4.x to PHP 5.5.x](http://php.net/manual/en/migration55.php)
+- [PHP Manual > Migrating from PHP 5.5.x to PHP 5.6.x](http://php.net/manual/en/migration56.php)
 
 **NOT ALL** changes will be checked, because some can not be check by a program.
 
@@ -7,7 +7,7 @@ Lists below describes which will be check and not.
 
 
 ## Overview
-- [x] [Backward incompatible changes](http://php.net/manual/en/migration56.incompatible.php)
+- [x] [Backward Incompatible Changes](http://php.net/manual/en/migration56.incompatible.php)
 - [~~Ignore~~] [New features](http://php.net/manual/en/migration56.new-features.php)
 - [x] [Deprecated features](http://php.net/manual/en/migration56.deprecated.php)
 - [~~Ignore~~] [Changed functions](http://php.net/manual/en/migration56.changed-functions.php)
