@@ -91,7 +91,7 @@ EOT;
         $args = array(
             '--list'            => false,
             '--quite'           => false,
-            '--set'             => 'to56',
+            '--set'             => 'to70',
             '--dump'            => false,
             '--verbose'         => false,
             '--version'         => false,

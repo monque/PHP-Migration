@@ -1,0 +1,7 @@
+{
+    "desc": "Migrating from ANY version to PHP 7.0.x",
+    "link": "http://php.net/migration70",
+    "depend": [
+        "to56", "v70"
+    ]
+}
