@@ -374,14 +374,15 @@ EOT;
         // Parse
         $chgvisitor->prepare();
         foreach ($filelist as $file) {
-            $chgvisitor->setFile($file);
             if ($this->args['--verbose']) {
                 Logging::info('Parse file {file}', array('file' => $file));
             }
-            $code = file_get_contents($file);
+
+            $chgvisitor->setFile($file);
+            $chgvisitor->setCode(file_get_contents($file));
 
             try {
-                $stmts = $parser->parse($code);
+                $stmts = $parser->parse($chgvisitor->getCode());
             } catch (PhpParserError $e) {
                 $chgvisitor->addSpot('PARSE', true, $e->getMessage(), 'NONE', $e->getRawLine());
                 if ($this->args['--verbose']) {

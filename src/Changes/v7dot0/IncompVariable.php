@@ -60,8 +60,7 @@ class IncompVariable extends AbstractChange
     public function afterTraverse(array $nodes)
     {
         // Parse code as PHP 5
-        $code = file_get_contents($this->visitor->getFile());
-        $stmts = $this->parser5->parse($code);
+        $stmts = $this->parser5->parse($this->visitor->getCode());
         $this->ast2plain($stmts, $this->plain5);
 
         // Compare

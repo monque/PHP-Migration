@@ -21,23 +21,10 @@ class TestHelper
     public static function getParser()
     {
         if (!isset(self::$parser)) {
-            self::$parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP5);
+            self::$parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         }
 
         return self::$parser;
-    }
-
-    public static function getStmtByCode($code, $addtag = true)
-    {
-        if ($addtag) {
-            $code = '<?php '.$code;
-        }
-        return self::getParser()->parse($code);
-    }
-
-    public static function getNodeByCode($code, $addtag = true)
-    {
-        return current(self::getStmtByCode($code, $addtag));
     }
 
     public static function fetchProperty($object, $name)
@@ -50,6 +37,8 @@ class TestHelper
 
     public static function runChange($change, $code)
     {
+        $code = '<?php '.$code;
+
         $visitor = new CheckVisitor(array($change));
 
         $traverser = new NodeTraverser;
@@ -57,7 +46,9 @@ class TestHelper
         $traverser->addVisitor($visitor);
 
         $visitor->prepare();
-        $traverser->traverse(self::getStmtByCode($code));
+        $visitor->setCode($code);
+        $stmts = self::getParser()->parse($code);
+        $traverser->traverse($stmts);
         $visitor->finish();
 
         return $visitor->getSpots();

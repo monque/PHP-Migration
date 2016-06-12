@@ -31,6 +31,11 @@ class CheckVisitor extends NodeVisitorAbstract
     protected $file;
 
     /**
+     * Current code
+     */
+    protected $code;
+
+    /**
      * Current class, interface, trait
      */
     protected $class;
@@ -74,6 +79,16 @@ class CheckVisitor extends NodeVisitorAbstract
                 return call_user_func_array(array($change, $method), $args);
             }
         }
+    }
+
+    public function setCode($code)
+    {
+        $this->code = $code;
+    }
+
+    public function getCode()
+    {
+        return $this->code;
     }
 
     public function setFile(\SplFileInfo $file)
