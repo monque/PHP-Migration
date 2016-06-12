@@ -273,6 +273,7 @@ EOT;
     {
         // Load set, change
         $chglist = array();
+        $options = array();
         $loaded_sets = array();
         $setstack = array($this->args['--set']);
         while (!empty($setstack)) {
@@ -290,12 +291,24 @@ EOT;
                 Logging::error("Unable load setfile {name}", array('name' => $setfile));
                 exit(1);
             }
+            if ($this->args['--verbose']) {
+                Logging::info('Load set {name}', array('name' => basename($setfile)));
+            }
             $info = json_decode(file_get_contents($setfile));
 
             // Depend
             if (isset($info->depend)) {
                 foreach ($info->depend as $setname) {
                     $setstack[] = $setname;
+                }
+            }
+
+            // Options
+            if (isset($info->options)) {
+                foreach ($info->options as $key => $value) {
+                    if (!isset($options[$key])) {
+                        $options[$key] = $value;
+                    }
                 }
             }
 
@@ -307,6 +320,10 @@ EOT;
             }
         }
         $chglist = array_reverse($chglist);  // FIXME: use a better method making load order correct
+
+        if ($this->args['--verbose']) {
+            Logging::info('Set options '.print_r($options, true));
+        }
 
         // Instantiate change
         foreach ($chglist as $key => $chgname) {
@@ -320,7 +337,12 @@ EOT;
         $chgvisitor = new CheckVisitor($chglist);
 
         // Instance parser
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP5);
+        if (isset($options['parse_as_version']) && $options['parse_as_version'] == 7) {
+            $kind = ParserFactory::ONLY_PHP7;
+        } else {
+            $kind = ParserFactory::PREFER_PHP7;
+        }
+        $parser = (new ParserFactory)->create($kind);
         $traverser = new NodeTraverser;
         $traverser->addVisitor(new NameResolver);
         $traverser->addVisitor($chgvisitor);

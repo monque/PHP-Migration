@@ -132,7 +132,7 @@ class CheckVisitor extends NodeVisitorAbstract
     public function beforeTraverse(array $nodes)
     {
         foreach ($this->changes as $change) {
-            $change->beforeTraverse();
+            $change->beforeTraverse($nodes);
         }
     }
 
@@ -184,7 +184,7 @@ class CheckVisitor extends NodeVisitorAbstract
     public function afterTraverse(array $nodes)
     {
         foreach ($this->changes as $change) {
-            $change->afterTraverse();
+            $change->afterTraverse($nodes);
         }
     }
 

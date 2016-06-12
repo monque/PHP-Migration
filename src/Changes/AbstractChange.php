@@ -62,14 +62,14 @@ abstract class AbstractChange
     /**
      * Called before Traverser woking
      */
-    public function beforeTraverse()
+    public function beforeTraverse(array $nodes)
     {
     }
 
     /**
      * Called after Traverser woking done
      */
-    public function afterTraverse()
+    public function afterTraverse(array $nodes)
     {
     }
 
