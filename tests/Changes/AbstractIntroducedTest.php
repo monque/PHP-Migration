@@ -114,5 +114,10 @@ abstract class AbstractIntroducedTest extends AbstractChangeTest
             $code = $this->genDefine(strtolower($name));
             $this->assertNotSpot($code);
         }
+
+        // #Issue 7: First argument not a string
+        $this->assertNotSpot('define(DUMMY, 0);');
+        $this->assertNotSpot('define(123, 0);');
+        $this->assertNotSpot('define($dummy, 0);');
     }
 }
