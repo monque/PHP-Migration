@@ -343,6 +343,9 @@ EOT;
             $kind = ParserFactory::PREFER_PHP7;
         }
         $parser = (new ParserFactory)->create($kind);
+        if ($this->args['--verbose']) {
+            Logging::info('Parser created '.get_class($parser));
+        }
         $traverser = new NodeTraverser;
         $traverser->addVisitor(new NameResolver);
         $traverser->addVisitor($chgvisitor);
