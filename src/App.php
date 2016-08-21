@@ -387,7 +387,7 @@ EOT;
             try {
                 $stmts = $parser->parse($chgvisitor->getCode());
             } catch (PhpParserError $e) {
-                $chgvisitor->addSpot('PARSE', true, $e->getMessage(), 'NONE', $e->getRawLine());
+                $chgvisitor->addSpot('PARSE', true, $e->getMessage(), 'NONE', $e->getStartLine());
                 if ($this->args['--verbose']) {
                     Logging::warning('Parse error {file}, error message "{exception}"', array(
                         'exception' => $e,
