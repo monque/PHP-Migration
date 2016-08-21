@@ -10,12 +10,15 @@ namespace PhpMigration\Changes\v5dot6;
  */
 
 use PhpMigration\Changes\AbstractChange;
+use PhpMigration\Changes\RemoveTableItemTrait;
 use PhpMigration\SymbolTable;
 use PhpMigration\Utils\ParserHelper;
 use PhpParser\Node\Expr;
 
 class IncompMisc extends AbstractChange
 {
+    use RemoveTableItemTrait;
+
     protected static $version = '5.6.0';
 
     protected $tableLoaded = false;
@@ -37,14 +40,6 @@ class IncompMisc extends AbstractChange
         'mcrypt_encrypt', 'mcrypt_decrypt', 'mcrypt_cbc', 'mcrypt_cfb',
         'mcrypt_ecb', 'mcrypt_generic', 'mcrypt_ofb',
     );
-
-    /* FIXME duplicated method in v5dot3/Deprecated.php */
-    public function skipMcryptFuncs($table)
-    {
-        foreach ($table as $func => $dummy) {
-            $this->mcryptTable->del($func);
-        }
-    }
 
     public function prepare()
     {

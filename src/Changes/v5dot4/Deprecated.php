@@ -10,11 +10,14 @@ namespace PhpMigration\Changes\v5dot4;
  */
 
 use PhpMigration\Changes\AbstractChange;
+use PhpMigration\Changes\RemoveTableItemTrait;
 use PhpMigration\SymbolTable;
 use PhpParser\Node\Expr;
 
 class Deprecated extends AbstractChange
 {
+    use RemoveTableItemTrait;
+
     protected static $version = '5.4.0';
 
     protected $tableLoaded = false;
@@ -23,14 +26,6 @@ class Deprecated extends AbstractChange
         'mcrypt_generic_end',
         'mysql_list_dbs',
     );
-
-    /* FIXME duplicated method in v5dot3/Deprecated.php */
-    public function skipDeprecatedFuncs($table)
-    {
-        foreach ($table as $func => $dummy) {
-            $this->funcTable->del($func);
-        }
-    }
 
     public function prepare()
     {

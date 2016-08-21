@@ -52,7 +52,7 @@ abstract class AbstractChange
     }
 
     /**
-     * Called after every file have been parsed
+     * Called after all file have been parsed
      * Usually process data collected in traversing, and return
      */
     public function finish()

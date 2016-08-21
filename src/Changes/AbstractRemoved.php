@@ -20,6 +20,8 @@ abstract class AbstractRemoved extends AbstractChange
 
     protected $constTable;
 
+    protected $varTable;
+
     public function prepare()
     {
         if (!$this->tableLoaded) {
@@ -36,6 +38,9 @@ abstract class AbstractRemoved extends AbstractChange
         if (isset($this->constTable)) {
             $this->constTable = new SymbolTable(array_flip($this->constTable), SymbolTable::CS);
         }
+        if (isset($this->varTable)) {
+            $this->varTable = new SymbolTable(array_flip($this->varTable), SymbolTable::CS);
+        }
     }
 
     public function leaveNode($node)
@@ -47,6 +52,10 @@ abstract class AbstractRemoved extends AbstractChange
         // Constant
         } elseif ($this->isRemovedConst($node)) {
             $this->addSpot('WARNING', true, sprintf('Constant %s is removed', $node->name));
+
+        // Variable
+        } elseif ($this->isRemovedVar($node)) {
+            $this->addSpot('WARNING', true, sprintf('Variable $%s is removed', $node->name));
         }
     }
 
@@ -60,5 +69,11 @@ abstract class AbstractRemoved extends AbstractChange
     {
         return ($node instanceof Expr\ConstFetch && isset($this->constTable) &&
                 $this->constTable->has($node->name));
+    }
+
+    protected function isRemovedVar($node)
+    {
+        return ($node instanceof Expr\Variable && isset($this->varTable) &&
+                $this->varTable->has($node->name));
     }
 }

@@ -11,6 +11,7 @@ namespace PhpMigration\Utils;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr;
+use PhpParser\Node\Scalar;
 use PhpParser\Node\Stmt;
 
 class ParserHelper
@@ -54,7 +55,11 @@ class ParserHelper
 
     public static function getConditionalName(Node $node)
     {
-        return $node->cond->expr->args[0]->value->value;
+        if ($node->cond->expr->args[0]->value instanceof Scalar\String_) {
+            return $node->cond->expr->args[0]->value->value;
+        } else {
+            return null;
+        }
     }
 
     public static function isSameFunc($name, $const)

@@ -20,6 +20,9 @@ class Deprecated extends AbstractChange
 
     protected $checkHRPD = true;
 
+    /**
+     * For another Changes to set whether skip this check
+     */
     public function skipHRPD($off)
     {
         $this->checkHRPD = !$off;

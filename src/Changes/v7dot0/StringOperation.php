@@ -1,14 +1,15 @@
 <?php
 namespace PhpMigration\Changes\v7dot0;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- */
-
 use PhpMigration\Changes\AbstractChange;
-use PhpParser\Node\Scalar;
+use PhpParser\Node\{Expr, Name, Scalar, Stmt};
 
-class IncompStringHandle extends AbstractChange
+/**
+ * Hexadecimal strings are no longer considered numeric
+ *
+ * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.strings.hex
+ */
+class StringOperation extends AbstractChange
 {
     protected static $version = '7.0.0';
 

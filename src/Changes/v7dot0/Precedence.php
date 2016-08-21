@@ -4,9 +4,16 @@ namespace PhpMigration\Changes\v7dot0;
 use PhpMigration\Changes\AbstractChange;
 use PhpParser\Error as PhpParserError;
 use PhpParser\Node;
-use PhpParser\Node\Name;
+use PhpParser\Node\{Expr, Name, Scalar, Stmt};
 use PhpParser\ParserFactory;
 
+/**
+ * File will be parsed as PHP 5 after traverser, and checked if any difference
+ * between these two results.
+ *
+ * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.variable-handling.indirect
+ * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.other.yield
+ */
 class Precedence extends AbstractChange
 {
     protected static $version = '7.0.0';
@@ -43,7 +50,7 @@ class Precedence extends AbstractChange
 
     public function beforeTraverse(array $nodes)
     {
-        $this->lines = $this->plain5 = $this->plain7 = array();
+        $this->lines = $this->plain5 = $this->plain7 = [];
     }
 
     public function enterNode($node)
@@ -72,16 +79,15 @@ class Precedence extends AbstractChange
         $this->ast2plain($stmts, $this->plain5);
         $diff = array_diff_assoc($this->plain5, $this->plain7);
 
-        $lset = array();
+        $lset = [];
         foreach ($diff as $i => $name) {
-            $line = $this->lines[$i];
+            $line = $this->lines[$i] ?? 0;
             if (isset($lset[$line])) {
                 continue;
             }
             $lset[$line] = true;
 
-            $this->addSpot('WARNING', true, 'Changing of evaluation precedence affects',
-                $this->lines[$i], $this->visitor->getFile());
+            $this->addSpot('WARNING', true, 'Changing of evaluation precedence affects', $line);
         }
     }
 }

@@ -52,7 +52,7 @@ abstract class AbstractKeywordReserved extends AbstractChange
             $name = $node->name->toString();
         }
         if (!is_null($name) && $this->wordTable->has($name)) {
-            $this->addSpot('FATAL', true, 'Keyword '.$name.' is reserved');
+            $this->addSpot('FATAL', true, 'Keyword "'.$name.'" is reserved');
         }
     }
 }

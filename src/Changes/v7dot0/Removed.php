@@ -2,43 +2,29 @@
 namespace PhpMigration\Changes\v7dot0;
 
 use PhpMigration\Changes\AbstractRemoved;
-use PhpParser\Node\Expr;
-use PhpParser\Node\Scalar;
+use PhpParser\Node\{Expr, Name, Scalar, Stmt};
 
 class Removed extends AbstractRemoved
 {
     protected static $version = '7.0.0';
 
-    protected $funcTable = array(
-        /* call_user_method() and call_user_method_array()
-         *
-         * These functions were deprecated in PHP 4.1.0 in favour of
-         * call_user_func() and call_user_func_array(). You may also want to
-         * consider using variable functions and/or the ... operator. */
+    /** 
+     * Removed functions
+     *
+     * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.removed-functions
+     */
+    protected $funcTable = [
+        // call_user_method() and call_user_method_array()
         'call_user_method', 'call_user_method_array',
 
-        /* All ereg* functions
-         *
-         * All ereg functions were removed. PCRE is a recommended
-         * alternative.*/
+        // All ereg* functions
         'ereg', 'ereg_replace', 'eregi', 'eregi_replace',
 
-        /* mcrypt aliases
-         *
-         * The deprecated mcrypt_generic_end() function has been removed in
-         * favour of mcrypt_generic_deinit().
-         *
-         * Additionally, the deprecated mcrypt_ecb(), mcrypt_cbc(),
-         * mcrypt_cfb() and mcrypt_ofb() functions have been removed in favour
-         * of using mcrypt_decrypt() with the appropriate MCRYPT_MODE_*
-         * constant. */
+        // mcrypt aliases
         'mcrypt_generic_end', 'mcrypt_ecb', 'mcrypt_cbc', 'mcrypt_cfb',
         'mcrypt_ofb',
 
-        /* All ext/mysql functions
-         *
-         * All ext/mysql functions were removed. For details about choosing a
-         * different MySQL API, see Choosing a MySQL API. */
+        // All ext/mysql functions
         'mysql_affected_rows', 'mysql_client_encoding', 'mysql_close',
         'mysql_connect', 'mysql_create_db', 'mysql_data_seek', 'mysql_db_name',
         'mysql_db_query', 'mysql_drop_db', 'mysql_errno', 'mysql_error',
@@ -55,10 +41,7 @@ class Removed extends AbstractRemoved
         'mysql_set_charset', 'mysql_stat', 'mysql_tablename',
         'mysql_thread_id', 'mysql_unbuffered_query',
 
-        /* All ext/mssql functions
-         *
-         * All ext/mssql functions were removed. For a list of alternatives,
-         * see the MSSQL Introduction. */
+        // All ext/mssql functions
         'mssql_bind', 'mssql_close', 'mssql_connect', 'mssql_data_seek',
         'mssql_execute', 'mssql_fetch_array', 'mssql_fetch_assoc',
         'mssql_fetch_batch', 'mssql_fetch_field', 'mssql_fetch_object',
@@ -70,67 +53,51 @@ class Removed extends AbstractRemoved
         'mssql_pconnect', 'mssql_query', 'mssql_result', 'mssql_rows_affected',
         'mssql_select_db',
 
-        /* intl aliases
-         *
-         * The deprecated datefmt_set_timezone_id() and
-         * IntlDateFormatter::setTimeZoneID() aliases have been removed in
-         * favour of datefmt_set_timezone() and
-         * IntlDateFormatter::setTimeZone(), respectively. */
+        // intl aliases
         'datefmt_set_timezone_id',
         // TODO 'IntlDateFormatter::setTimeZoneID',
 
-        /* set_magic_quotes_runtime()
-         *
-         * set_magic_quotes_runtime(), along with its alias
-         * magic_quotes_runtime(), have been removed. They were deprecated in
-         * PHP 5.3.0, and became effectively non-functional with the removal of
-         * magic quotes in PHP 5.4.0. */
+        // set_magic_quotes_runtime()
         'set_magic_quotes_runtime', 'magic_quotes_runtime',
 
-        /* set_socket_blocking()
-         *
-         * The deprecated set_socket_blocking() alias has been removed in
-         * favour of stream_set_blocking(). */
+        // set_socket_blocking()
         'set_socket_blocking',
 
-        /* dl() in PHP-FPM
+        /**
+         * dl() in PHP-FPM
          *
          * dl() can no longer be used in PHP-FPM. It remains functional in the
          * CLI and embed SAPIs.
          *
-         * It has already disabled in 5.3, ignore it here */
+         * It has already disabled in 5.3, so ignore it.
+         */
 
-        /* GD Type1 functions
-         *
-         * Support for PostScript Type1 fonts has been removed from the GD
-         * extension, resulting in the removal of the following functions */
+        // GD Type1 functions
         'imagepsbbox', 'imagepsencodefont', 'imagepsextendfont',
         'imagepsfreefont', 'imagepsloadfont', 'imagepsslantfont',
         'imagepstext',
-    );
+    ];
+
+    /**
+     * $HTTP_RAW_POST_DATA removed
+     *
+     * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.other.http-raw-post-data
+     */
+    protected $varTable = [
+        'HTTP_RAW_POST_DATA', // TODO append hint "use php://input instead"
+    ];
 
     public function prepare()
     {
         parent::prepare();
 
         if ($this->visitor) {
-            $this->visitor->callChange('v5dot3\Deprecated', 'skipDeprecatedFuncs', $this->funcTable);
-            $this->visitor->callChange('v5dot4\Deprecated', 'skipDeprecatedFuncs', $this->funcTable);
-            $this->visitor->callChange('v5dot5\Deprecated', 'skipDeprecatedFuncs', $this->funcTable);
-            $this->visitor->callChange('v5dot5\Deprecated', 'skipMysqlFuncs', $this->funcTable);
-            $this->visitor->callChange('v5dot6\IncompMisc', 'skipMcryptFuncs', $this->funcTable);
+            $this->visitor->callChange('v5dot3\Deprecated', 'removeTableItems', ['funcTable', $this->funcTable]);
+            $this->visitor->callChange('v5dot4\Deprecated', 'removeTableItems', ['funcTable', $this->funcTable]);
+            $this->visitor->callChange('v5dot5\Deprecated', 'removeTableItems', ['funcTable', $this->funcTable]);
+            $this->visitor->callChange('v5dot5\Deprecated', 'removeTableItems', ['mysqlTable', $this->funcTable]);
+            $this->visitor->callChange('v5dot6\IncompMisc', 'removeTableItems', ['mcryptTable', $this->funcTable]);
             $this->visitor->callChange('v5dot6\Deprecated', 'skipHRPD', true);
-        }
-    }
-
-    public function leaveNode($node)
-    {
-        parent::leaveNode($node);
-
-        // TODO move to AbstractRemoved
-        if ($node instanceof Expr\Variable && !($node->name instanceof Expr\Variable) &&
-                $node->name == 'HTTP_RAW_POST_DATA') {
-            $this->addSpot('WARNING', true, '$HTTP_RAW_POST_DATA is removed, use php://input instead');
         }
     }
 }

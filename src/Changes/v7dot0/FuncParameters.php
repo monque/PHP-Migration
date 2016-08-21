@@ -2,22 +2,27 @@
 namespace PhpMigration\Changes\v7dot0;
 
 use PhpMigration\Changes\AbstractChange;
-use PhpParser\Node\Stmt;
+use PhpParser\Node\{Expr, Name, Scalar, Stmt};
 
+/**
+ * Functions cannot have multiple parameters with the same name 
+ *
+ * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.other.func-parameters
+ */
 class FuncParameters extends AbstractChange
 {
     protected static $version = '7.0.0';
 
     public function leaveNode($node)
     {
-        if (!$node instanceof Stmt\Function_ && !$node instanceof Stmt\ClassMethod) {
+        if (!isset($node->params)) {
             return;
         }
 
-        $set = array();
+        $set = [];
         foreach ($node->params as $param) {
             if (isset($set[$param->name])) {
-                $this->addSpot('WARNING', true, 'Functions cannot have multiple parameters with the same name');
+                $this->addSpot('WARNING', true, 'Can not define two or more parameters with the same name');
                 break;
             }
             $set[$param->name] = true;

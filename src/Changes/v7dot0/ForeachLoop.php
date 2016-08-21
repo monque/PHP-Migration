@@ -3,10 +3,14 @@ namespace PhpMigration\Changes\v7dot0;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\SymbolTable;
-use PhpParser\Node\Expr;
-use PhpParser\Node\Stmt;
+use PhpParser\Node\{Expr, Name, Scalar, Stmt};
 
-class IncompForeach extends AbstractChange
+/**
+ * foreach no longer changes the internal array pointer
+ *
+ * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.foreach.array-pointer
+ */
+class ForeachLoop extends AbstractChange
 {
     protected static $version = '7.0.0';
 
@@ -16,9 +20,9 @@ class IncompForeach extends AbstractChange
      * No need check for end(), reset(), each(), next(), prev(), they all
      * manipulate pointer by themself.
      */
-    protected $funcTable = array(
+    protected $funcTable = [
         'current', 'key',
-    );
+    ];
 
     public function prepare()
     {

@@ -12,6 +12,7 @@ namespace PhpMigration\Changes;
 use PhpMigration\SymbolTable;
 use PhpMigration\Utils\ParserHelper;
 use PhpParser\Node\Expr;
+use PhpParser\Node\Scalar;
 use PhpParser\Node\Stmt;
 
 abstract class AbstractIntroduced extends AbstractChange
@@ -87,12 +88,12 @@ abstract class AbstractIntroduced extends AbstractChange
              * TODO: We should check namespaced name instead literal
              * Predis/Session/SessionHandler.php in Predis will be affteced
              */
-            $this->addSpot('FATAL', true, sprintf('Cannot redeclare class %s', $node->name));
+            $this->addSpot('FATAL', true, sprintf('Cannot redeclare class "%s"', $node->name));
 
         // Constant
         } elseif ($this->isNewConst($node)) {
             $constname = $node->args[0]->value->value;
-            $this->addSpot('WARNING', true, sprintf('Constant %s already defined', $constname));
+            $this->addSpot('WARNING', true, sprintf('Constant "%s" already defined', $constname));
 
         // Parameter
         } elseif ($this->isNewParam($node)) {
@@ -137,7 +138,8 @@ abstract class AbstractIntroduced extends AbstractChange
             return false;
         }
 
-        return (($node instanceof Stmt\ClassLike) && $this->classTable->has($node->name));
+        return (($node instanceof Stmt\ClassLike) &&
+                $this->classTable->has($node->namespacedName->toString()));
     }
 
     protected function isNewConst($node)
@@ -146,7 +148,8 @@ abstract class AbstractIntroduced extends AbstractChange
             return false;
         }
 
-        if ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'define')) {
+        if ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'define') &&
+                $node->args[0]->value instanceof Scalar\String_) {
             $constname = $node->args[0]->value->value;
             return $this->constTable->has($constname) &&
                     (is_null($this->condConst) || $constname != $this->condConst);

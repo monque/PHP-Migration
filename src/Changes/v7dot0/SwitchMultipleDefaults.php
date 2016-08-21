@@ -2,13 +2,22 @@
 namespace PhpMigration\Changes\v7dot0;
 
 use PhpMigration\Changes\AbstractChange;
-use PhpParser\Node\Stmt;
+use PhpParser\Node\{Expr, Name, Scalar, Stmt};
 
+/**
+ * Switch statements cannot have multiple default blocks
+ *
+ * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.other.multiple-default
+ */
 class SwitchMultipleDefaults extends AbstractChange
 {
     protected static $version = '7.0.0';
 
-    protected $currentSwitch; // TODO move to CheckVisitor
+    /**
+     * Record current switch block only in this file. Do not move to
+     * CheckVisitor if no another need.
+     */
+    protected $currentSwitch;
 
     protected $hasDefault;
 
@@ -24,7 +33,7 @@ class SwitchMultipleDefaults extends AbstractChange
     {
         if ($node instanceof Stmt\Case_ && !is_null($this->currentSwitch) && is_null($node->cond)) {
             if ($this->hasDefault) {
-                $this->addSpot('WARNING', true, 'Switch statements cannot have multiple default blocks');
+                $this->addSpot('FATAL', true, 'Switch statements cannot have multiple default blocks');
             } else {
                 $this->hasDefault = true;
             }

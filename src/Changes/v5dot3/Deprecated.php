@@ -11,10 +11,13 @@ namespace PhpMigration\Changes\v5dot3;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\SymbolTable;
+use PhpMigration\Changes\RemoveTableItemTrait;
 use PhpParser\Node\Expr;
 
 class Deprecated extends AbstractChange
 {
+    use RemoveTableItemTrait;
+
     protected static $version = '5.3.0';
 
     protected $tableLoaded = false;
@@ -52,13 +55,6 @@ class Deprecated extends AbstractChange
     public function skipCallTimePassByRef($off)
     {
         $this->checkCallTimePassByRef = !$off;
-    }
-
-    public function skipDeprecatedFuncs($table)
-    {
-        foreach ($table as $func => $dummy) {
-            $this->funcTable->del($func);
-        }
     }
 
     public function prepare()

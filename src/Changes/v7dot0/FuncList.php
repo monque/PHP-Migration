@@ -2,9 +2,15 @@
 namespace PhpMigration\Changes\v7dot0;
 
 use PhpMigration\Changes\AbstractChange;
-use PhpParser\Node\Expr;
+use PhpParser\Node\{Expr, Name, Scalar, Stmt};
 
-class IncompList extends AbstractChange
+/**
+ * list() no longer assigns variables in reverse order
+ * Empty list() assignments have been removed
+ *
+ * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.variable-handling.list
+ */
+class FuncList extends AbstractChange
 {
     protected static $version = '7.0.0';
 
@@ -12,7 +18,6 @@ class IncompList extends AbstractChange
     {
         if ($node instanceof Expr\List_) {
             $this->checkVarOrder($node);
-
             $this->checkEmpty($node);
         }
     }

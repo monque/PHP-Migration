@@ -2,14 +2,18 @@
     "desc": "Migrating from PHP 5.6.x to PHP 7.0.x",
     "link": "http://php.net/migration70",
     "changes": [
-        "v7dot0\\IncompErrorHandle",
-        "v7dot0\\Precedence",
-        "v7dot0\\IncompList",
-        "v7dot0\\IncompForeach",
-        "v7dot0\\IncompInteger",
-        "v7dot0\\IncompStringHandle",
-        "v7dot0\\IncompReserved",
+        "v7dot0\\ExceptionHandle",
+        "v7dot0\\ForeachLoop",
+        "v7dot0\\FuncList",
         "v7dot0\\FuncParameters",
+        "v7dot0\\IntegerOperation",
+        "v7dot0\\Precedence",
+        "v7dot0\\StringOperation",
+        "v7dot0\\SwitchMultipleDefaults",
+
+        "v7dot0\\Deprecated",
+        "v7dot0\\Introduced",
+        "v7dot0\\KeywordReserved",
         "v7dot0\\Removed"
     ],
     "options": {
