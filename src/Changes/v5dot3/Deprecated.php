@@ -54,14 +54,10 @@ class Deprecated extends AbstractChange
         $this->checkCallTimePassByRef = !$off;
     }
 
-    public function skipMysqlFunc($off)
+    public function skipDeprecatedFuncs($table)
     {
-        if ($off) {
-            unset($this->funcTable['mysql_db_query']);
-            unset($this->funcTable['mysql_escape_string']);
-        } else {
-            $this->funcTable['mysql_db_query'] = true;
-            $this->funcTable['mysql_escape_string'] = true;
+        foreach ($table as $func => $dummy) {
+            $this->funcTable->del($func);
         }
     }
 

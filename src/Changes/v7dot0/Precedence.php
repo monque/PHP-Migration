@@ -2,11 +2,12 @@
 namespace PhpMigration\Changes\v7dot0;
 
 use PhpMigration\Changes\AbstractChange;
+use PhpParser\Error as PhpParserError;
 use PhpParser\Node;
+use PhpParser\Node\Name;
 use PhpParser\ParserFactory;
-use PhpParser\Node\Name\FullyQualified;
 
-class IncompVariable extends AbstractChange
+class Precedence extends AbstractChange
 {
     protected static $version = '7.0.0';
 
@@ -50,7 +51,7 @@ class IncompVariable extends AbstractChange
         $this->lines[] = $node->getLine();
 
         // Use normal node instead of NameResolver
-        if ($node instanceof FullyQualified) {
+        if ($node instanceof Name\FullyQualified) {
             $this->plain7[] = 'PhpParser\Node\Name';
         } else {
             $this->plain7[] = get_class($node);
@@ -60,20 +61,26 @@ class IncompVariable extends AbstractChange
     public function afterTraverse(array $nodes)
     {
         // Parse code as PHP 5
-        $stmts = $this->parser5->parse($this->visitor->getCode());
-        $this->ast2plain($stmts, $this->plain5);
+        try {
+            $stmts = $this->parser5->parse($this->visitor->getCode());
+        } catch (PhpParserError $e) {
+            $this->addSpot('WARNING', true, 'Parse failed as PHP 5 "'.$e->getMessage().'"', $e->getStartLine());
+            return;
+        }
 
         // Compare
+        $this->ast2plain($stmts, $this->plain5);
         $diff = array_diff_assoc($this->plain5, $this->plain7);
+
         $lset = array();
         foreach ($diff as $i => $name) {
             $line = $this->lines[$i];
             if (isset($lset[$line])) {
                 continue;
             }
-
             $lset[$line] = true;
-            $this->addSpot('WARNING', true, 'Changing of variable handling affects',
+
+            $this->addSpot('WARNING', true, 'Changing of evaluation precedence affects',
                 $this->lines[$i], $this->visitor->getFile());
         }
     }

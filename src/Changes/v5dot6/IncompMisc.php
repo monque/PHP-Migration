@@ -38,6 +38,14 @@ class IncompMisc extends AbstractChange
         'mcrypt_ecb', 'mcrypt_generic', 'mcrypt_ofb',
     );
 
+    /* FIXME duplicated method in v5dot3/Deprecated.php */
+    public function skipMcryptFuncs($table)
+    {
+        foreach ($table as $func => $dummy) {
+            $this->mcryptTable->del($func);
+        }
+    }
+
     public function prepare()
     {
         if (!$this->tableLoaded) {

@@ -24,6 +24,14 @@ class Deprecated extends AbstractChange
         'mysql_list_dbs',
     );
 
+    /* FIXME duplicated method in v5dot3/Deprecated.php */
+    public function skipDeprecatedFuncs($table)
+    {
+        foreach ($table as $func => $dummy) {
+            $this->funcTable->del($func);
+        }
+    }
+
     public function prepare()
     {
         if (!$this->tableLoaded) {

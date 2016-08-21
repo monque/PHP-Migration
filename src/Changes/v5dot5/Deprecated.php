@@ -47,6 +47,22 @@ class Deprecated extends AbstractChange
         'mysql_thread_id', 'mysql_unbuffered_query',
     );
 
+    /* FIXME duplicated method in v5dot3/Deprecated.php */
+    public function skipDeprecatedFuncs($table)
+    {
+        foreach ($table as $func => $dummy) {
+            $this->funcTable->del($func);
+        }
+    }
+
+    /* FIXME duplicated method in v5dot3/Deprecated.php */
+    public function skipMysqlFuncs($table)
+    {
+        foreach ($table as $func => $dummy) {
+            $this->mysqlTable->del($func);
+        }
+    }
+
     public function prepare()
     {
         if (!$this->tableLoaded) {
@@ -56,7 +72,7 @@ class Deprecated extends AbstractChange
         }
 
         if ($this->visitor) {
-            $this->visitor->callChange('v5dot3\Deprecated', 'skipMysqlFunc', true);
+            $this->visitor->callChange('v5dot3\Deprecated', 'skipDeprecatedFuncs', $this->mysqlTable);
         }
     }
 

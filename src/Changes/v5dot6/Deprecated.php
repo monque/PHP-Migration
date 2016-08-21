@@ -18,6 +18,13 @@ class Deprecated extends AbstractChange
 {
     protected static $version = '5.6.0';
 
+    protected $checkHRPD = true;
+
+    public function skipHRPD($off)
+    {
+        $this->checkHRPD = !$off;
+    }
+
     public function leaveNode($node)
     {
         /**
@@ -31,7 +38,7 @@ class Deprecated extends AbstractChange
          * {Reference}
          * http://php.net/manual/en/migration56.deprecated.php#migration56.deprecated.raw-post-data
          */
-        if ($node instanceof Expr\Variable && !($node->name instanceof Expr\Variable) &&
+        if ($this->checkHRPD && $node instanceof Expr\Variable && !($node->name instanceof Expr\Variable) &&
                 $node->name == 'HTTP_RAW_POST_DATA') {
             $this->addSpot('DEPRECATED', true, '$HTTP_RAW_POST_DATA is deprecated, use php://input instead');
         }
