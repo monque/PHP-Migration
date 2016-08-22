@@ -84,10 +84,6 @@ abstract class AbstractIntroduced extends AbstractChange
 
         // Class, Interface, Trait
         } elseif ($this->isNewClass($node)) {
-            /**
-             * TODO: We should check namespaced name instead literal
-             * Predis/Session/SessionHandler.php in Predis will be affteced
-             */
             $this->addSpot('FATAL', true, sprintf('Cannot redeclare class "%s"', $node->name));
 
         // Constant
@@ -138,7 +134,8 @@ abstract class AbstractIntroduced extends AbstractChange
             return false;
         }
 
-        return (($node instanceof Stmt\ClassLike) &&
+        return ($node instanceof Stmt\ClassLike &&
+                !is_null($node->name) && // Anonymous class
                 $this->classTable->has($node->namespacedName->toString()));
     }
 
