@@ -353,9 +353,7 @@ EOT;
         // Prepare filelist
         $filelist = array();
         foreach ($this->args['<file>'] as $file) {
-            if (!file_exists($file)) {
-                Logging::warning('No such file or directory {file}', array('file' => $file));
-            } elseif (is_dir($file)) {
+            if (is_dir($file)) {
                 $iterator = new \RecursiveIteratorIterator(
                     new \RecursiveDirectoryIterator($file),
                     0,
@@ -379,6 +377,14 @@ EOT;
         foreach ($filelist as $file) {
             if ($this->args['--verbose']) {
                 Logging::info('Parse file {file}', array('file' => $file));
+            }
+
+            if (!file_exists($file)) {
+                Logging::warning('No such file or directory "{file}"', array('file' => $file));
+                continue;
+            } elseif (!is_readable($file)) {
+                Logging::warning('Permission denied "{file}"', array('file' => $file));
+                continue;
             }
 
             $chgvisitor->setFile($file);
