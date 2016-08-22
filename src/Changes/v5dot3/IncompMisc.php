@@ -44,7 +44,6 @@ class IncompMisc extends AbstractChange
                  * http://php.net/manual/en/migration53.incompatible.php
                  */
                 $this->addSpot('NOTICE', false, 'clearstatcache() no longer clears the realpath cache by default');
-
             } elseif (ParserHelper::isSameFunc($node->name, 'realpath')) {
                 /**
                  * {Description}
@@ -60,7 +59,6 @@ class IncompMisc extends AbstractChange
                  * http://php.net/manual/en/migration53.incompatible.php
                  */
                 $this->addSpot('NOTICE', false, 'realpath() is now fully platform-independent, especially on *BSD.');
-
             } elseif ($this->arrFuncTable->has($node->name)) {
                 /**
                  * {Description}
@@ -77,7 +75,6 @@ class IncompMisc extends AbstractChange
                     false,
                     sprintf('%s() no longer accept objects passed as arguments', $node->name)
                 );
-
             } elseif (ParserHelper::isSameFunc($node->name, 'call_user_func_array')) {
                 /**
                  * {Description}
@@ -96,7 +93,6 @@ class IncompMisc extends AbstractChange
                         sprintf('%s() no longer accept non-array passed as arguments', $node->name)
                     );
                 }
-
             } elseif (ParserHelper::isSameFunc($node->name, 'gd_info')) {
                 /**
                  * {Description}

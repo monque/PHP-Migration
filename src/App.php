@@ -190,22 +190,16 @@ EOT;
 
         if ($this->args['--help']) {
             $this->showUsage('help');
-
         } elseif ($this->args['--version']) {
             $this->showVersion();
-
         } elseif ($this->args['--list']) {
             $this->commandList();
-
         } elseif ($this->devmode && $this->args['--export-posbit']) {
             $this->commandExportPosbit();
-
         } elseif ($this->devmode && $this->args['--pack']) {
             $this->commandPack();
-
         } elseif ($this->args['<file>']) {
             $this->commandMain();
-
         } else {
             $this->showUsage();
         }

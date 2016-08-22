@@ -80,7 +80,6 @@ class Deprecated extends AbstractChange
                 true,
                 'The original MySQL extension is deprecated, use MySQLi or PDO_MySQL extensions instead'
             );
-
         } elseif ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'preg_replace')) {
             /**
              * {Description}
@@ -123,7 +122,6 @@ class Deprecated extends AbstractChange
                     'preg_replace() /e modifier is deprecated, use preg_replace_callback() instead'
                 );
             }
-
         } elseif ($node instanceof Expr\FuncCall && $this->funcTable->has($node->name)) {
             /**
              * TODO: how to check IntlDateFormatter::setTimeZoneId
