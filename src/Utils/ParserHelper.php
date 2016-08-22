@@ -11,6 +11,7 @@ namespace PhpMigration\Utils;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr;
+use PhpParser\Node\Name;
 use PhpParser\Node\Scalar;
 use PhpParser\Node\Stmt;
 
@@ -27,7 +28,7 @@ class ParserHelper
         if ($node instanceof Expr\MethodCall || $node instanceof Expr\StaticCall) {
             return !is_string($node->name);
         } elseif ($node instanceof Expr\FuncCall) {
-            return !($node->name instanceof Node\Name);
+            return !($node->name instanceof Name);
         } else {
             throw new \Exception('Invalid function, method call node ('.get_class($node).')');
         }
