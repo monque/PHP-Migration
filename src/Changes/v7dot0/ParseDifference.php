@@ -4,7 +4,6 @@ namespace PhpMigration\Changes\v7dot0;
 use PhpMigration\Changes\AbstractChange;
 use PhpParser\Error as PhpParserError;
 use PhpParser\Node;
-use PhpParser\Node\Name;
 use PhpParser\ParserFactory;
 
 /**
@@ -14,7 +13,7 @@ use PhpParser\ParserFactory;
  * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.variable-handling.indirect
  * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.other.yield
  */
-class Precedence extends AbstractChange
+class ParseDifference extends AbstractChange
 {
     protected static $version = '7.0.0';
 
@@ -43,6 +42,20 @@ class Precedence extends AbstractChange
         }
     }
 
+    /**
+     * Normalize node name and convert NameResolver's FullyQualified node
+     */
+    protected function normalizeNodeList(array &$nodes)
+    {
+        foreach ($nodes as &$node) {
+            if ($node == 'PhpParser\Node\Name\FullyQualified') {
+                $node = 'Node\Name';
+            } else {
+                $node = substr($node, 10); // Strip namespace prefix
+            }
+        }
+    }
+
     public function prepare()
     {
         $this->parser5 = (new ParserFactory)->create(ParserFactory::ONLY_PHP5);
@@ -56,13 +69,7 @@ class Precedence extends AbstractChange
     public function enterNode($node)
     {
         $this->lines[] = $node->getLine();
-
-        // Use normal node instead of NameResolver
-        if ($node instanceof Name\FullyQualified) {
-            $this->plain7[] = 'PhpParser\Node\Name';
-        } else {
-            $this->plain7[] = get_class($node);
-        }
+        $this->plain7[] = get_class($node);
     }
 
     public function afterTraverse(array $nodes)
@@ -77,6 +84,8 @@ class Precedence extends AbstractChange
 
         // Compare
         $this->ast2plain($stmts, $this->plain5);
+        $this->normalizeNodeList($this->plain5);
+        $this->normalizeNodeList($this->plain7);
         $diff = array_diff_assoc($this->plain5, $this->plain7);
 
         $lset = [];
@@ -88,7 +97,7 @@ class Precedence extends AbstractChange
             }
             $lset[$line] = true;
 
-            $this->addSpot('WARNING', true, 'Changing of evaluation precedence affects', $line);
+            $this->addSpot('WARNING', true, 'Different behavior between PHP 5/7', $line);
         }
     }
 }

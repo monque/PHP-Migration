@@ -7,7 +7,7 @@
         "v7dot0\\FuncList",
         "v7dot0\\FuncParameters",
         "v7dot0\\IntegerOperation",
-        "v7dot0\\Precedence",
+        "v7dot0\\ParseDifference",
         "v7dot0\\StringOperation",
         "v7dot0\\SwitchMultipleDefaults",
 
