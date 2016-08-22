@@ -134,9 +134,11 @@ abstract class AbstractIntroduced extends AbstractChange
             return false;
         }
 
-        return ($node instanceof Stmt\ClassLike &&
-                !is_null($node->name) && // Anonymous class
-                $this->classTable->has($node->namespacedName->toString()));
+        if (!$node instanceof Stmt\ClassLike || is_null($node->name)) {
+            return false;
+        }
+
+        return $this->classTable->has($node->namespacedName->toString());
     }
 
     protected function isNewConst($node)
