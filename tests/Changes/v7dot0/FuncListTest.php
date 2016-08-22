@@ -3,7 +3,7 @@ namespace PhpMigration\Changes\v7dot0;
 
 use PhpMigration\Changes\AbstractChangeTest;
 
-class IncompListTest extends AbstractChangeTest
+class FuncListTest extends AbstractChangeTest
 {
     public function testVarOrder()
     {

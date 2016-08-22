@@ -11,11 +11,10 @@ namespace PhpMigration\Changes\v7dot0;
 
 use PhpMigration\Changes\AbstractChangeTest;
 
-class IncompVariableTest extends AbstractChangeTest
+class ParseDifferenceTest extends AbstractChangeTest
 {
     public function test()
     {
-        // http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.variable-handling
         $this->assertHasSpot('$$foo[\'bar\'][\'baz\'];');
         $this->assertHasSpot('$foo->$bar[\'baz\'];');
         $this->assertHasSpot('$foo->$bar[\'baz\']();');

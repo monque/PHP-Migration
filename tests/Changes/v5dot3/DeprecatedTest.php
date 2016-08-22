@@ -27,14 +27,6 @@ class DeprecatedTest extends AbstractChangeTest
             // Case Insensitive name
             $this->assertHasSpot(sprintf("%s();", strtoupper($name)));
         }
-
-        // Set skip
-        $this->change->skipMysqlFunc(true);
-        $this->assertNotSpot('mysql_escape_string();');
-
-        // Cancle skip
-        $this->change->skipMysqlFunc(false);
-        $this->assertHasSpot('mysql_escape_string();');
     }
 
     public function testAssignNewByRef()
