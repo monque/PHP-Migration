@@ -3,7 +3,7 @@ namespace PhpMigration\Changes\v7dot0;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\Utils\ParserHelper;
-use PhpParser\Node\{Expr, Name, Scalar, Stmt};
+use PhpParser\Node\Expr;
 
 class ExceptionHandle extends AbstractChange
 {

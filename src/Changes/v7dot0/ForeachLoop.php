@@ -3,7 +3,8 @@ namespace PhpMigration\Changes\v7dot0;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\SymbolTable;
-use PhpParser\Node\{Expr, Name, Scalar, Stmt};
+use PhpParser\Node\Expr;
+use PhpParser\Node\Stmt;
 
 /**
  * foreach no longer changes the internal array pointer

@@ -3,7 +3,7 @@ namespace PhpMigration\Changes\v7dot0;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\SymbolTable;
-use PhpParser\Node\{Expr, Name, Scalar, Stmt};
+use PhpParser\Node\Stmt;
 
 /** 
  * Invalid class, interface and trait names 

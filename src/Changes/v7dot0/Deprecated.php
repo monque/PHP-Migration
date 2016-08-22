@@ -3,7 +3,8 @@ namespace PhpMigration\Changes\v7dot0;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\Utils\ParserHelper;
-use PhpParser\Node\{Expr, Name, Scalar, Stmt};
+use PhpParser\Node\Expr;
+use PhpParser\Node\Stmt;
 
 class Deprecated extends AbstractChange
 {
@@ -26,7 +27,7 @@ class Deprecated extends AbstractChange
          *
          * @see http://php.net/manual/en/migration70.deprecated.php#migration70.deprecated.pwshash-salt-option
          */
-        } elseif ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'password_hash')) {
+        } elseif ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'password_hash') && isset($node->args[2])) {
             $this->addSpot('DEPRECATED', false, 'salt option for password_hash() is deprecated');
 
         /**

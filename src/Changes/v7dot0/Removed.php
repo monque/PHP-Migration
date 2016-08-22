@@ -2,7 +2,6 @@
 namespace PhpMigration\Changes\v7dot0;
 
 use PhpMigration\Changes\AbstractRemoved;
-use PhpParser\Node\{Expr, Name, Scalar, Stmt};
 
 class Removed extends AbstractRemoved
 {

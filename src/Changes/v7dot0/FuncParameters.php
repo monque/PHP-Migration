@@ -2,7 +2,6 @@
 namespace PhpMigration\Changes\v7dot0;
 
 use PhpMigration\Changes\AbstractChange;
-use PhpParser\Node\{Expr, Name, Scalar, Stmt};
 
 /**
  * Functions cannot have multiple parameters with the same name 

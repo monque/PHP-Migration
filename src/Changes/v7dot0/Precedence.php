@@ -4,7 +4,7 @@ namespace PhpMigration\Changes\v7dot0;
 use PhpMigration\Changes\AbstractChange;
 use PhpParser\Error as PhpParserError;
 use PhpParser\Node;
-use PhpParser\Node\{Expr, Name, Scalar, Stmt};
+use PhpParser\Node\Name;
 use PhpParser\ParserFactory;
 
 /**
@@ -81,7 +81,8 @@ class Precedence extends AbstractChange
 
         $lset = [];
         foreach ($diff as $i => $name) {
-            $line = $this->lines[$i] ?? 0;
+            // TODO we do like double-? in PHP 7 such as `$line = $this->lines[$i] ?? 0;`
+            $line = isset($this->lines[$i]) ? $this->lines[$i] : 0;
             if (isset($lset[$line])) {
                 continue;
             }

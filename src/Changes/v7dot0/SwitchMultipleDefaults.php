@@ -2,7 +2,7 @@
 namespace PhpMigration\Changes\v7dot0;
 
 use PhpMigration\Changes\AbstractChange;
-use PhpParser\Node\{Expr, Name, Scalar, Stmt};
+use PhpParser\Node\Stmt;
 
 /**
  * Switch statements cannot have multiple default blocks
