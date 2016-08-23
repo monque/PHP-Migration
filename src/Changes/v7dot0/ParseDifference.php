@@ -56,7 +56,7 @@ class ParseDifference extends AbstractChange
         }
     }
 
-    public function prepare()
+    public function __construct()
     {
         $this->parser5 = (new ParserFactory)->create(ParserFactory::ONLY_PHP5);
     }

@@ -17,8 +17,6 @@ class IncompRegister extends AbstractChange
 {
     protected static $version = '5.4.0';
 
-    protected $tableLoaded = false;
-
     protected $longArray = array(
         'HTTP_POST_VARS',
         'HTTP_GET_VARS',
@@ -29,12 +27,9 @@ class IncompRegister extends AbstractChange
         'HTTP_POST_FILES',
     );
 
-    public function prepare()
+    public function __construct()
     {
-        if (!$this->tableLoaded) {
-            $this->longArray = new SymbolTable(array_flip($this->longArray), SymbolTable::CS);
-            $this->tableLoaded = true;
-        }
+        $this->longArray = new SymbolTable($this->longArray, SymbolTable::CS);
     }
 
     public function leaveNode($node)

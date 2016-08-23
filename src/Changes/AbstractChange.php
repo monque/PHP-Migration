@@ -45,7 +45,14 @@ abstract class AbstractChange
     }
 
     /**
-     * Called before any processing, just after __construct
+     * Initialization of properties
+     */
+    public function __construct()
+    {
+    }
+
+    /**
+     * Called before any processing, after __construct()
      */
     public function prepare()
     {
@@ -56,6 +63,13 @@ abstract class AbstractChange
      * Usually process data collected in traversing, and return
      */
     public function finish()
+    {
+    }
+
+    /**
+     * De-initialization of properties, after finish()
+     */
+    public function __destruct()
     {
     }
 

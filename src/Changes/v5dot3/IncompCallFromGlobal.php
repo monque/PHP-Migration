@@ -17,18 +17,13 @@ class IncompCallFromGlobal extends AbstractChange
 {
     protected static $version = '5.3.0';
 
-    protected $tableLoaded = false;
-
     protected $funcTable = array(
         'func_get_arg', 'func_get_args', 'func_num_args'
     );
 
-    public function prepare()
+    public function __construct()
     {
-        if (!$this->tableLoaded) {
-            $this->funcTable  = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
-            $this->tableLoaded = true;
-        }
+        $this->funcTable = new SymbolTable($this->funcTable, SymbolTable::IC);
     }
 
     protected function emitSpot($node)

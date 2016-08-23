@@ -20,8 +20,6 @@ class Deprecated extends AbstractChange
 
     protected static $version = '5.3.0';
 
-    protected $tableLoaded = false;
-
     protected $funcTable = array(
         'call_user_method'          => 'use call_user_func() instead',
         'call_user_method_array'    => 'use call_user_func_array() instead',
@@ -48,6 +46,11 @@ class Deprecated extends AbstractChange
 
     protected $checkCallTimePassByRef = true;
 
+    public function __construct()
+    {
+        $this->funcTable = new SymbolTable($this->funcTable, SymbolTable::IC);
+    }
+
     /**
      * For another Changes to set whether skip the check for Call-time
      * Pass-by-ref
@@ -55,14 +58,6 @@ class Deprecated extends AbstractChange
     public function skipCallTimePassByRef($off)
     {
         $this->checkCallTimePassByRef = !$off;
-    }
-
-    public function prepare()
-    {
-        if (!$this->tableLoaded) {
-            $this->funcTable = new SymbolTable($this->funcTable, SymbolTable::IC);
-            $this->tableLoaded = true;
-        }
     }
 
     public function leaveNode($node)

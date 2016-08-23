@@ -19,8 +19,6 @@ class IncompByReference extends AbstractChange
 {
     protected static $version = '5.3.0';
 
-    protected $prepared = false;
-
     protected $callList;
 
     protected $declareTable;
@@ -245,11 +243,9 @@ class IncompByReference extends AbstractChange
 
     public function prepare()
     {
-        if (!$this->prepared) {
-            $this->callList = array();
-            $this->declareTable = new SymbolTable($this->builtinTable, SymbolTable::IC);
-            $this->methodTable = new SymbolTable(array(), SymbolTable::IC);
-        }
+        $this->callList = array();
+        $this->declareTable = new SymbolTable($this->builtinTable, SymbolTable::IC);
+        $this->methodTable = new SymbolTable(array(), SymbolTable::IC);
     }
 
     public function leaveNode($node)

@@ -18,18 +18,13 @@ class IncompMagic extends AbstractChange
 {
     protected static $version = '5.3.0';
 
-    protected $tableLoaded = false;
-
     protected $funcTable = array(
         '__get', '__set', '__isset', '__unset', '__call',
     );
 
-    public function prepare()
+    public function __construct()
     {
-        if (!$this->tableLoaded) {
-            $this->funcTable  = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
-            $this->tableLoaded = true;
-        }
+        $this->funcTable = new SymbolTable($this->funcTable, SymbolTable::IC);
     }
 
     protected function emitNonPub($node)

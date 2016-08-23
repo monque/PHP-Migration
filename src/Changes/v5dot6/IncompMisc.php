@@ -21,8 +21,6 @@ class IncompMisc extends AbstractChange
 
     protected static $version = '5.6.0';
 
-    protected $tableLoaded = false;
-
     protected $gmpTable = array(
         'gmp_abs', 'gmp_add', 'gmp_and', 'gmp_clrbit', 'gmp_cmp', 'gmp_com',
         'gmp_div_q', 'gmp_div_qr', 'gmp_div_r', 'gmp_div', 'gmp_divexact',
@@ -41,13 +39,10 @@ class IncompMisc extends AbstractChange
         'mcrypt_ecb', 'mcrypt_generic', 'mcrypt_ofb',
     );
 
-    public function prepare()
+    public function __construct()
     {
-        if (!$this->tableLoaded) {
-            $this->gmpTable = new SymbolTable(array_flip($this->gmpTable), SymbolTable::IC);
-            $this->mcryptTable = new SymbolTable(array_flip($this->mcryptTable), SymbolTable::IC);
-            $this->tableLoaded = true;
-        }
+        $this->gmpTable = new SymbolTable($this->gmpTable, SymbolTable::IC);
+        $this->mcryptTable = new SymbolTable($this->mcryptTable, SymbolTable::IC);
     }
 
     public function leaveNode($node)

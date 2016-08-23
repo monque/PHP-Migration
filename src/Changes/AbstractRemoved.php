@@ -14,32 +14,22 @@ use PhpParser\Node\Expr;
 
 abstract class AbstractRemoved extends AbstractChange
 {
-    protected $tableLoaded = false;
-
     protected $funcTable;
 
     protected $constTable;
 
     protected $varTable;
 
-    public function prepare()
-    {
-        if (!$this->tableLoaded) {
-            $this->loadTable();
-            $this->tableLoaded = true;
-        }
-    }
-
-    public function loadTable()
+    public function __construct()
     {
         if (isset($this->funcTable)) {
-            $this->funcTable = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
+            $this->funcTable = new SymbolTable($this->funcTable, SymbolTable::IC);
         }
         if (isset($this->constTable)) {
-            $this->constTable = new SymbolTable(array_flip($this->constTable), SymbolTable::CS);
+            $this->constTable = new SymbolTable($this->constTable, SymbolTable::CS);
         }
         if (isset($this->varTable)) {
-            $this->varTable = new SymbolTable(array_flip($this->varTable), SymbolTable::CS);
+            $this->varTable = new SymbolTable($this->varTable, SymbolTable::CS);
         }
     }
 

@@ -17,8 +17,6 @@ use PhpParser\Node\Stmt;
 
 abstract class AbstractIntroduced extends AbstractChange
 {
-    protected $tableLoaded = false;
-
     protected $funcTable;
 
     protected $methodTable;
@@ -33,27 +31,19 @@ abstract class AbstractIntroduced extends AbstractChange
 
     protected $condConst = null;
 
-    public function prepare()
-    {
-        if (!$this->tableLoaded) {
-            $this->loadTable();
-            $this->tableLoaded = true;
-        }
-    }
-
-    public function loadTable()
+    public function __construct()
     {
         if (isset($this->funcTable)) {
-            $this->funcTable = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
+            $this->funcTable = new SymbolTable($this->funcTable, SymbolTable::IC);
         }
         if (isset($this->methodTable)) {
-            $this->methodTable  = new SymbolTable(array_flip($this->methodTable), SymbolTable::IC);
+            $this->methodTable  = new SymbolTable($this->methodTable, SymbolTable::IC);
         }
         if (isset($this->classTable)) {
-            $this->classTable = new SymbolTable(array_flip($this->classTable), SymbolTable::IC);
+            $this->classTable = new SymbolTable($this->classTable, SymbolTable::IC);
         }
         if (isset($this->constTable)) {
-            $this->constTable = new SymbolTable(array_flip($this->constTable), SymbolTable::CS);
+            $this->constTable = new SymbolTable($this->constTable, SymbolTable::CS);
         }
     }
 

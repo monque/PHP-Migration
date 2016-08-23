@@ -22,8 +22,6 @@ class Deprecated extends AbstractChange
 
     protected static $version = '5.5.0';
 
-    protected $tableLoaded = false;
-
     protected $funcTable = array(
         // intl
         'datefmt_set_timezone_id',
@@ -50,17 +48,15 @@ class Deprecated extends AbstractChange
         'mysql_thread_id', 'mysql_unbuffered_query',
     );
 
+    public function __construct()
+    {
+        $this->funcTable = new SymbolTable($this->funcTable, SymbolTable::IC);
+        $this->mysqlTable = new SymbolTable($this->mysqlTable, SymbolTable::IC);
+    }
+
     public function prepare()
     {
-        if (!$this->tableLoaded) {
-            $this->funcTable = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
-            $this->mysqlTable = new SymbolTable(array_flip($this->mysqlTable), SymbolTable::IC);
-            $this->tableLoaded = true;
-        }
-
-        if ($this->visitor) {
-            $this->visitor->callChange('v5dot3\Deprecated', 'removeTableItems', ['funcTable', $this->mysqlTable]);
-        }
+        $this->visitor->callChange('v5dot3\Deprecated', 'removeTableItems', ['funcTable', $this->mysqlTable]);
     }
 
     public function leaveNode($node)

@@ -31,10 +31,10 @@ class KeywordReserved extends AbstractChange
         'resource', 'object', 'mixed', 'numeric',
     ];
 
-    public function prepare()
+    public function __construct()
     {
-        $this->forbiddenTable = new SymbolTable(array_flip($this->forbiddenTable), SymbolTable::IC);
-        $this->reservedTable = new SymbolTable(array_flip($this->reservedTable), SymbolTable::IC);
+        $this->forbiddenTable = new SymbolTable($this->forbiddenTable, SymbolTable::IC);
+        $this->reservedTable = new SymbolTable($this->reservedTable, SymbolTable::IC);
     }
 
     public function leaveNode($node)

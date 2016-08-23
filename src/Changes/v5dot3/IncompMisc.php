@@ -18,18 +18,13 @@ class IncompMisc extends AbstractChange
 {
     protected static $version = '5.3.0';
 
-    protected $tableLoaded = false;
-
     protected $arrFuncTable = array(
         'natsort', 'natcasesort', 'usort', 'uasort', 'uksort', 'array_flip', 'array_unique',
     );
 
-    public function prepare()
+    public function __construct()
     {
-        if (!$this->tableLoaded) {
-            $this->arrFuncTable  = new SymbolTable(array_flip($this->arrFuncTable), SymbolTable::IC);
-            $this->tableLoaded = true;
-        }
+        $this->arrFuncTable = new SymbolTable($this->arrFuncTable, SymbolTable::IC);
     }
 
     public function leaveNode($node)

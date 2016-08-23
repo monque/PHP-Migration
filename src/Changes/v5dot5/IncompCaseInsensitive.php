@@ -18,20 +18,15 @@ class IncompCaseInsensitive extends AbstractChange
 {
     protected static $version = '5.5.0';
 
-    protected $tableLoaded = false;
-
     protected $keywords = array(
         'self'      => 'self',
         'parent'    => 'parent',
         'static'    => 'static',
     );
 
-    public function prepare()
+    public function __construct()
     {
-        if (!$this->tableLoaded) {
-            $this->keywords = new SymbolTable($this->keywords, SymbolTable::IC);
-            $this->tableLoaded = true;
-        }
+        $this->keywords = new SymbolTable($this->keywords, SymbolTable::IC);
     }
 
     public function leaveNode($node)

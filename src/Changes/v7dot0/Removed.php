@@ -88,15 +88,11 @@ class Removed extends AbstractRemoved
 
     public function prepare()
     {
-        parent::prepare();
-
-        if ($this->visitor) {
-            $this->visitor->callChange('v5dot3\Deprecated', 'removeTableItems', ['funcTable', $this->funcTable]);
-            $this->visitor->callChange('v5dot4\Deprecated', 'removeTableItems', ['funcTable', $this->funcTable]);
-            $this->visitor->callChange('v5dot5\Deprecated', 'removeTableItems', ['funcTable', $this->funcTable]);
-            $this->visitor->callChange('v5dot5\Deprecated', 'removeTableItems', ['mysqlTable', $this->funcTable]);
-            $this->visitor->callChange('v5dot6\IncompMisc', 'removeTableItems', ['mcryptTable', $this->funcTable]);
-            $this->visitor->callChange('v5dot6\Deprecated', 'skipHRPD', true);
-        }
+        $this->visitor->callChange('v5dot3\Deprecated', 'removeTableItems', ['funcTable', $this->funcTable]);
+        $this->visitor->callChange('v5dot4\Deprecated', 'removeTableItems', ['funcTable', $this->funcTable]);
+        $this->visitor->callChange('v5dot5\Deprecated', 'removeTableItems', ['funcTable', $this->funcTable]);
+        $this->visitor->callChange('v5dot5\Deprecated', 'removeTableItems', ['mysqlTable', $this->funcTable]);
+        $this->visitor->callChange('v5dot6\IncompMisc', 'removeTableItems', ['mcryptTable', $this->funcTable]);
+        $this->visitor->callChange('v5dot6\Deprecated', 'skipHRPD', true);
     }
 }

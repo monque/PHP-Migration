@@ -25,9 +25,9 @@ class ForeachLoop extends AbstractChange
         'current', 'key',
     ];
 
-    public function prepare()
+    public function __construct()
     {
-        $this->funcTable = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
+        $this->funcTable = new SymbolTable($this->funcTable, SymbolTable::IC);
     }
 
     public function beforeTraverse(array $nodes)

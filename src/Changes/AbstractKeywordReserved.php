@@ -16,16 +16,11 @@ use PhpParser\Node\Stmt;
 
 abstract class AbstractKeywordReserved extends AbstractChange
 {
-    protected $tableLoaded = false;
-
     protected $wordTable;
 
-    public function prepare()
+    public function __construct()
     {
-        if (!$this->tableLoaded) {
-            $this->wordTable = new SymbolTable(array_flip($this->wordTable), SymbolTable::IC);
-            $this->tableLoaded = true;
-        }
+        $this->wordTable = new SymbolTable($this->wordTable, SymbolTable::IC);
     }
 
     public function leaveNode($node)
