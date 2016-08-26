@@ -25,8 +25,10 @@ class ParserHelper
          * eg: $_GET['func']($arg)
          */
 
-        if ($node instanceof Expr\MethodCall || $node instanceof Expr\StaticCall) {
+        if ($node instanceof Expr\MethodCall) {
             return !is_string($node->name);
+        } elseif ($node instanceof Expr\StaticCall) {
+            return !is_string($node->name) || $node->class instanceof Expr\Variable;
         } elseif ($node instanceof Expr\FuncCall) {
             return !($node->name instanceof Name);
         } else {
