@@ -16,13 +16,15 @@ class IntegerOperation extends AbstractChange
          *
          * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.integers.negative-bitshift
          */
-        if ($node instanceof Expr\BinaryOp\ShiftLeft || $node instanceof Expr\BinaryOp\ShiftRight) {
+        if ($node instanceof Expr\BinaryOp\ShiftLeft ||
+                $node instanceof Expr\BinaryOp\ShiftRight) {
             $affect = true;
             $certain = false;
 
             if ($node->right instanceof Scalar\LNumber) {
                 $affect = false;
-            } elseif ($node->right instanceof Expr\UnaryMinus && $node->right->expr instanceof Scalar\LNumber) {
+            } elseif ($node->right instanceof Expr\UnaryMinus &&
+                    $node->right->expr instanceof Scalar\LNumber) {
                 $certain = true;
             }
 

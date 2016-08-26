@@ -17,28 +17,28 @@ class ExceptionHandle extends AbstractChange
          *
          * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.error-handling
          */
-        if ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'set_exception_handler')) {
-            if (!isset($node->args[0])) {
-                return;
-            }
+        if (!$node instanceof Expr\FuncCall ||
+                !ParserHelper::isSameFunc($node->name, 'set_exception_handler') ||
+                !isset($node->args[0])) {
+            return;
+        }
 
-            $affected = true;
-            $certain = false;
-            $callback = $node->args[0]->value;
+        $affected = true;
+        $certain = false;
+        $callback = $node->args[0]->value;
 
-            if ($callback instanceof Expr\Closure) {
-                if (!isset($callback->params[0]) || !isset($callback->params[0]->type)) {
-                    $affected = false;
-                    $certain = true;
-                } elseif (ParserHelper::isSameClass($callback->params[0]->type, 'Exception')) {
-                    $affected = true;
-                    $certain = true;
-                }
+        if ($callback instanceof Expr\Closure) {
+            if (!isset($callback->params[0]) || !isset($callback->params[0]->type)) {
+                $affected = false;
+                $certain = true;
+            } elseif (ParserHelper::isSameClass($callback->params[0]->type, 'Exception')) {
+                $affected = true;
+                $certain = true;
             }
+        }
 
-            if ($affected) {
-                $this->addSpot('WARNING', $certain, 'set_exception_handler() is no longer guaranteed to receive Exception objects');
-            }
+        if ($affected) {
+            $this->addSpot('WARNING', $certain, 'set_exception_handler() is no longer guaranteed to receive Exception objects');
         }
     }
 }

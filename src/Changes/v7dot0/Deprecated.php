@@ -17,17 +17,18 @@ class Deprecated extends AbstractChange
          *
          * @see http://php.net/manual/en/migration70.deprecated.php#migration70.deprecated.php4-constructors
          */
-        if ($node instanceof Stmt\ClassMethod) {
-            if ($node->name == $this->visitor->getClassName()) {
-                $this->addSpot('DEPRECATED', true, 'PHP 4 style constructor is deprecated');
-            }
+        if ($node instanceof Stmt\ClassMethod &&
+                $node->migName == $this->visitor->getClass()->name) {
+            $this->addSpot('DEPRECATED', true, 'PHP 4 style constructor is deprecated');
 
         /**
          * password_hash() salt option
          *
          * @see http://php.net/manual/en/migration70.deprecated.php#migration70.deprecated.pwshash-salt-option
          */
-        } elseif ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'password_hash') && isset($node->args[2])) {
+        } elseif ($node instanceof Expr\FuncCall &&
+                ParserHelper::isSameFunc($node->migName, 'password_hash') &&
+                isset($node->args[2])) {
             $this->addSpot('DEPRECATED', false, 'salt option for password_hash() is deprecated');
 
         /**
@@ -35,7 +36,8 @@ class Deprecated extends AbstractChange
          *
          * @see http://php.net/manual/en/migration70.deprecated.php#migration70.deprecated.ldap
          */
-        } elseif ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'ldap_sort')) {
+        } elseif ($node instanceof Expr\FuncCall &&
+                ParserHelper::isSameFunc($node->migName, 'ldap_sort')) {
             $this->addSpot('DEPRECATED', true, 'ldap_sort() is deprecated');
         }
     }

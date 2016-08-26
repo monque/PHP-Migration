@@ -33,6 +33,10 @@ abstract class AbstractIntroducedTest extends AbstractChangeTest
             $code = sprintf("function %s() {}", strtoupper($name));
             $this->assertHasSpot($code);
 
+            // Namespaced
+            $code = sprintf("namespace Dummy; function %s() {}", $name);
+            $this->assertNotSpot($code);
+
             // Conditional name
             $code = sprintf("if (!function_exists('%s')) { function %s() {} }", $name, $name);
             $this->assertNotSpot($code);
@@ -64,6 +68,10 @@ abstract class AbstractIntroducedTest extends AbstractChangeTest
             // Case Insensitive name
             $code = $this->genMethod(strtoupper($class), strtoupper($method));
             $this->assertHasSpot($code);
+
+            // Namespaced
+            $code = 'namespace Dummy; '.$this->genMethod($class, $method);
+            $this->assertNotSpot($code);
         }
     }
 
@@ -85,6 +93,10 @@ abstract class AbstractIntroducedTest extends AbstractChangeTest
             // Case Insensitive name
             $code = sprintf("class %s {}", strtoupper($name));
             $this->assertHasSpot($code);
+
+            // Namespaced
+            $code = sprintf("namespace Dummy; class %s {}", $name);
+            $this->assertNotSpot($code);
 
             // Conditional name
             // Removed, because of autoload it's too rare to see

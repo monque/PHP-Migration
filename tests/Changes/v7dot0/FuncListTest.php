@@ -9,6 +9,8 @@ class FuncListTest extends AbstractChangeTest
     {
         $this->assertHasSpot('list($a[], $a[], $a[]) = [1, 2, 3];');
 
+        $this->assertHasSpot('list($a[], $b, $a[]) = [1, 2, 3];');
+
         $this->assertNotSpot('list($a, $b) = [1, 2];');
     }
 

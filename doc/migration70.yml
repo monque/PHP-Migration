@@ -23,7 +23,7 @@ Backward incompatible changes:
   -
     name: Changes to the handling of indirect variables, properties, and methods
     status: CHECK
-    check: v7dot0/Precedence
+    check: v7dot0/ParseDifference
   -
     name: list() no longer assigns variables in reverse order
     status: CHECK
@@ -152,7 +152,7 @@ Backward incompatible changes:
   -
     name: yield is now a right associative operator
     status: CHECK
-    check: v7dot0/Precedence
+    check: v7dot0/ParseDifference
   -
     name: Functions cannot have multiple parameters with the same name
     status: CHECK

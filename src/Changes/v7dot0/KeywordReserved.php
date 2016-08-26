@@ -43,7 +43,7 @@ class KeywordReserved extends AbstractChange
             return;
         }
 
-        $name = $node->namespacedName->toString();
+        $name = $node->name;
 
         if ($this->forbiddenTable->has($name)) {
             $this->addSpot('FATAL', true, 'Keyword "'.$name.'" cannot be used to name class-like');

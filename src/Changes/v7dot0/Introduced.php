@@ -9,17 +9,11 @@ class Introduced extends AbstractIntroduced
 
     /** @see http://php.net/manual/en/migration70.new-functions.php */
     protected $funcTable = [
-        // Closure
-        'Closure::call',
-
         // CSPRNG
         'random_bytes', 'random_int',
 
         // Error Handling and Logging
         'error_clear_last',
-
-        // Generator
-        'Generator::getReturn',
 
         // GNU Multiple Precision
         'gmp_random_seed',
@@ -36,6 +30,17 @@ class Introduced extends AbstractIntroduced
         // POSIX
         'posix_setrlimit',
 
+        // Zlib Compression
+        'inflate_add', 'deflate_add', 'inflate_init', 'deflate_init',
+    ];
+
+    protected $methodTable = [
+        // Generator
+        'Generator::getReturn',
+
+        // Closure
+        'Closure::call',
+
         // Reflection
         'ReflectionParameter::getType', 'ReflectionParameter::hasType',
         'ReflectionFunctionAbstract::getReturnType',
@@ -43,9 +48,6 @@ class Introduced extends AbstractIntroduced
 
         // Zip
         'ZipArchive::setCompressionIndex', 'ZipArchive::setCompressionName',
-
-        // Zlib Compression
-        'inflate_add', 'deflate_add', 'inflate_init', 'deflate_init',
     ];
 
     /** @see http://php.net/manual/en/migration70.classes.php */
