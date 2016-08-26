@@ -17,10 +17,14 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      * global only accepts simple variables
      *
      * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.variable-handling.global
+     * @expectedException PhpParser\Error
      */
     public function testInvalidGlobal()
     {
-        $this->expectException(Error::class);
+        // BC for PHPUnit 4.8
+        if (method_exists($this, 'expectException')) {
+            $this->expectException(Error::class);
+        }
 
         $this->parser->parse('<?php function f() { global $$foo->bar; }');
     }
@@ -34,10 +38,14 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      * Invalid octal literals
      *
      * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.integers.invalid-octals
+     * @expectedException PhpParser\Error
      */
     public function testInvalidOctal()
     {
-        $this->expectException(Error::class);
+        // BC for PHPUnit 4.8
+        if (method_exists($this, 'expectException')) {
+            $this->expectException(Error::class);
+        }
 
         $this->parser->parse('<?php $a = 0128;');
     }
