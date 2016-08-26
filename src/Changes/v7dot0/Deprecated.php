@@ -17,8 +17,8 @@ class Deprecated extends AbstractChange
          *
          * @see http://php.net/manual/en/migration70.deprecated.php#migration70.deprecated.php4-constructors
          */
-        if ($node instanceof Stmt\ClassMethod && $this->visitor->inClass()) {
-            if ($node->name == $this->visitor->getClassname()) {
+        if ($node instanceof Stmt\ClassMethod) {
+            if ($node->name == $this->visitor->getClassName()) {
                 $this->addSpot('DEPRECATED', true, 'PHP 4 style constructor is deprecated');
             }
 

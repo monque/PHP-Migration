@@ -54,7 +54,6 @@ class IncompCallFromGlobal extends AbstractChange
         // Populate
         if ($node instanceof Expr\FuncCall &&
                 $this->funcTable->has($node->name) &&
-                !$this->visitor->inMethod() &&
                 !$this->visitor->inFunction()) {
             $this->emitSpot($node);
         }
