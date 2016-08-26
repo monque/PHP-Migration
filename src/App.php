@@ -10,6 +10,7 @@ namespace PhpMigration;
  */
 
 use PhpMigration\CheckVisitor;
+use PhpMigration\ReduceVisitor;
 use PhpMigration\Utils\FunctionListExporter;
 use PhpMigration\Utils\Logging;
 use PhpMigration\Utils\Packager;
@@ -342,6 +343,7 @@ EOT;
         }
         $traverser = new NodeTraverser;
         $traverser->addVisitor(new NameResolver);
+        $traverser->addVisitor(new ReduceVisitor);
         $traverser->addVisitor($chgvisitor);
 
         // Prepare filelist

@@ -10,6 +10,7 @@ namespace PhpMigration\Utils;
  */
 
 use PhpMigration\CheckVisitor;
+use PhpMigration\ReduceVisitor;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\ParserFactory;
@@ -43,6 +44,7 @@ class TestHelper
 
         $traverser = new NodeTraverser;
         $traverser->addVisitor(new NameResolver);
+        $traverser->addVisitor(new ReduceVisitor);
         $traverser->addVisitor($visitor);
 
         $visitor->prepare();

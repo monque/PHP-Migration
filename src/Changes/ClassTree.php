@@ -25,8 +25,8 @@ class ClassTree extends AbstractChange
     public function leaveNode($node)
     {
         if ($node instanceof Stmt\Class_) {
-            $name = $node->namespacedName->toString();
-            $parent_name = is_null($node->extends) ? null : $node->extends->toString();
+            $name = $node->migName;
+            $parent_name = $node->migExtends;
 
             if (isset($this->classTable[$name])) {
                 Logging::notice('Found a duplicated class '.$name.' in '.$this->visitor->getFile());

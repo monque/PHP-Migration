@@ -61,20 +61,20 @@ abstract class AbstractIntroduced extends AbstractChange
     {
         // Function
         if ($this->isNewFunc($node)) {
-            $this->addSpot('FATAL', true, sprintf('Cannot redeclare %s()', $node->name));
+            $this->addSpot('FATAL', true, sprintf('Cannot redeclare %s()', $node->migName));
 
         // Method
         } elseif ($this->isNewMethod($node, $method_name)) {
             $this->addSpot('WARNING', true, sprintf(
                 'Method %s::%s() will override built-in method %s()',
                 $this->visitor->getClassname(),
-                $node->name,
+                $node->migName,
                 $method_name
             ));
 
         // Class, Interface, Trait
         } elseif ($this->isNewClass($node)) {
-            $this->addSpot('FATAL', true, sprintf('Cannot redeclare class "%s"', $node->name));
+            $this->addSpot('FATAL', true, sprintf('Cannot redeclare class "%s"', $node->migName));
 
         // Constant
         } elseif ($this->isNewConst($node)) {
@@ -83,8 +83,8 @@ abstract class AbstractIntroduced extends AbstractChange
 
         // Parameter
         } elseif ($this->isNewParam($node)) {
-            $advice = $this->paramTable->get($node->name);
-            $this->addSpot('NEW', false, sprintf('Function %s() has new parameter, %s', $node->name, $advice));
+            $advice = $this->paramTable->get($node->migName);
+            $this->addSpot('NEW', false, sprintf('Function %s() has new parameter, %s', $node->migName, $advice));
         }
 
         // Conditional declaration clear
@@ -97,58 +97,55 @@ abstract class AbstractIntroduced extends AbstractChange
 
     protected function isNewFunc($node)
     {
-        if (!isset($this->funcTable)) {
-            return false;
+        if (!isset($this->funcTable) || !$node instanceof Stmt\Function_ || !is_string($node->migName)) {
+            return;
         }
 
-        return ($node instanceof Stmt\Function_ && $this->funcTable->has($node->name) &&
-            (is_null($this->condFunc) || !ParserHelper::isSameFunc($node->name, $this->condFunc)));
+        return $this->funcTable->has($node->migName) &&
+            (is_null($this->condFunc) || !ParserHelper::isSameFunc($node->migName, $this->condFunc));
     }
 
     protected function isNewMethod($node, &$mname = null)
     {
-        if (!isset($this->methodTable) || !($node instanceof Stmt\ClassMethod)) {
+        if (!isset($this->methodTable) || !$node instanceof Stmt\ClassMethod) {
             return false;
         }
-        $name = $this->visitor->getClass()->extends;
-        if (!$name) {
+
+        $class = $this->visitor->getClass();
+        if (!$class instanceof Stmt\Class_ || !$class->migExtends) {
             return false;
         }
-        $mname = $name.'::'.$node->name;
+
+        $mname = $class->migExtends.'::'.$node->migName;
         return $this->methodTable->has($mname);
     }
 
     protected function isNewClass($node)
     {
-        if (!isset($this->classTable)) {
+        if (!isset($this->classTable) || !$node instanceof Stmt\ClassLike || is_null($node->migName)) {
             return false;
         }
 
-        if (!$node instanceof Stmt\ClassLike || is_null($node->name)) {
-            return false;
-        }
-
-        return $this->classTable->has($node->namespacedName->toString());
+        return $this->classTable->has($node->migName);
     }
 
     protected function isNewConst($node)
     {
-        if (!isset($this->constTable)) {
+        if (!isset($this->constTable) ||
+                !$node instanceof Expr\FuncCall ||
+                !ParserHelper::isSameFunc($node->migName, 'define') ||
+                !$node->args[0]->value instanceof Scalar\String_) {
             return false;
         }
 
-        if ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'define') &&
-                $node->args[0]->value instanceof Scalar\String_) {
-            $constname = $node->args[0]->value->value;
-            return $this->constTable->has($constname) &&
-                    (is_null($this->condConst) || $constname != $this->condConst);
-        }
-        return false;
+        $name = $node->args[0]->value->value;
+        return $this->constTable->has($name) &&
+                (is_null($this->condConst) || $name != $this->condConst);
     }
 
     protected function isNewParam($node)
     {
         return ($node instanceof Expr\FuncCall && isset($this->paramTable) &&
-                $this->paramTable->has($node->name));
+                $this->paramTable->has($node->migName));
     }
 }

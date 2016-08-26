@@ -40,11 +40,10 @@ abstract class AbstractKeywordReserved extends AbstractChange
         $name = null;
         if ($node instanceof Stmt\ClassLike ||
                 $node instanceof Stmt\Function_ || $node instanceof Stmt\ClassMethod ||
-                $node instanceof Expr\MethodCall || $node instanceof Expr\StaticCall) {
-            $name = $node->name;
-        } elseif ($node instanceof Expr\ConstFetch ||
+                $node instanceof Expr\MethodCall || $node instanceof Expr\StaticCall ||
+                $node instanceof Expr\ConstFetch ||  
                 ($node instanceof Expr\FuncCall && !ParserHelper::isDynamicCall($node))) {
-            $name = $node->name->toString();
+            $name = $node->migName;
         }
         if (!is_null($name) && $this->wordTable->has($name)) {
             $this->addSpot('FATAL', true, 'Keyword "'.$name.'" is reserved');

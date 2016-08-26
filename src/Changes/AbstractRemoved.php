@@ -37,33 +37,33 @@ abstract class AbstractRemoved extends AbstractChange
     {
         // Function
         if ($this->isRemovedFunc($node)) {
-            $this->addSpot('FATAL', true, sprintf('Function %s() is removed', $node->name));
+            $this->addSpot('FATAL', true, sprintf('Function %s() is removed', $node->migName));
 
         // Constant
         } elseif ($this->isRemovedConst($node)) {
-            $this->addSpot('WARNING', true, sprintf('Constant %s is removed', $node->name));
+            $this->addSpot('WARNING', true, sprintf('Constant %s is removed', $node->migName));
 
         // Variable
         } elseif ($this->isRemovedVar($node)) {
-            $this->addSpot('WARNING', true, sprintf('Variable $%s is removed', $node->name));
+            $this->addSpot('WARNING', true, sprintf('Variable $%s is removed', $node->migName));
         }
     }
 
     protected function isRemovedFunc($node)
     {
         return ($node instanceof Expr\FuncCall && isset($this->funcTable) &&
-                $this->funcTable->has($node->name));
+                $this->funcTable->has($node->migName));
     }
 
     protected function isRemovedConst($node)
     {
         return ($node instanceof Expr\ConstFetch && isset($this->constTable) &&
-                $this->constTable->has($node->name));
+                $this->constTable->has($node->migName));
     }
 
     protected function isRemovedVar($node)
     {
         return ($node instanceof Expr\Variable && isset($this->varTable) &&
-                $this->varTable->has($node->name));
+                $this->varTable->has($node->migName));
     }
 }
