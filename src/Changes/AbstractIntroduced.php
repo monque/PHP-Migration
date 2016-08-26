@@ -67,7 +67,7 @@ abstract class AbstractIntroduced extends AbstractChange
         } elseif ($this->isNewMethod($node, $method_name)) {
             $this->addSpot('WARNING', true, sprintf(
                 'Method %s::%s() will override built-in method %s()',
-                $this->visitor->getClassname(),
+                $this->visitor->getClassName(),
                 $node->migName,
                 $method_name
             ));

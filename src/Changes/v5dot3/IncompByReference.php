@@ -369,9 +369,9 @@ class IncompByReference extends AbstractChange
         if ($type == 'func') {
             $fname = $node->name;
         } elseif ($node->isStatic()) {
-            $fname = $this->visitor->getClassname().'::'.$node->name;
+            $fname = $this->visitor->getClassName().'::'.$node->name;
         } else {
-            $fname = $this->visitor->getClassname().'->'.$node->name;
+            $fname = $this->visitor->getClassName().'->'.$node->name;
 
             $mname = '->'.$node->name;
             if ($this->methodTable->has($mname)) {
@@ -379,7 +379,7 @@ class IncompByReference extends AbstractChange
             } else {
                 $suspect = array();
             }
-            $suspect[$this->visitor->getClassname()] = $posbit;
+            $suspect[$this->visitor->getClassName()] = $posbit;
             $this->methodTable->set($mname, $suspect);
         }
 
@@ -402,13 +402,13 @@ class IncompByReference extends AbstractChange
         } elseif ($type == 'static') {
             $class = $node->class->toString();
             if ($class == 'self' && $this->visitor->inClass()) {
-                $class = $this->visitor->getClassname();
+                $class = $this->visitor->getClassName();
             }
             $callname = $class.'::'.$node->name;
         } elseif ($type == 'method') {
             if ($node->var instanceof Expr\Variable &&
                     $node->var->name == 'this' && $this->visitor->inClass()) {
-                $oname = $this->visitor->getClassname();
+                $oname = $this->visitor->getClassName();
             } else {
                 $oname = '';
             }

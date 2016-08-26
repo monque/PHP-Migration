@@ -44,7 +44,7 @@ class IncompMagic extends AbstractChange
 
         $message = sprintf(
             'The magic method %s::%s() must have public visibility and cannot be static',
-            $this->visitor->getClassname(),
+            $this->visitor->getClassName(),
             $node->name
         );
         $this->addSpot('WARNING', true, $message, $node->getLine());
@@ -65,7 +65,7 @@ class IncompMagic extends AbstractChange
 
         $message = sprintf(
             'Method %s::__tostring() cannot take arguments',
-            $this->visitor->getClassname()
+            $this->visitor->getClassName()
         );
         $this->addSpot('FATAL', true, $message, $node->getLine());
     }

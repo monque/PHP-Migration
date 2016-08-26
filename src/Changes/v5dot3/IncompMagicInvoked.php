@@ -30,7 +30,7 @@ class IncompMagicInvoked extends AbstractChange
 
         $message = sprintf(
             'The __call() magic method will be invoked on access to non-public mehtods in %s',
-            $this->visitor->getClassname()
+            $this->visitor->getClassName()
         );
         $this->addSpot('NOTICE', false, $message, $node->getLine());
     }
