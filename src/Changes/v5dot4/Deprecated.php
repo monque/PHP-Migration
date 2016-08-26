@@ -10,26 +10,24 @@ namespace PhpMigration\Changes\v5dot4;
  */
 
 use PhpMigration\Changes\AbstractChange;
+use PhpMigration\Changes\RemoveTableItemTrait;
 use PhpMigration\SymbolTable;
 use PhpParser\Node\Expr;
 
 class Deprecated extends AbstractChange
 {
-    protected static $version = '5.4.0';
+    use RemoveTableItemTrait;
 
-    protected $tableLoaded = false;
+    protected static $version = '5.4.0';
 
     protected $funcTable = array(
         'mcrypt_generic_end',
         'mysql_list_dbs',
     );
 
-    public function prepare()
+    public function __construct()
     {
-        if (!$this->tableLoaded) {
-            $this->funcTable = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
-            $this->tableLoaded = true;
-        }
+        $this->funcTable = new SymbolTable($this->funcTable, SymbolTable::IC);
     }
 
     public function leaveNode($node)

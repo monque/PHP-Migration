@@ -22,7 +22,6 @@ abstract class AbstractChangeTest extends \PHPUnit_Framework_TestCase
             $chgname = substr($chgname, 0, -4);
         }
         $this->change = new $chgname;
-        $this->change->prepare();
     }
 
     public function assertHasSpot($code)

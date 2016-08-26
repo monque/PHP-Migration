@@ -51,7 +51,6 @@ class IncompMisc extends AbstractChange
              * http://php.net/manual/en/migration54.incompatible.php
              */
             $this->addSpot('WARNING', true, 'The third parameter of ob_start() has changed');
-
         } elseif ($node instanceof Expr\FuncCall &&
                 (ParserHelper::isSameFunc($node->name, 'htmlentities') ||
                 ParserHelper::isSameFunc($node->name, 'htmlspecialchars'))) {

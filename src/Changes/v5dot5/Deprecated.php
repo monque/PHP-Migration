@@ -10,6 +10,7 @@ namespace PhpMigration\Changes\v5dot5;
  */
 
 use PhpMigration\Changes\AbstractChange;
+use PhpMigration\Changes\RemoveTableItemTrait;
 use PhpMigration\SymbolTable;
 use PhpMigration\Utils\ParserHelper;
 use PhpParser\Node\Expr;
@@ -17,9 +18,9 @@ use PhpParser\Node\Scalar;
 
 class Deprecated extends AbstractChange
 {
-    protected static $version = '5.5.0';
+    use RemoveTableItemTrait;
 
-    protected $tableLoaded = false;
+    protected static $version = '5.5.0';
 
     protected $funcTable = array(
         // intl
@@ -47,17 +48,15 @@ class Deprecated extends AbstractChange
         'mysql_thread_id', 'mysql_unbuffered_query',
     );
 
+    public function __construct()
+    {
+        $this->funcTable = new SymbolTable($this->funcTable, SymbolTable::IC);
+        $this->mysqlTable = new SymbolTable($this->mysqlTable, SymbolTable::IC);
+    }
+
     public function prepare()
     {
-        if (!$this->tableLoaded) {
-            $this->funcTable = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
-            $this->mysqlTable = new SymbolTable(array_flip($this->mysqlTable), SymbolTable::IC);
-            $this->tableLoaded = true;
-        }
-
-        if ($this->visitor) {
-            $this->visitor->callChange('v5dot3\Deprecated', 'skipMysqlFunc', true);
-        }
+        $this->visitor->callChange('v5dot3\Deprecated', 'removeTableItems', ['funcTable', $this->mysqlTable]);
     }
 
     public function leaveNode($node)
@@ -77,7 +76,6 @@ class Deprecated extends AbstractChange
                 true,
                 'The original MySQL extension is deprecated, use MySQLi or PDO_MySQL extensions instead'
             );
-
         } elseif ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'preg_replace')) {
             /**
              * {Description}
@@ -120,7 +118,6 @@ class Deprecated extends AbstractChange
                     'preg_replace() /e modifier is deprecated, use preg_replace_callback() instead'
                 );
             }
-
         } elseif ($node instanceof Expr\FuncCall && $this->funcTable->has($node->name)) {
             /**
              * TODO: how to check IntlDateFormatter::setTimeZoneId

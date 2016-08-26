@@ -17,8 +17,6 @@ use PhpParser\Node\Stmt;
 
 abstract class AbstractIntroduced extends AbstractChange
 {
-    protected $tableLoaded = false;
-
     protected $funcTable;
 
     protected $methodTable;
@@ -33,37 +31,29 @@ abstract class AbstractIntroduced extends AbstractChange
 
     protected $condConst = null;
 
-    public function prepare()
-    {
-        if (!$this->tableLoaded) {
-            $this->loadTable();
-            $this->tableLoaded = true;
-        }
-    }
-
-    public function loadTable()
+    public function __construct()
     {
         if (isset($this->funcTable)) {
-            $this->funcTable = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
+            $this->funcTable = new SymbolTable($this->funcTable, SymbolTable::IC);
         }
         if (isset($this->methodTable)) {
-            $this->methodTable  = new SymbolTable(array_flip($this->methodTable), SymbolTable::IC);
+            $this->methodTable  = new SymbolTable($this->methodTable, SymbolTable::IC);
         }
         if (isset($this->classTable)) {
-            $this->classTable = new SymbolTable(array_flip($this->classTable), SymbolTable::IC);
+            $this->classTable = new SymbolTable($this->classTable, SymbolTable::IC);
         }
         if (isset($this->constTable)) {
-            $this->constTable = new SymbolTable(array_flip($this->constTable), SymbolTable::CS);
+            $this->constTable = new SymbolTable($this->constTable, SymbolTable::CS);
         }
     }
 
     public function enterNode($node)
     {
         // Support the simplest conditional declaration
-        if (ParserHelper::isConditionalFunc($node)) {
-            $this->condFunc = ParserHelper::getConditionalName($node);
-        } elseif (ParserHelper::isConditionalConst($node)) {
-            $this->condConst = ParserHelper::getConditionalName($node);
+        if ($this->isConditionalFunc($node)) {
+            $this->condFunc = $this->getConditionalName($node);
+        } elseif ($this->isConditionalConst($node)) {
+            $this->condConst = $this->getConditionalName($node);
         }
     }
 
@@ -71,94 +61,123 @@ abstract class AbstractIntroduced extends AbstractChange
     {
         // Function
         if ($this->isNewFunc($node)) {
-            $this->addSpot('FATAL', true, sprintf('Cannot redeclare %s()', $node->name));
+            $this->addSpot('FATAL', true, sprintf('Cannot redeclare %s()', $node->migName));
 
         // Method
         } elseif ($this->isNewMethod($node, $method_name)) {
             $this->addSpot('WARNING', true, sprintf(
                 'Method %s::%s() will override built-in method %s()',
-                $this->visitor->getClassname(),
-                $node->name,
+                $this->visitor->getClassName(),
+                $node->migName,
                 $method_name
             ));
 
         // Class, Interface, Trait
         } elseif ($this->isNewClass($node)) {
-            /**
-             * TODO: We should check namespaced name instead literal
-             * Predis/Session/SessionHandler.php in Predis will be affteced
-             */
-            $this->addSpot('FATAL', true, sprintf('Cannot redeclare class %s', $node->name));
+            $this->addSpot('FATAL', true, sprintf('Cannot redeclare class "%s"', $node->migName));
 
         // Constant
         } elseif ($this->isNewConst($node)) {
             $constname = $node->args[0]->value->value;
-            $this->addSpot('WARNING', true, sprintf('Constant %s already defined', $constname));
+            $this->addSpot('WARNING', true, sprintf('Constant "%s" already defined', $constname));
 
         // Parameter
         } elseif ($this->isNewParam($node)) {
-            $advice = $this->paramTable->get($node->name);
-            $this->addSpot('NEW', false, sprintf('Function %s() has new parameter, %s', $node->name, $advice));
+            $advice = $this->paramTable->get($node->migName);
+            $this->addSpot('NEW', false, sprintf('Function %s() has new parameter, %s', $node->migName, $advice));
         }
 
         // Conditional declaration clear
-        if (ParserHelper::isConditionalFunc($node)) {
+        if ($this->isConditionalFunc($node)) {
             $this->condFunc = null;
-        } elseif (ParserHelper::isConditionalConst($node)) {
+        } elseif ($this->isConditionalConst($node)) {
             $this->condConst = null;
         }
     }
 
     protected function isNewFunc($node)
     {
-        if (!isset($this->funcTable)) {
-            return false;
+        if (!isset($this->funcTable) || !$node instanceof Stmt\Function_ || !is_string($node->migName)) {
+            return;
         }
 
-        return ($node instanceof Stmt\Function_ && $this->funcTable->has($node->name) &&
-            (is_null($this->condFunc) || !ParserHelper::isSameFunc($node->name, $this->condFunc)));
+        return $this->funcTable->has($node->migName) &&
+            (is_null($this->condFunc) || !ParserHelper::isSameFunc($node->migName, $this->condFunc));
     }
 
     protected function isNewMethod($node, &$mname = null)
     {
-        if (!isset($this->methodTable) || !($node instanceof Stmt\ClassMethod)) {
+        if (!isset($this->methodTable) || !$node instanceof Stmt\ClassMethod) {
             return false;
         }
-        $name = $this->visitor->getClass()->extends;
-        if (!$name) {
+
+        $class = $this->visitor->getClass();
+        if (!$class instanceof Stmt\Class_ || !$class->migExtends) {
             return false;
         }
-        $mname = $name.'::'.$node->name;
+
+        $mname = $class->migExtends.'::'.$node->migName;
         return $this->methodTable->has($mname);
     }
 
     protected function isNewClass($node)
     {
-        if (!isset($this->classTable)) {
+        if (!isset($this->classTable) || !$node instanceof Stmt\ClassLike || is_null($node->migName)) {
             return false;
         }
 
-        return (($node instanceof Stmt\ClassLike) && $this->classTable->has($node->name));
+        return $this->classTable->has($node->migName);
     }
 
     protected function isNewConst($node)
     {
-        if (!isset($this->constTable)) {
+        if (!isset($this->constTable) ||
+                !$node instanceof Expr\FuncCall ||
+                !ParserHelper::isSameFunc($node->migName, 'define') ||
+                !$node->args[0]->value instanceof Scalar\String_) {
             return false;
         }
 
-        if ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'define') &&
-                $node->args[0]->value instanceof Scalar\String_) {
-            $constname = $node->args[0]->value->value;
-            return $this->constTable->has($constname) &&
-                    (is_null($this->condConst) || $constname != $this->condConst);
-        }
-        return false;
+        $name = $node->args[0]->value->value;
+        return $this->constTable->has($name) &&
+                (is_null($this->condConst) || $name != $this->condConst);
     }
 
     protected function isNewParam($node)
     {
         return ($node instanceof Expr\FuncCall && isset($this->paramTable) &&
-                $this->paramTable->has($node->name));
+                $this->paramTable->has($node->migName));
+    }
+
+    /**
+     * Conditional checking
+     */
+    protected function isConditionalDeclare($node, $testfunc)
+    {
+        if (!$node instanceof Stmt\If_ || !$node->cond instanceof Expr\BooleanNot) {
+            return false;
+        }
+
+        $expr = $node->cond->expr;
+        return $expr instanceof Expr\FuncCall && ParserHelper::isSameFunc($expr->migName, $testfunc);
+    }
+
+    protected function isConditionalFunc($node)
+    {
+        return $this->isConditionalDeclare($node, 'function_exists');
+    }
+
+    protected function isConditionalConst($node)
+    {
+        return $this->isConditionalDeclare($node, 'defined');
+    }
+
+    protected function getConditionalName($node)
+    {
+        if ($node->cond->expr->args[0]->value instanceof Scalar\String_) {
+            return $node->cond->expr->args[0]->value->value;
+        } else {
+            return null;
+        }
     }
 }

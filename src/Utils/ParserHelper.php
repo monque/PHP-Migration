@@ -11,6 +11,8 @@ namespace PhpMigration\Utils;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr;
+use PhpParser\Node\Name;
+use PhpParser\Node\Scalar;
 use PhpParser\Node\Stmt;
 
 class ParserHelper
@@ -23,38 +25,15 @@ class ParserHelper
          * eg: $_GET['func']($arg)
          */
 
-        if ($node instanceof Expr\MethodCall || $node instanceof Expr\StaticCall) {
+        if ($node instanceof Expr\MethodCall) {
             return !is_string($node->name);
+        } elseif ($node instanceof Expr\StaticCall) {
+            return !is_string($node->name) || $node->class instanceof Expr\Variable;
         } elseif ($node instanceof Expr\FuncCall) {
-            return !($node->name instanceof Node\Name);
+            return !($node->name instanceof Name);
         } else {
             throw new \Exception('Invalid function, method call node ('.get_class($node).')');
         }
-    }
-
-    protected static function isConditionalDeclare(Node $node, $testfunc)
-    {
-        if (!($node instanceof Stmt\If_ && $node->cond instanceof Expr\BooleanNot)) {
-            return false;
-        }
-
-        $expr = $node->cond->expr;
-        return $expr instanceof Expr\FuncCall && self::isSameFunc($expr->name, $testfunc);
-    }
-
-    public static function isConditionalFunc(Node $node)
-    {
-        return self::isConditionalDeclare($node, 'function_exists');
-    }
-
-    public static function isConditionalConst(Node $node)
-    {
-        return self::isConditionalDeclare($node, 'defined');
-    }
-
-    public static function getConditionalName(Node $node)
-    {
-        return $node->cond->expr->args[0]->value->value;
     }
 
     public static function isSameFunc($name, $const)

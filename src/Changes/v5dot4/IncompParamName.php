@@ -17,18 +17,13 @@ class IncompParamName extends AbstractChange
 {
     protected static $version = '5.4.0';
 
-    protected $tableLoaded = false;
-
     protected $autoGlobals = array(
         '_SESSION', '_GET', '_POST', '_COOKIE', '_SERVER', '_ENV', '_REQUEST', '_FILES'
     );
 
-    public function prepare()
+    public function __construct()
     {
-        if (!$this->tableLoaded) {
-            $this->autoGlobals = new SymbolTable(array_flip($this->autoGlobals), SymbolTable::CS);
-            $this->tableLoaded = true;
-        }
+        $this->autoGlobals = new SymbolTable($this->autoGlobals, SymbolTable::CS);
     }
 
     public function leaveNode($node)

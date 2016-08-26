@@ -18,18 +18,13 @@ class IncompMisc extends AbstractChange
 {
     protected static $version = '5.3.0';
 
-    protected $tableLoaded = false;
-
     protected $arrFuncTable = array(
         'natsort', 'natcasesort', 'usort', 'uasort', 'uksort', 'array_flip', 'array_unique',
     );
 
-    public function prepare()
+    public function __construct()
     {
-        if (!$this->tableLoaded) {
-            $this->arrFuncTable  = new SymbolTable(array_flip($this->arrFuncTable), SymbolTable::IC);
-            $this->tableLoaded = true;
-        }
+        $this->arrFuncTable = new SymbolTable($this->arrFuncTable, SymbolTable::IC);
     }
 
     public function leaveNode($node)
@@ -44,7 +39,6 @@ class IncompMisc extends AbstractChange
                  * http://php.net/manual/en/migration53.incompatible.php
                  */
                 $this->addSpot('NOTICE', false, 'clearstatcache() no longer clears the realpath cache by default');
-
             } elseif (ParserHelper::isSameFunc($node->name, 'realpath')) {
                 /**
                  * {Description}
@@ -60,7 +54,6 @@ class IncompMisc extends AbstractChange
                  * http://php.net/manual/en/migration53.incompatible.php
                  */
                 $this->addSpot('NOTICE', false, 'realpath() is now fully platform-independent, especially on *BSD.');
-
             } elseif ($this->arrFuncTable->has($node->name)) {
                 /**
                  * {Description}
@@ -77,7 +70,6 @@ class IncompMisc extends AbstractChange
                     false,
                     sprintf('%s() no longer accept objects passed as arguments', $node->name)
                 );
-
             } elseif (ParserHelper::isSameFunc($node->name, 'call_user_func_array')) {
                 /**
                  * {Description}
@@ -96,7 +88,6 @@ class IncompMisc extends AbstractChange
                         sprintf('%s() no longer accept non-array passed as arguments', $node->name)
                     );
                 }
-
             } elseif (ParserHelper::isSameFunc($node->name, 'gd_info')) {
                 /**
                  * {Description}

@@ -11,14 +11,12 @@ namespace PhpMigration\Changes\v5dot5;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\SymbolTable;
-use PhpParser\Node;
+use PhpParser\Node\Name;
 use PhpParser\Node\Expr;
 
 class IncompCaseInsensitive extends AbstractChange
 {
     protected static $version = '5.5.0';
-
-    protected $tableLoaded = false;
 
     protected $keywords = array(
         'self'      => 'self',
@@ -26,12 +24,9 @@ class IncompCaseInsensitive extends AbstractChange
         'static'    => 'static',
     );
 
-    public function prepare()
+    public function __construct()
     {
-        if (!$this->tableLoaded) {
-            $this->keywords = new SymbolTable($this->keywords, SymbolTable::IC);
-            $this->tableLoaded = true;
-        }
+        $this->keywords = new SymbolTable($this->keywords, SymbolTable::IC);
     }
 
     public function leaveNode($node)
@@ -49,7 +44,7 @@ class IncompCaseInsensitive extends AbstractChange
          * http://php.net/manual/en/migration55.incompatible.php#migration55.incompatible.self-parent-static
          */
         if (($node instanceof Expr\StaticCall || $node instanceof Expr\StaticPropertyFetch)
-                && $node->class instanceof Node\Name) {
+                && $node->class instanceof Name) {
             $name = $node->class->toString();
             if ($this->keywords->has($name) && $this->keywords->get($name) != $name) {
                 $this->addSpot(

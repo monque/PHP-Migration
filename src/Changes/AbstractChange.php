@@ -45,14 +45,21 @@ abstract class AbstractChange
     }
 
     /**
-     * Called before any processing, just after __construct
+     * Initialization of properties
+     */
+    public function __construct()
+    {
+    }
+
+    /**
+     * Called before any processing, after __construct()
      */
     public function prepare()
     {
     }
 
     /**
-     * Called after every file have been parsed
+     * Called after all file have been parsed
      * Usually process data collected in traversing, and return
      */
     public function finish()
@@ -60,16 +67,23 @@ abstract class AbstractChange
     }
 
     /**
+     * De-initialization of properties, after finish()
+     */
+    public function __destruct()
+    {
+    }
+
+    /**
      * Called before Traverser woking
      */
-    public function beforeTraverse()
+    public function beforeTraverse(array $nodes)
     {
     }
 
     /**
      * Called after Traverser woking done
      */
-    public function afterTraverse()
+    public function afterTraverse(array $nodes)
     {
     }
 

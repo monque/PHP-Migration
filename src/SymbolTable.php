@@ -20,6 +20,11 @@ class SymbolTable implements \Iterator, \ArrayAccess
 
     public function __construct($data, $case_sensitive = true)
     {
+        // Auto flip
+        if (is_array($data) && key($data) === 0) {
+            $data = array_flip($data);
+        }
+
         $this->data = array();
         foreach ($data as $rawkey => $value) {
             $key = $case_sensitive ? $rawkey : strtolower($rawkey);

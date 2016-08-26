@@ -18,18 +18,13 @@ class IncompMagic extends AbstractChange
 {
     protected static $version = '5.3.0';
 
-    protected $tableLoaded = false;
-
     protected $funcTable = array(
         '__get', '__set', '__isset', '__unset', '__call',
     );
 
-    public function prepare()
+    public function __construct()
     {
-        if (!$this->tableLoaded) {
-            $this->funcTable  = new SymbolTable(array_flip($this->funcTable), SymbolTable::IC);
-            $this->tableLoaded = true;
-        }
+        $this->funcTable = new SymbolTable($this->funcTable, SymbolTable::IC);
     }
 
     protected function emitNonPub($node)
@@ -49,7 +44,7 @@ class IncompMagic extends AbstractChange
 
         $message = sprintf(
             'The magic method %s::%s() must have public visibility and cannot be static',
-            $this->visitor->getClassname(),
+            $this->visitor->getClassName(),
             $node->name
         );
         $this->addSpot('WARNING', true, $message, $node->getLine());
@@ -70,7 +65,7 @@ class IncompMagic extends AbstractChange
 
         $message = sprintf(
             'Method %s::__tostring() cannot take arguments',
-            $this->visitor->getClassname()
+            $this->visitor->getClassName()
         );
         $this->addSpot('FATAL', true, $message, $node->getLine());
     }

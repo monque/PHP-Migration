@@ -10,15 +10,16 @@ namespace PhpMigration\Changes\v5dot6;
  */
 
 use PhpMigration\Changes\AbstractChange;
+use PhpMigration\Changes\RemoveTableItemTrait;
 use PhpMigration\SymbolTable;
 use PhpMigration\Utils\ParserHelper;
 use PhpParser\Node\Expr;
 
 class IncompMisc extends AbstractChange
 {
-    protected static $version = '5.6.0';
+    use RemoveTableItemTrait;
 
-    protected $tableLoaded = false;
+    protected static $version = '5.6.0';
 
     protected $gmpTable = array(
         'gmp_abs', 'gmp_add', 'gmp_and', 'gmp_clrbit', 'gmp_cmp', 'gmp_com',
@@ -38,13 +39,10 @@ class IncompMisc extends AbstractChange
         'mcrypt_ecb', 'mcrypt_generic', 'mcrypt_ofb',
     );
 
-    public function prepare()
+    public function __construct()
     {
-        if (!$this->tableLoaded) {
-            $this->gmpTable = new SymbolTable(array_flip($this->gmpTable), SymbolTable::IC);
-            $this->mcryptTable = new SymbolTable(array_flip($this->mcryptTable), SymbolTable::IC);
-            $this->tableLoaded = true;
-        }
+        $this->gmpTable = new SymbolTable($this->gmpTable, SymbolTable::IC);
+        $this->mcryptTable = new SymbolTable($this->mcryptTable, SymbolTable::IC);
     }
 
     public function leaveNode($node)

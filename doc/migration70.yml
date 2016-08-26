@@ -1,0 +1,237 @@
+# Migrating from PHP 5.6.x to PHP 7.0.x
+# http://php.net/manual/en/migration70.php
+---
+
+Backward incompatible changes:
+
+  # Changes to error and exception handling
+  -
+    name: set_exception_handler() is no longer guaranteed to receive Exception objects
+    status: CHECK
+    check: v7dot0/ExceptionHandle
+  -
+    name: Internal constructors always throw exceptions on failure
+    status: IGNORE
+  -
+    name: Parse errors throw ParseError
+    status: IGNORE
+  -
+    name: E_STRICT notices severity changes
+    status: TODO
+
+  # Changes to variable handling
+  -
+    name: Changes to the handling of indirect variables, properties, and methods
+    status: CHECK
+    check: v7dot0/ParseDifference
+  -
+    name: list() no longer assigns variables in reverse order
+    status: CHECK
+    check: v7dot0/FuncList
+  -
+    name: Empty list() assignments have been removed
+    status: CHECK
+    check: v7dot0/FuncList
+  -
+    name: list() cannot unpack strings
+    status: IGNORE
+  -
+    name: Array ordering when elements are automatically created during by reference assignments has changed
+    status: IGNORE
+  -
+    name: global only accepts simple variables
+    status: PARSER
+  -
+    name: Parentheses around function arguments no longer affect behaviour
+    status: IGNORE
+
+  # Changes to foreach
+  -
+    name: foreach no longer changes the internal array pointer
+    status: CHECK
+    check: v7dot0/ForeachLoop
+  -
+    name: foreach by-value operates on a copy of the array
+    status: IGNORE
+  -
+    name: foreach by-reference has improved iteration behaviour
+    status: IGNORE
+  -
+    name: Iteration of non-Traversable objects
+    status: IGNORE
+
+  # Changes to integer handling
+  -
+    name: Invalid octal literals
+    status: PARSER
+  -
+    name: Negative bitshifts
+    status: CHECK
+    check: v7dot0/IntegerOperation
+  -
+    name: Out of range bitshits
+    status: IGNORE
+  -
+    name: Changes to Division By Zero
+    status: IGNORE
+  -
+    name: Changes to Modulus By Zero
+    status: CHECK
+    check: v7dot0/IntegerOperation
+
+  # Changes to string handling
+  -
+    name: Hexadecimal strings are no longer considered numeric
+    status: CHECK
+    check: v7dot0/StringOperation
+  -
+    name: \u{ may cause errors
+    status: IGNORE
+
+  # Removed functions
+  -
+    name: call_user_method() and call_user_method_array()
+    status: CHECK
+    check: v7dot0/Removed
+  -
+    name: All ereg* functions
+    status: CHECK
+    check: v7dot0/Removed
+  -
+    name: mcrypt aliases
+    status: CHECK
+    check: v7dot0/Removed
+  -
+    name: All ext/mysql functions
+    status: CHECK
+    check: v7dot0/Removed
+  -
+    name: All ext/mssql functions
+    status: CHECK
+    check: v7dot0/Removed
+  -
+    name: intl aliases
+    status: CHECK
+    check: v7dot0/Removed
+  -
+    name: set_magic_quotes_runtime()
+    status: CHECK
+    check: v7dot0/Removed
+  -
+    name: set_socket_blocking()
+    status: CHECK
+    check: v7dot0/Removed
+  -
+    name: dl() in PHP-FPM
+    status: CHECK
+    check: v5dot3/Removed
+  -
+    name: GD Type1 functions
+    status: CHECK
+    check: v7dot0/Removed
+
+  # Removed INI directives
+  -
+    name: Removed INI directives
+    status: INI
+
+  # Other backward incompatible changes
+  -
+    name: New objects cannot be assigned by reference
+    status: PARSER # @see https://github.com/nikic/PHP-Parser/issues/295
+  -
+    name: Invalid class, interface and trait names
+    status: CHECK
+    check: v7dot0/KeywordReserved
+  -
+    name: ASP and script PHP tags removed
+    status: PARSER
+  -
+    name: Calls from incompatible context removed
+    status: IGNORE
+  -
+    name: yield is now a right associative operator
+    status: CHECK
+    check: v7dot0/ParseDifference
+  -
+    name: Functions cannot have multiple parameters with the same name
+    status: CHECK
+    check: v7dot0/FuncParameters
+  -
+    name: Functions inspecting arguments report the current parameter value
+    status: TODO
+  -
+    name: Switch statements cannot have multiple default blocks
+    status: CHECK
+    check: v7dot0/SwitchMultipleDefaults
+  -
+    name: $HTTP_RAW_POST_DATA removed
+    status: CHECK
+    check: v7dot0/Removed
+  -
+    name: \# comments in INI files removed 
+    status: INI
+  -
+    name: JSON extension replaced with JSOND
+    status: IGNORE
+  -
+    name: Internal function failure on overflow
+    status: IGNORE
+  -
+    name: Fixes to custom session handler return values
+    status: IGNORE
+
+
+Deprecated:
+  - 
+    name: PHP 4 style constructors
+    status: CHECK
+    check: v7dot0/Deprecated
+  - 
+    name: Static calls to non-static methods
+    status: TODO
+  - 
+    name: password_hash() salt option
+    status: CHECK
+    check: v7dot0/Deprecated
+  - 
+    name: capture_session_meta SSL context option
+    status: IGNORE
+  - 
+    name: LDAP deprecations
+    status: CHECK
+    check: v7dot0/Deprecated
+
+
+Changed functions:
+  -
+    status: IGNORE
+
+
+New functions, classes, interfaces, constans:
+  -
+    status: CHECK
+    check: v7dot0/Introduced
+
+
+Changes in SAPI Modules:
+  -
+    name: Unqualified listen ports now listen on both IPv4 and IPv6
+    status: IGNORE
+
+
+Removed Extensions and SAPIs:
+  -
+    status: IGNORE
+
+
+Other Changes:
+  -
+    name: Loosening Reserved Word Restrictions
+    status: IGNORE
+  -
+    name: Removal of date.timezone Warning
+    status: IGNORE
+
+
+# vim: set shiftwidth=2 expandtab softtabstop=2:

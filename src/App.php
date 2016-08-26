@@ -10,6 +10,7 @@ namespace PhpMigration;
  */
 
 use PhpMigration\CheckVisitor;
+use PhpMigration\ReduceVisitor;
 use PhpMigration\Utils\FunctionListExporter;
 use PhpMigration\Utils\Logging;
 use PhpMigration\Utils\Packager;
@@ -91,7 +92,7 @@ EOT;
         $args = array(
             '--list'            => false,
             '--quite'           => false,
-            '--set'             => 'to56',
+            '--set'             => 'to70',
             '--dump'            => false,
             '--verbose'         => false,
             '--version'         => false,
@@ -190,22 +191,16 @@ EOT;
 
         if ($this->args['--help']) {
             $this->showUsage('help');
-
         } elseif ($this->args['--version']) {
             $this->showVersion();
-
         } elseif ($this->args['--list']) {
             $this->commandList();
-
         } elseif ($this->devmode && $this->args['--export-posbit']) {
             $this->commandExportPosbit();
-
         } elseif ($this->devmode && $this->args['--pack']) {
             $this->commandPack();
-
         } elseif ($this->args['<file>']) {
             $this->commandMain();
-
         } else {
             $this->showUsage();
         }
@@ -273,6 +268,7 @@ EOT;
     {
         // Load set, change
         $chglist = array();
+        $options = array();
         $loaded_sets = array();
         $setstack = array($this->args['--set']);
         while (!empty($setstack)) {
@@ -290,12 +286,24 @@ EOT;
                 Logging::error("Unable load setfile {name}", array('name' => $setfile));
                 exit(1);
             }
+            if ($this->args['--verbose']) {
+                Logging::info('Load set {name}', array('name' => basename($setfile)));
+            }
             $info = json_decode(file_get_contents($setfile));
 
             // Depend
             if (isset($info->depend)) {
                 foreach ($info->depend as $setname) {
                     $setstack[] = $setname;
+                }
+            }
+
+            // Options
+            if (isset($info->options)) {
+                foreach ($info->options as $key => $value) {
+                    if (!isset($options[$key])) {
+                        $options[$key] = $value;
+                    }
                 }
             }
 
@@ -307,6 +315,10 @@ EOT;
             }
         }
         $chglist = array_reverse($chglist);  // FIXME: use a better method making load order correct
+
+        if ($this->args['--verbose']) {
+            Logging::info('Set options '.print_r($options, true));
+        }
 
         // Instantiate change
         foreach ($chglist as $key => $chgname) {
@@ -320,17 +332,28 @@ EOT;
         $chgvisitor = new CheckVisitor($chglist);
 
         // Instance parser
-        $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP5);
+        if (isset($options['parse_as_version']) && $options['parse_as_version'] == 7) {
+            $kind = ParserFactory::ONLY_PHP7;
+        } else {
+            $kind = ParserFactory::PREFER_PHP7;
+        }
+        $parser = (new ParserFactory)->create($kind);
+        if ($this->args['--verbose']) {
+            Logging::info('Parser created '.get_class($parser));
+        }
+
+        // Instance traverser
+        $traverser_pre = new NodeTraverser;
+        $traverser_pre->addVisitor(new NameResolver);
+        $traverser_pre->addVisitor(new ReduceVisitor);
+
         $traverser = new NodeTraverser;
-        $traverser->addVisitor(new NameResolver);
         $traverser->addVisitor($chgvisitor);
 
         // Prepare filelist
         $filelist = array();
         foreach ($this->args['<file>'] as $file) {
-            if (!file_exists($file)) {
-                Logging::warning('No such file or directory {file}', array('file' => $file));
-            } elseif (is_dir($file)) {
+            if (is_dir($file)) {
                 $iterator = new \RecursiveIteratorIterator(
                     new \RecursiveDirectoryIterator($file),
                     0,
@@ -352,16 +375,25 @@ EOT;
         // Parse
         $chgvisitor->prepare();
         foreach ($filelist as $file) {
-            $chgvisitor->setFile($file);
             if ($this->args['--verbose']) {
                 Logging::info('Parse file {file}', array('file' => $file));
             }
-            $code = file_get_contents($file);
+
+            if (!file_exists($file)) {
+                Logging::warning('No such file or directory "{file}"', array('file' => $file));
+                continue;
+            } elseif (!is_readable($file)) {
+                Logging::warning('Permission denied "{file}"', array('file' => $file));
+                continue;
+            }
+
+            $chgvisitor->setFile($file);
+            $chgvisitor->setCode(file_get_contents($file));
 
             try {
-                $stmts = $parser->parse($code);
+                $stmts = $parser->parse($chgvisitor->getCode());
             } catch (PhpParserError $e) {
-                $chgvisitor->addSpot('PARSE', true, $e->getMessage(), 'NONE', $e->getRawLine());
+                $chgvisitor->addSpot('PARSE', true, $e->getMessage(), 'NONE', $e->getStartLine());
                 if ($this->args['--verbose']) {
                     Logging::warning('Parse error {file}, error message "{exception}"', array(
                         'exception' => $e,
@@ -371,8 +403,9 @@ EOT;
                 continue;
             }
 
-            // Apply traverser
-            $stmts = $traverser->traverse($stmts);
+            // Apply traversers
+            $stmts = $traverser_pre->traverse($stmts);
+            $traverser->traverse($stmts);
         }
         $chgvisitor->finish();
 

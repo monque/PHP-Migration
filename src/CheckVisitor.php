@@ -11,6 +11,7 @@ namespace PhpMigration;
 
 use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
+use PhpParser\Node\FunctionLike;
 use PhpParser\Node\Stmt;
 
 class CheckVisitor extends NodeVisitorAbstract
@@ -31,24 +32,34 @@ class CheckVisitor extends NodeVisitorAbstract
     protected $file;
 
     /**
-     * Current class, interface, trait
+     * Current code
      */
-    protected $class;
-
-    /**
-     * Current method in class
-     */
-    protected $method;
-
-    /**
-     * Current function
-     */
-    protected $function;
+    protected $code;
 
     /**
      * Current node
      */
     protected $node;
+
+    /**
+     * Current class-like node (class, interface, trait)
+     */
+    protected $class;
+
+    /**
+     * Stack for record current class-like node
+     */
+    protected $classStack;
+
+    /**
+     * Current funciton-like node (function, method, closure)
+     */
+    protected $function;
+
+    /**
+     * Stack for record current function-like node
+     */
+    protected $funcStack;
 
     /**
      * Empty spots, current state and save the Changes
@@ -70,10 +81,20 @@ class CheckVisitor extends NodeVisitorAbstract
         }
 
         foreach ($this->changes as $change) {
-            if ($name == substr(get_class($change), -strlen($name))) {
+            if ('PhpMigration\Changes\\'.$name == get_class($change)) {
                 return call_user_func_array(array($change, $method), $args);
             }
         }
+    }
+
+    public function setCode($code)
+    {
+        $this->code = $code;
+    }
+
+    public function getCode()
+    {
+        return $this->code;
     }
 
     public function setFile(\SplFileInfo $file)
@@ -91,24 +112,14 @@ class CheckVisitor extends NodeVisitorAbstract
         return $this->class;
     }
 
-    public function getClassname()
+    public function getClassName()
     {
-        return is_null($this->class) ? null : $this->class->name;
+        return is_null($this->class) ? null : $this->class->migName;
     }
 
     public function inClass()
     {
         return !is_null($this->class);
-    }
-
-    public function getMethod()
-    {
-        return $this->method;
-    }
-
-    public function inMethod()
-    {
-        return !is_null($this->method);
     }
 
     public function getFunction()
@@ -131,8 +142,10 @@ class CheckVisitor extends NodeVisitorAbstract
 
     public function beforeTraverse(array $nodes)
     {
+        $this->classStack = $this->funcStack = array();
+
         foreach ($this->changes as $change) {
-            $change->beforeTraverse();
+            $change->beforeTraverse($nodes);
         }
     }
 
@@ -143,15 +156,16 @@ class CheckVisitor extends NodeVisitorAbstract
         // Record current
         if ($node instanceof Stmt\ClassLike) {
             /**
-             * Class, Interface, Trait are stored in one same HashTable (zend_executor_globals.class_table).
-             * Their name will be conflict if duplicated (eg, class Demo {} and Interface Demo {})
-             * So, we treat all these class-like's name as Class name.
+             * Class, Interface, Trait are stored in one same HashTable
+             * (zend_executor_globals.class_table). Their name will be conflict
+             * if duplicated (eg, class Demo {} and Interface Demo {}). So, we
+             * treat all these class-like's name as Class name.
              */
             $this->class = $node;
-        } elseif ($node instanceof Stmt\ClassMethod) {
-            $this->method = $node;
-        } elseif ($node instanceof Stmt\Function_) {
+            $this->classStack[] = $node;
+        } elseif ($node instanceof FunctionLike) {
             $this->function = $node;
+            $this->funcStack[] = $node;
         }
 
         foreach ($this->changes as $change) {
@@ -169,13 +183,11 @@ class CheckVisitor extends NodeVisitorAbstract
             $change->leaveNode($node);
         }
 
-        // Clear current
+        // Pop current stack
         if ($node instanceof Stmt\ClassLike) {
-            $this->class = null;
-        } elseif ($node instanceof Stmt\ClassMethod) {
-            $this->method = null;
-        } elseif ($node instanceof Stmt\Function_) {
-            $this->function = null;
+            $this->class = array_pop($this->classStack);
+        } elseif ($node instanceof FunctionLike) {
+            $this->function = array_pop($this->funcStack);
         }
 
         $this->node = null;
@@ -184,7 +196,7 @@ class CheckVisitor extends NodeVisitorAbstract
     public function afterTraverse(array $nodes)
     {
         foreach ($this->changes as $change) {
-            $change->afterTraverse();
+            $change->afterTraverse($nodes);
         }
     }
 

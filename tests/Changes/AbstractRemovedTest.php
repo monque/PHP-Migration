@@ -32,6 +32,13 @@ abstract class AbstractRemovedTest extends AbstractChangeTest
             // Case Insensitive name
             $code = sprintf("%s();", strtoupper($name));
             $this->assertHasSpot($code);
+
+            // Namespaced
+            $code = sprintf("use Dummy as %s; %s();", $name, $name);
+            $this->assertHasSpot($code);
+
+            $code = sprintf("dummy\%s();", $name, $name);
+            $this->assertNotSpot($code);
         }
     }
 
@@ -53,6 +60,22 @@ abstract class AbstractRemovedTest extends AbstractChangeTest
             // Case Insensitive name
             $code = strtolower($name).';';
             $this->assertNotSpot($code);
+        }
+    }
+
+    public function testVar()
+    {
+        // Not-new
+        $code = '$not_removed;';
+        $this->assertNotSpot($code);
+
+        $table = TestHelper::fetchProperty($this->change, 'varTable');
+        if (is_null($table)) {
+            return;
+        }
+        foreach ($table as $name => $dummy) {
+            $code = '$'.$name.';';
+            $this->assertHasSpot($code);
         }
     }
 }

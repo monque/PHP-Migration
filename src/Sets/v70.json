@@ -1,0 +1,22 @@
+{
+    "desc": "Migrating from PHP 5.6.x to PHP 7.0.x",
+    "link": "http://php.net/migration70",
+    "changes": [
+        "v7dot0\\ExceptionHandle",
+        "v7dot0\\ForeachLoop",
+        "v7dot0\\FuncList",
+        "v7dot0\\FuncParameters",
+        "v7dot0\\IntegerOperation",
+        "v7dot0\\ParseDifference",
+        "v7dot0\\StringOperation",
+        "v7dot0\\SwitchMultipleDefaults",
+
+        "v7dot0\\Deprecated",
+        "v7dot0\\Introduced",
+        "v7dot0\\KeywordReserved",
+        "v7dot0\\Removed"
+    ],
+    "options": {
+        "parse_as_version": 7
+    }
+}
