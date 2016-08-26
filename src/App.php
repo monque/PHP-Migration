@@ -341,9 +341,13 @@ EOT;
         if ($this->args['--verbose']) {
             Logging::info('Parser created '.get_class($parser));
         }
+
+        // Instance traverser
+        $traverser_pre = new NodeTraverser;
+        $traverser_pre->addVisitor(new NameResolver);
+        $traverser_pre->addVisitor(new ReduceVisitor);
+
         $traverser = new NodeTraverser;
-        $traverser->addVisitor(new NameResolver);
-        $traverser->addVisitor(new ReduceVisitor);
         $traverser->addVisitor($chgvisitor);
 
         // Prepare filelist
@@ -399,8 +403,9 @@ EOT;
                 continue;
             }
 
-            // Apply traverser
-            $stmts = $traverser->traverse($stmts);
+            // Apply traversers
+            $stmts = $traverser_pre->traverse($stmts);
+            $traverser->traverse($stmts);
         }
         $chgvisitor->finish();
 

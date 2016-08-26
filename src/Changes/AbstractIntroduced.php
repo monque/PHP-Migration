@@ -50,10 +50,10 @@ abstract class AbstractIntroduced extends AbstractChange
     public function enterNode($node)
     {
         // Support the simplest conditional declaration
-        if (ParserHelper::isConditionalFunc($node)) {
-            $this->condFunc = ParserHelper::getConditionalName($node);
-        } elseif (ParserHelper::isConditionalConst($node)) {
-            $this->condConst = ParserHelper::getConditionalName($node);
+        if ($this->isConditionalFunc($node)) {
+            $this->condFunc = $this->getConditionalName($node);
+        } elseif ($this->isConditionalConst($node)) {
+            $this->condConst = $this->getConditionalName($node);
         }
     }
 
@@ -88,9 +88,9 @@ abstract class AbstractIntroduced extends AbstractChange
         }
 
         // Conditional declaration clear
-        if (ParserHelper::isConditionalFunc($node)) {
+        if ($this->isConditionalFunc($node)) {
             $this->condFunc = null;
-        } elseif (ParserHelper::isConditionalConst($node)) {
+        } elseif ($this->isConditionalConst($node)) {
             $this->condConst = null;
         }
     }
@@ -147,5 +147,37 @@ abstract class AbstractIntroduced extends AbstractChange
     {
         return ($node instanceof Expr\FuncCall && isset($this->paramTable) &&
                 $this->paramTable->has($node->migName));
+    }
+
+    /**
+     * Conditional checking
+     */
+    protected function isConditionalDeclare($node, $testfunc)
+    {
+        if (!$node instanceof Stmt\If_ || !$node->cond instanceof Expr\BooleanNot) {
+            return false;
+        }
+
+        $expr = $node->cond->expr;
+        return $expr instanceof Expr\FuncCall && ParserHelper::isSameFunc($expr->migName, $testfunc);
+    }
+
+    protected function isConditionalFunc($node)
+    {
+        return $this->isConditionalDeclare($node, 'function_exists');
+    }
+
+    protected function isConditionalConst($node)
+    {
+        return $this->isConditionalDeclare($node, 'defined');
+    }
+
+    protected function getConditionalName($node)
+    {
+        if ($node->cond->expr->args[0]->value instanceof Scalar\String_) {
+            return $node->cond->expr->args[0]->value->value;
+        } else {
+            return null;
+        }
     }
 }

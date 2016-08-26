@@ -42,14 +42,17 @@ class TestHelper
 
         $visitor = new CheckVisitor(array($change));
 
+        $traverser_pre = new NodeTraverser;
+        $traverser_pre->addVisitor(new NameResolver);
+        $traverser_pre->addVisitor(new ReduceVisitor);
+
         $traverser = new NodeTraverser;
-        $traverser->addVisitor(new NameResolver);
-        $traverser->addVisitor(new ReduceVisitor);
         $traverser->addVisitor($visitor);
 
         $visitor->prepare();
         $visitor->setCode($code);
         $stmts = self::getParser()->parse($code);
+        $stmts = $traverser_pre->traverse($stmts);
         $traverser->traverse($stmts);
         $visitor->finish();
 
