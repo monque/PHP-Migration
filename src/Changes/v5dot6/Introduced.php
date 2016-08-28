@@ -7,7 +7,7 @@ class Introduced extends AbstractIntroduced
 {
     protected static $version = '5.6.0';
 
-    protected $funcTable = array(
+    protected $funcTable = [
         // GMP
         'gmp_root', 'gmp_rootrem',
 
@@ -33,17 +33,17 @@ class Introduced extends AbstractIntroduced
 
         // Session
         'session_abort', 'session_reset',
-    );
+    ];
 
-    protected $methodTable = array(
+    protected $methodTable = [
         // PDO_PGSQL
         'PDO::pgsqlGetNotify', 'PDO::pgsqlGetPid',
 
         // Zip
         'ZipArchive::setPassword',
-    );
+    ];
 
-    protected $constTable = array(
+    protected $constTable = [
         // LDAP
         'LDAP_ESCAPE_DN', 'LDAP_ESCAPE_FILTER',
 
@@ -64,5 +64,5 @@ class Introduced extends AbstractIntroduced
         'PGSQL_CONNECTION_STARTED', 'PGSQL_DML_ESCAPE', 'PGSQL_POLLING_ACTIVE',
         'PGSQL_POLLING_FAILED', 'PGSQL_POLLING_OK', 'PGSQL_POLLING_READING',
         'PGSQL_POLLING_WRITING',
-    );
+    ];
 }

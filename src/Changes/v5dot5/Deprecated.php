@@ -14,15 +14,15 @@ class Deprecated extends AbstractChange
 
     protected static $version = '5.5.0';
 
-    protected $funcTable = array(
+    protected $funcTable = [
         // intl
         'datefmt_set_timezone_id',
 
         // mcrypt
         'mcrypt_cbc', 'mcrypt_cfb', 'mcrypt_ecb', 'mcrypt_ofb',
-    );
+    ];
 
-    protected $mysqlTable = array(
+    protected $mysqlTable = [
         'mysql_affected_rows', 'mysql_client_encoding', 'mysql_close',
         'mysql_connect', 'mysql_create_db', 'mysql_data_seek', 'mysql_db_name',
         'mysql_db_query', 'mysql_drop_db', 'mysql_errno', 'mysql_error',
@@ -38,7 +38,7 @@ class Deprecated extends AbstractChange
         'mysql_real_escape_string', 'mysql_result', 'mysql_select_db',
         'mysql_set_charset', 'mysql_stat', 'mysql_tablename',
         'mysql_thread_id', 'mysql_unbuffered_query',
-    );
+    ];
 
     public function __construct()
     {

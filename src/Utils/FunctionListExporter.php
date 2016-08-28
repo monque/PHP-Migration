@@ -3,20 +3,20 @@ namespace PhpMigration\Utils;
 
 class FunctionListExporter
 {
-    protected static $defaultMethod = array(
-        'modifier' => array(),
+    protected static $defaultMethod = [
+        'modifier' => [],
         'type' => null,
         'name' => null,
-        'params' => array(),
-    );
+        'params' => [],
+    ];
 
-    protected static $defaultParam = array(
+    protected static $defaultParam = [
         'optional' => false,
         'type' => null,
         'name' => null,
         'initializer' => null,
         'reference' => false,
-    );
+    ];
 
     public function parse($dhtml)
     {
@@ -94,7 +94,7 @@ class FunctionListExporter
 
     public function parseAll($wholehtml)
     {
-        $list = array();
+        $list = [];
 
         preg_match_all('/<div class="methodsynopsis dc-description">.+?<\/div>/s', $wholehtml, $matches);
         if (!$matches[0]) {

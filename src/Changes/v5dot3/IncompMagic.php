@@ -10,9 +10,9 @@ class IncompMagic extends AbstractChange
 {
     protected static $version = '5.3.0';
 
-    protected $funcTable = array(
+    protected $funcTable = [
         '__get', '__set', '__isset', '__unset', '__call',
-    );
+    ];
 
     public function __construct()
     {

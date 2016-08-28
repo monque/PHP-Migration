@@ -9,7 +9,7 @@ class IncompRegister extends AbstractChange
 {
     protected static $version = '5.4.0';
 
-    protected $longArray = array(
+    protected $longArray = [
         'HTTP_POST_VARS',
         'HTTP_GET_VARS',
         'HTTP_ENV_VARS',
@@ -17,7 +17,7 @@ class IncompRegister extends AbstractChange
         'HTTP_COOKIE_VARS',
         'HTTP_SESSION_VARS',
         'HTTP_POST_FILES',
-    );
+    ];
 
     public function __construct()
     {

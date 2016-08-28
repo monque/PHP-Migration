@@ -9,9 +9,9 @@ class IncompParamName extends AbstractChange
 {
     protected static $version = '5.4.0';
 
-    protected $autoGlobals = array(
+    protected $autoGlobals = [
         '_SESSION', '_GET', '_POST', '_COOKIE', '_SERVER', '_ENV', '_REQUEST', '_FILES'
-    );
+    ];
 
     public function __construct()
     {

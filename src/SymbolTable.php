@@ -17,7 +17,7 @@ class SymbolTable implements \Iterator, \ArrayAccess
             $data = array_flip($data);
         }
 
-        $this->data = array();
+        $this->data = [];
         foreach ($data as $rawkey => $value) {
             $key = $case_sensitive ? $rawkey : strtolower($rawkey);
             $this->data[$key] = $value;

@@ -5,7 +5,7 @@ class Packager
 {
     const NAME = 'phpmig.phar';
 
-    protected $filelist = array(
+    protected $filelist = [
         'LICENSE',
         'README.md',
         'README_ZH.md',
@@ -67,7 +67,7 @@ class Packager
         'src/Utils/Logging.php',
         'src/Utils/Packager.php',
         'src/Utils/ParserHelper.php',
-    );
+    ];
 
     public function pack()
     {

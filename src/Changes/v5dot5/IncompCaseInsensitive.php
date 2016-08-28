@@ -10,11 +10,11 @@ class IncompCaseInsensitive extends AbstractChange
 {
     protected static $version = '5.5.0';
 
-    protected $keywords = array(
+    protected $keywords = [
         'self'      => 'self',
         'parent'    => 'parent',
         'static'    => 'static',
-    );
+    ];
 
     public function __construct()
     {

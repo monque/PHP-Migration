@@ -11,7 +11,7 @@ class ClassTree extends AbstractChange
 
     public function prepare()
     {
-        $this->classTable = array();
+        $this->classTable = [];
     }
 
     public function leaveNode($node)
@@ -24,11 +24,11 @@ class ClassTree extends AbstractChange
                 Logging::notice('Found a duplicated class '.$name.' in '.$this->visitor->getFile());
             }
 
-            $this->classTable[$name] = array(
+            $this->classTable[$name] = [
                 'parent' => $parent_name,
-                'children' => array(),
+                'children' => [],
                 'topentry' => true,
-            );
+            ];
         }
     }
 
@@ -56,7 +56,7 @@ class ClassTree extends AbstractChange
         }
     }
 
-    protected function outputTree($data, $depth = 0, $last_status = array())
+    protected function outputTree($data, $depth = 0, $last_status = [])
     {
         if (!is_array($data) || empty($data)) {
             return;

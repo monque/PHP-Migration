@@ -3,9 +3,9 @@ namespace PhpMigration;
 
 class SymbolTableTest extends \PHPUnit_Framework_TestCase
 {
-    protected $fillData = array(
+    protected $fillData = [
         'CamelCase' => 'CamelCase',
-    );
+    ];
 
     protected $csEmptyTable;
 
@@ -17,8 +17,8 @@ class SymbolTableTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->csEmptyTable = new SymbolTable(array(), SymbolTable::CS);
-        $this->icEmptyTable = new SymbolTable(array(), SymbolTable::IC);
+        $this->csEmptyTable = new SymbolTable([], SymbolTable::CS);
+        $this->icEmptyTable = new SymbolTable([], SymbolTable::IC);
         $this->csFilledTable = new SymbolTable($this->fillData, SymbolTable::CS);
         $this->icFilledTable = new SymbolTable($this->fillData, SymbolTable::IC);
     }

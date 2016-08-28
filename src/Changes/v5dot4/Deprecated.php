@@ -12,10 +12,10 @@ class Deprecated extends AbstractChange
 
     protected static $version = '5.4.0';
 
-    protected $funcTable = array(
+    protected $funcTable = [
         'mcrypt_generic_end',
         'mysql_list_dbs',
-    );
+    ];
 
     public function __construct()
     {

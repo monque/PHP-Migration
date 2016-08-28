@@ -10,13 +10,13 @@ class IncompHashAlgo extends AbstractChange
 {
     protected static $version = '5.4.0';
 
-    protected $funcTable = array(
+    protected $funcTable = [
         'hash',
         'hash_file',
         'hash_hmac',
         'hash_hmac_file',
         'hash_init',
-    );
+    ];
 
     public function __construct()
     {

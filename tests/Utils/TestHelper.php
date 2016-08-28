@@ -23,7 +23,7 @@ class TestHelper
 
         $code = '<?php '.$code;
 
-        $visitor = new CheckVisitor(array($change));
+        $visitor = new CheckVisitor([$change]);
 
         $traverser = new NodeTraverser;
         $traverser->addVisitor($visitor);

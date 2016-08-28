@@ -10,9 +10,9 @@ class IncompMisc extends AbstractChange
 {
     protected static $version = '5.3.0';
 
-    protected $arrFuncTable = array(
+    protected $arrFuncTable = [
         'natsort', 'natcasesort', 'usort', 'uasort', 'uksort', 'array_flip', 'array_unique',
-    );
+    ];
 
     public function __construct()
     {

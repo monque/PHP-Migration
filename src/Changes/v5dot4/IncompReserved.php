@@ -16,7 +16,7 @@ class IncompReserved extends AbstractKeywordReserved
      * {Reference}
      * http://php.net/manual/en/migration54.incompatible.php
      */
-    protected $wordTable = array(
+    protected $wordTable = [
         'trait', 'callable', 'insteadof'
-    );
+    ];
 }

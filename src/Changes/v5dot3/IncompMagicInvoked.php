@@ -29,7 +29,7 @@ class IncompMagicInvoked extends AbstractChange
 
     public function leaveNode($node)
     {
-        $non_public = array();
+        $non_public = [];
         $has_magic_call = false;
 
         if ($node instanceof Stmt\Class_) {

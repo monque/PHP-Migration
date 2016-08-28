@@ -9,9 +9,9 @@ class IncompCallFromGlobal extends AbstractChange
 {
     protected static $version = '5.3.0';
 
-    protected $funcTable = array(
+    protected $funcTable = [
         'func_get_arg', 'func_get_args', 'func_num_args'
-    );
+    ];
 
     public function __construct()
     {

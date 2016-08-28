@@ -12,7 +12,7 @@ class Deprecated extends AbstractChange
 
     protected static $version = '5.3.0';
 
-    protected $funcTable = array(
+    protected $funcTable = [
         'call_user_method'          => 'use call_user_func() instead',
         'call_user_method_array'    => 'use call_user_func_array() instead',
         'define_syslog_variables'   => '',
@@ -34,7 +34,7 @@ class Deprecated extends AbstractChange
         'mysql_escape_string'       => 'use mysql_real_escape_string() instead',
         // Passing locale category names as strings is now deprecated. Use the LC_* family of constants instead.
         // The is_dst parameter to mktime(). Use the new timezone handling functions instead.
-    );
+    ];
 
     protected $checkCallTimePassByRef = true;
 

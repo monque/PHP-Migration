@@ -72,7 +72,7 @@ class IncompMisc extends AbstractChange
              * http://php.net/manual/en/migration54.incompatible.php
              */
             $level = false;
-            $msgbox = array();
+            $msgbox = [];
 
             if (ParserHelper::isSameFunc($node->name, 'htmlentities')) {
                 $level = 'WARNING';

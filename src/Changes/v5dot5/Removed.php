@@ -16,10 +16,10 @@ class Removed extends AbstractRemoved
      * {Reference}
      * http://php.net/manual/en/migration55.incompatible.php#migration55.incompatible.guid
      */
-    protected $funcTable = array(
+    protected $funcTable = [
         'php_logo_guid',
         'php_egg_logo_guid',
         'php_real_logo_guid',
         'zend_logo_guid',
-    );
+    ];
 }

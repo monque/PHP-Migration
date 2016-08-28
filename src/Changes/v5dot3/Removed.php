@@ -15,7 +15,7 @@ class Removed extends AbstractRemoved
      * {Reference}
      * http://php.net/manual/en/migration53.sapi.php
      */
-    protected $funcTable = array(
+    protected $funcTable = [
         'dl'
-    );
+    ];
 }

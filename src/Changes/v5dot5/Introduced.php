@@ -7,7 +7,7 @@ class Introduced extends AbstractIntroduced
 {
     protected static $version = '5.5.0';
 
-    protected $funcTable = array(
+    protected $funcTable = [
         // PHP Core
         'array_column', 'boolval', 'json_last_error_msg',
 
@@ -89,9 +89,9 @@ class Introduced extends AbstractIntroduced
 
         // SPL
         // 'SplFixedArray::__wakeup', // FIXME: a method in new function list ?
-    );
+    ];
 
-    protected $methodTable = array(
+    protected $methodTable = [
         // MySQLi
         'mysqli::begin_transaction',
         'mysqli::release_savepoint',
@@ -102,9 +102,9 @@ class Introduced extends AbstractIntroduced
         'IntlDateFormatter::getCalendarObject',
         'IntlDateFormatter::getTimeZone',
         'IntlDateFormatter::setTimeZone',
-    );
+    ];
 
-    protected $classTable = array(
+    protected $classTable = [
         // cURL
         'CURLFile',
 
@@ -115,9 +115,9 @@ class Introduced extends AbstractIntroduced
         'IntlCalendar', 'IntlGregorianCalendar', 'IntlTimeZone',
         'IntlBreakIterator', 'IntlRuleBasedBreakIterator',
         'IntlCodePointBreakIterator',
-    );
+    ];
 
-    protected $constTable = array(
+    protected $constTable = [
         // GD
         'IMG_AFFINE_TRANSLATE', 'IMG_AFFINE_SCALE', 'IMG_AFFINE_ROTATE',
         'IMG_AFFINE_SHEAR_HORIZONTAL', 'IMG_AFFINE_SHEAR_VERTICAL',
@@ -136,5 +136,5 @@ class Introduced extends AbstractIntroduced
 
         // MySQLi
         'MYSQLI_SERVER_PUBLIC_KEY',
-    );
+    ];
 }

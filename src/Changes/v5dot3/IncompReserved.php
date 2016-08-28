@@ -15,7 +15,7 @@ class IncompReserved extends AbstractKeywordReserved
      * {Reference}
      * http://php.net/manual/en/migration53.incompatible.php
      */
-    protected $wordTable = array(
+    protected $wordTable = [
         'goto', 'namespace',
-    );
+    ];
 }
