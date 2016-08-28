@@ -1,4 +1,5 @@
 <?php
+
 namespace PhpMigration\Changes\v7dot0;
 
 use PhpParser\Error;
@@ -10,7 +11,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->parser = (new ParserFactory)->create(ParserFactory::ONLY_PHP7);
+        $this->parser = (new ParserFactory())->create(ParserFactory::ONLY_PHP7);
     }
 
     /**

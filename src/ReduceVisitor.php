@@ -1,9 +1,10 @@
 <?php
+
 namespace PhpMigration;
 
 use PhpParser\Node;
-use PhpParser\NodeVisitorAbstract;
 use PhpParser\Node\Name;
+use PhpParser\NodeVisitorAbstract;
 
 class ReduceVisitor extends NodeVisitorAbstract
 {

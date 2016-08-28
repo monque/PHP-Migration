@@ -1,13 +1,6 @@
 <?php
-namespace PhpMigration\Changes\v5dot4;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
+namespace PhpMigration\Changes\v5dot4;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\SymbolTable;
@@ -18,13 +11,13 @@ class IncompHashAlgo extends AbstractChange
 {
     protected static $version = '5.4.0';
 
-    protected $funcTable = array(
+    protected $funcTable = [
         'hash',
         'hash_file',
         'hash_hmac',
         'hash_hmac_file',
         'hash_init',
-    );
+    ];
 
     public function __construct()
     {
@@ -40,7 +33,6 @@ class IncompHashAlgo extends AbstractChange
          * {Reference}
          * http://php.net/manual/en/migration54.incompatible.php
          */
-
         if ($node instanceof Expr\FuncCall && $this->funcTable->has($node->name)) {
             $affected = true;
             $certain = false;

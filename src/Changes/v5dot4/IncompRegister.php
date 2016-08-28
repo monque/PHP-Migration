@@ -1,13 +1,6 @@
 <?php
-namespace PhpMigration\Changes\v5dot4;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
+namespace PhpMigration\Changes\v5dot4;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\SymbolTable;
@@ -17,7 +10,7 @@ class IncompRegister extends AbstractChange
 {
     protected static $version = '5.4.0';
 
-    protected $longArray = array(
+    protected $longArray = [
         'HTTP_POST_VARS',
         'HTTP_GET_VARS',
         'HTTP_ENV_VARS',
@@ -25,7 +18,7 @@ class IncompRegister extends AbstractChange
         'HTTP_COOKIE_VARS',
         'HTTP_SESSION_VARS',
         'HTTP_POST_FILES',
-    );
+    ];
 
     public function __construct()
     {

@@ -1,13 +1,6 @@
 <?php
-namespace PhpMigration\Changes\v5dot3;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
+namespace PhpMigration\Changes\v5dot3;
 
 use PhpMigration\Changes\AbstractIntroduced;
 
@@ -15,7 +8,7 @@ class Introduced extends AbstractIntroduced
 {
     protected static $version = '5.3.0';
 
-    protected $funcTable = array(
+    protected $funcTable = [
         // PHP Core
         'array_replace', 'array_replace_recursive', 'class_alias',
         'forward_static_call', 'forward_static_call_array',
@@ -58,9 +51,9 @@ class Introduced extends AbstractIntroduced
 
         // Semaphore
         'msg_queue_exists', 'shm_has_var',
-    );
+    ];
 
-    protected $methodTable = array(
+    protected $methodTable = [
         // Date/Time
         'DateTime::add', 'DateTime::createFromFormat', 'DateTime::diff',
         'DateTime::getLastErrors', 'DateTime::sub',
@@ -85,9 +78,9 @@ class Introduced extends AbstractIntroduced
 
         // XSL
         'XSLTProcessor::setProfiling',
-    );
+    ];
 
-    protected $classTable = array(
+    protected $classTable = [
         // Date/Time
         'DateInterval', 'DatePeriod',
 
@@ -99,9 +92,9 @@ class Introduced extends AbstractIntroduced
         'RecursiveTreeIterator', 'SplDoublyLinkedList', 'SplFixedArray',
         'SplHeap', 'SplMaxHeap', 'SplMinHeap', 'SplPriorityQueue', 'SplQueue',
         'SplStack',
-    );
+    ];
 
-    protected $constTable = array(
+    protected $constTable = [
         // PHP Core
         '__DIR__', '__NAMESPACE__', 'E_DEPRECATED', 'E_USER_DEPRECATED',
         'INI_SCANNER_NORMAL', 'INI_SCANNER_RAW', 'PHP_MAXPATHLEN',
@@ -143,9 +136,9 @@ class Introduced extends AbstractIntroduced
         'SI_KERNEL', 'SI_MESGQ', 'SI_NOINFO', 'SI_QUEUE', 'SI_SIGIO',
         'SI_TIMER', 'SI_TKILL', 'SI_USER', 'SIG_BLOCK', 'SIG_SETMASK',
         'SIG_UNBLOCK', 'TRAP_BRKPT', 'TRAP_TRACE',
-    );
+    ];
 
-    protected $paramTable_ = array(  // New parameter is too trivial
+    protected $paramTable_ = [  // New parameter is too trivial
         // PHP Core
         'clearstatcache'            => 'added clear_realpath_cache and filename',
         'copy'                      => 'added a stream context parameter, context',
@@ -170,5 +163,5 @@ class Introduced extends AbstractIntroduced
 
         // sybase_ct
         'sybase_connect'            => 'added new',
-    );
+    ];
 }

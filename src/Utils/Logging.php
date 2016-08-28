@@ -1,13 +1,6 @@
 <?php
-namespace PhpMigration\Utils;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
+namespace PhpMigration\Utils;
 
 use PhpMigration\Logger;
 
@@ -43,7 +36,7 @@ class Logging
                 return $logger->$method($args[0], $args[1], $args[2], $args[3]);
 
             default:
-                return call_user_func_array(array($logger, $method), $args);
+                return call_user_func_array([$logger, $method], $args);
         }
     }
 }

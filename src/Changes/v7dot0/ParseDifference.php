@@ -1,4 +1,5 @@
 <?php
+
 namespace PhpMigration\Changes\v7dot0;
 
 use PhpMigration\Changes\AbstractChange;
@@ -58,7 +59,7 @@ class ParseDifference extends AbstractChange
 
     public function __construct()
     {
-        $this->parser5 = (new ParserFactory)->create(ParserFactory::ONLY_PHP5);
+        $this->parser5 = (new ParserFactory())->create(ParserFactory::ONLY_PHP5);
     }
 
     public function beforeTraverse(array $nodes)

@@ -1,13 +1,6 @@
 <?php
-namespace PhpMigration\Changes\v5dot4;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
+namespace PhpMigration\Changes\v5dot4;
 
 use PhpMigration\Changes\AbstractIntroduced;
 
@@ -15,7 +8,7 @@ class Introduced extends AbstractIntroduced
 {
     protected static $version = '5.4.0';
 
-    protected $funcTable = array(
+    protected $funcTable = [
         // PHP Core
         'hex2bin', 'http_response_code', 'get_declared_traits',
         'getimagesizefromstring', 'stream_set_chunk_size',
@@ -44,9 +37,9 @@ class Introduced extends AbstractIntroduced
 
         // Zlib
         'zlib_decode', 'zlib_encode',
-    );
+    ];
 
-    protected $methodTable = array(
+    protected $methodTable = [
         // XSL
         'XsltProcessor::setSecurityPrefs',
         'XsltProcessor::getSecurityPrefs',
@@ -80,9 +73,9 @@ class Introduced extends AbstractIntroduced
         // StreamWrapper
         'StreamWrapper::stream_metadata',
         'StreamWrapper::stream_truncate',
-    );
+    ];
 
-    protected $classTable = array(
+    protected $classTable = [
         // SPL
         'CallbackFilterIterator', 'RecursiveCallbackFilterIterator',
 
@@ -100,9 +93,9 @@ class Introduced extends AbstractIntroduced
 
         // Intl
         'Transliterator', 'Spoofchecker',
-    );
+    ];
 
-    protected $constTable = array(
+    protected $constTable = [
         // PHP Core
         'ENT_DISALLOWED', 'ENT_HTML401', 'ENT_HTML5', 'ENT_SUBSTITUTE',
         'ENT_XML1', 'ENT_XHTML', 'IPPROTO_IP', 'IPPROTO_IPV6',
@@ -155,5 +148,5 @@ class Introduced extends AbstractIntroduced
         // Json
         'JSON_PRETTY_PRINT', 'JSON_UNESCAPED_SLASHES', 'JSON_NUMERIC_CHECK',
         'JSON_UNESCAPED_UNICODE', 'JSON_BIGINT_AS_STRING',
-    );
+    ];
 }

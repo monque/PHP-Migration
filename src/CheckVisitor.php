@@ -1,18 +1,11 @@
 <?php
+
 namespace PhpMigration;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
-
 use PhpParser\Node;
-use PhpParser\NodeVisitorAbstract;
 use PhpParser\Node\FunctionLike;
 use PhpParser\Node\Stmt;
+use PhpParser\NodeVisitorAbstract;
 
 class CheckVisitor extends NodeVisitorAbstract
 {
@@ -64,9 +57,9 @@ class CheckVisitor extends NodeVisitorAbstract
     /**
      * Empty spots, current state and save the Changes
      */
-    public function __construct($changes = array())
+    public function __construct($changes = [])
     {
-        $this->spots = array();
+        $this->spots = [];
         $this->changes = $changes;
         $this->filename = $this->class = $this->method = $this->function = null;
     }
@@ -77,12 +70,12 @@ class CheckVisitor extends NodeVisitorAbstract
     public function callChange($name, $method, $args)
     {
         if (!is_array($args)) {
-            $args = array($args);
+            $args = [$args];
         }
 
         foreach ($this->changes as $change) {
             if ('PhpMigration\Changes\\'.$name == get_class($change)) {
-                return call_user_func_array(array($change, $method), $args);
+                return call_user_func_array([$change, $method], $args);
             }
         }
     }
@@ -142,7 +135,7 @@ class CheckVisitor extends NodeVisitorAbstract
 
     public function beforeTraverse(array $nodes)
     {
-        $this->classStack = $this->funcStack = array();
+        $this->classStack = $this->funcStack = [];
 
         foreach ($this->changes as $change) {
             $change->beforeTraverse($nodes);
@@ -226,14 +219,14 @@ class CheckVisitor extends NodeVisitorAbstract
         }
 
         // Add by file
-        $this->spots[$filename][] = array(
+        $this->spots[$filename][] = [
             'cate' => $cate,
             'identified' => $identified,
             'message' => $message,
             'version' => $version,
             'line' => $line,
             'file' => $file,
-        );
+        ];
     }
 
     /**

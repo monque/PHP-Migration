@@ -1,13 +1,6 @@
 <?php
-namespace PhpMigration\Changes\v5dot3;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
+namespace PhpMigration\Changes\v5dot3;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\SymbolTable;
@@ -17,9 +10,9 @@ class IncompCallFromGlobal extends AbstractChange
 {
     protected static $version = '5.3.0';
 
-    protected $funcTable = array(
-        'func_get_arg', 'func_get_args', 'func_num_args'
-    );
+    protected $funcTable = [
+        'func_get_arg', 'func_get_args', 'func_num_args',
+    ];
 
     public function __construct()
     {
@@ -41,7 +34,6 @@ class IncompCallFromGlobal extends AbstractChange
          * {Reference}
          * http://php.net/manual/en/migration53.incompatible.php
          */
-
         $message = sprintf(
             '%s() Called from the global scope - no function context',
             $node->name

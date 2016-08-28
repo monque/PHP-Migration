@@ -1,15 +1,7 @@
 <?php
+
 namespace PhpMigration\Changes;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
-
-use PhpMigration\Changes\AbstractChange;
 use PhpMigration\Utils\Logging;
 use PhpParser\Node\Stmt;
 
@@ -19,7 +11,7 @@ class ClassTree extends AbstractChange
 
     public function prepare()
     {
-        $this->classTable = array();
+        $this->classTable = [];
     }
 
     public function leaveNode($node)
@@ -32,11 +24,11 @@ class ClassTree extends AbstractChange
                 Logging::notice('Found a duplicated class '.$name.' in '.$this->visitor->getFile());
             }
 
-            $this->classTable[$name] = array(
+            $this->classTable[$name] = [
                 'parent' => $parent_name,
-                'children' => array(),
+                'children' => [],
                 'topentry' => true,
-            );
+            ];
         }
     }
 
@@ -64,7 +56,7 @@ class ClassTree extends AbstractChange
         }
     }
 
-    protected function outputTree($data, $depth = 0, $last_status = array())
+    protected function outputTree($data, $depth = 0, $last_status = [])
     {
         if (!is_array($data) || empty($data)) {
             return;

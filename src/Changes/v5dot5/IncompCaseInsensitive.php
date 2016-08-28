@@ -1,28 +1,21 @@
 <?php
-namespace PhpMigration\Changes\v5dot5;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
+namespace PhpMigration\Changes\v5dot5;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\SymbolTable;
-use PhpParser\Node\Name;
 use PhpParser\Node\Expr;
+use PhpParser\Node\Name;
 
 class IncompCaseInsensitive extends AbstractChange
 {
     protected static $version = '5.5.0';
 
-    protected $keywords = array(
+    protected $keywords = [
         'self'      => 'self',
         'parent'    => 'parent',
         'static'    => 'static',
-    );
+    ];
 
     public function __construct()
     {

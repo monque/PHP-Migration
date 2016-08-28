@@ -1,13 +1,6 @@
 <?php
-namespace PhpMigration\Changes;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
+namespace PhpMigration\Changes;
 
 use PhpMigration\Utils\TestHelper;
 
@@ -21,7 +14,7 @@ abstract class AbstractChangeTest extends \PHPUnit_Framework_TestCase
         if (substr($chgname, -4) == 'Test') {
             $chgname = substr($chgname, 0, -4);
         }
-        $this->change = new $chgname;
+        $this->change = new $chgname();
     }
 
     public function assertHasSpot($code)

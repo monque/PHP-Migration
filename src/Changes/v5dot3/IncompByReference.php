@@ -1,13 +1,6 @@
 <?php
-namespace PhpMigration\Changes\v5dot3;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
+namespace PhpMigration\Changes\v5dot3;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\SymbolTable;
@@ -25,7 +18,7 @@ class IncompByReference extends AbstractChange
 
     protected $methodTable;
 
-    protected $builtinTable = array(
+    protected $builtinTable = [
         // This list is exported by running `phpmig --export-posbit <docfile>`
         'apc_dec'                                =>    4, // 001
         'apc_fetch'                              =>    2, // 01
@@ -239,13 +232,13 @@ class IncompByReference extends AbstractChange
         'yaz_hits'                               =>    2, // 01
         'yaz_scan_result'                        =>    2, // 01
         'yaz_wait'                               =>    1, // 1
-    );
+    ];
 
     public function prepare()
     {
-        $this->callList = array();
+        $this->callList = [];
         $this->declareTable = new SymbolTable($this->builtinTable, SymbolTable::IC);
-        $this->methodTable = new SymbolTable(array(), SymbolTable::IC);
+        $this->methodTable = new SymbolTable([], SymbolTable::IC);
     }
 
     public function leaveNode($node)
@@ -274,7 +267,7 @@ class IncompByReference extends AbstractChange
                     $this->emitSpot($call);
                 }
             } elseif (substr($cname, 0, 2) == '->' && $this->methodTable->has($cname)) {
-                $suspect = array();
+                $suspect = [];
                 foreach ($this->methodTable->get($cname) as $class => $posbit) {
                     if ($this->isMismatch($posbit, $call['pos'])) {
                         $suspect[] = $class;
@@ -377,7 +370,7 @@ class IncompByReference extends AbstractChange
             if ($this->methodTable->has($mname)) {
                 $suspect = $this->methodTable->get($mname);
             } else {
-                $suspect = array();
+                $suspect = [];
             }
             $suspect[$this->visitor->getClassName()] = $posbit;
             $this->methodTable->set($mname, $suspect);
@@ -415,11 +408,11 @@ class IncompByReference extends AbstractChange
             $callname = $oname.'->'.$node->name;
         }
 
-        $this->callList[] = array(
+        $this->callList[] = [
             'name' => $callname,
             'pos' => $posbit,
             'file' => $this->visitor->getFile(),
             'line' => $node->getLine(),
-        );
+        ];
     }
 }

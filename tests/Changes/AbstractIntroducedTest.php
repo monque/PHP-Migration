@@ -1,15 +1,7 @@
 <?php
+
 namespace PhpMigration\Changes;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
-
-use PhpMigration\Changes\AbstractChangeTest;
 use PhpMigration\Utils\TestHelper;
 
 abstract class AbstractIntroducedTest extends AbstractChangeTest
@@ -26,15 +18,15 @@ abstract class AbstractIntroducedTest extends AbstractChangeTest
         }
         foreach ($table as $name => $dummy) {
             // Normal name
-            $code = sprintf("function %s() {}", $name);
+            $code = sprintf('function %s() {}', $name);
             $this->assertHasSpot($code);
 
             // Case Insensitive name
-            $code = sprintf("function %s() {}", strtoupper($name));
+            $code = sprintf('function %s() {}', strtoupper($name));
             $this->assertHasSpot($code);
 
             // Namespaced
-            $code = sprintf("namespace Dummy; function %s() {}", $name);
+            $code = sprintf('namespace Dummy; function %s() {}', $name);
             $this->assertNotSpot($code);
 
             // Conditional name
@@ -87,15 +79,15 @@ abstract class AbstractIntroducedTest extends AbstractChangeTest
         }
         foreach ($table as $name => $dummy) {
             // Normal name
-            $code = sprintf("class %s {}", $name);
+            $code = sprintf('class %s {}', $name);
             $this->assertHasSpot($code);
 
             // Case Insensitive name
-            $code = sprintf("class %s {}", strtoupper($name));
+            $code = sprintf('class %s {}', strtoupper($name));
             $this->assertHasSpot($code);
 
             // Namespaced
-            $code = sprintf("namespace Dummy; class %s {}", $name);
+            $code = sprintf('namespace Dummy; class %s {}', $name);
             $this->assertNotSpot($code);
 
             // Conditional name

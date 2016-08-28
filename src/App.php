@@ -1,16 +1,7 @@
 <?php
+
 namespace PhpMigration;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
-
-use PhpMigration\CheckVisitor;
-use PhpMigration\ReduceVisitor;
 use PhpMigration\Utils\FunctionListExporter;
 use PhpMigration\Utils\Logging;
 use PhpMigration\Utils\Packager;
@@ -42,7 +33,7 @@ class App
 
     protected function showUsage($type = 'usage', $halt = true)
     {
-        $usage_simple = <<<EOT
+        $usage_simple = <<<'EOT'
 Usage: phpmig [options] <file>...
        phpmig -l | --list
 EOT;
@@ -61,7 +52,7 @@ Options:
       --version         Show version
 EOT;
 
-        $usage_dev = <<<EOT
+        $usage_dev = <<<'EOT'
 
 Development:
   --export-posbit <doc> Export built-in function posbit list
@@ -89,7 +80,7 @@ EOT;
     protected function handleArgs()
     {
         // Default
-        $args = array(
+        $args = [
             '--list'            => false,
             '--quite'           => false,
             '--set'             => 'to70',
@@ -97,11 +88,11 @@ EOT;
             '--verbose'         => false,
             '--version'         => false,
             '--help'            => false,
-            '<file>'            => array(),
+            '<file>'            => [],
 
             '--export-posbit'   => false,
             '--pack'            => false,
-        );
+        ];
 
         // Fill args
         $argv = array_slice($_SERVER['argv'], 1);
@@ -225,7 +216,7 @@ EOT;
     {
         $docfile = current($this->args['<file>']);
         if (!file_exists($docfile)) {
-            Logging::error("Unable load docfile {name}", array('name' => $docfile));
+            Logging::error('Unable load docfile {name}', ['name' => $docfile]);
             exit(1);
         }
         $html = file_get_contents($docfile);
@@ -260,17 +251,17 @@ EOT;
             exit(1);
         }
 
-        $packager = new Packager;
+        $packager = new Packager();
         $packager->pack();
     }
 
     protected function commandMain()
     {
         // Load set, change
-        $chglist = array();
-        $options = array();
-        $loaded_sets = array();
-        $setstack = array($this->args['--set']);
+        $chglist = [];
+        $options = [];
+        $loaded_sets = [];
+        $setstack = [$this->args['--set']];
         while (!empty($setstack)) {
             $setname = array_shift($setstack);
 
@@ -283,11 +274,11 @@ EOT;
             // Load
             $setfile = $this->setpath.'/'.$setname.'.json';
             if (!file_exists($setfile)) {
-                Logging::error("Unable load setfile {name}", array('name' => $setfile));
+                Logging::error('Unable load setfile {name}', ['name' => $setfile]);
                 exit(1);
             }
             if ($this->args['--verbose']) {
-                Logging::info('Load set {name}', array('name' => basename($setfile)));
+                Logging::info('Load set {name}', ['name' => basename($setfile)]);
             }
             $info = json_decode(file_get_contents($setfile));
 
@@ -323,10 +314,10 @@ EOT;
         // Instantiate change
         foreach ($chglist as $key => $chgname) {
             if ($this->args['--verbose']) {
-                Logging::info('Load change {name}', array('name' => $chgname));
+                Logging::info('Load change {name}', ['name' => $chgname]);
             }
             $chgname = '\PhpMigration\Changes\\'.$chgname;
-            $chglist[$key] = new $chgname;
+            $chglist[$key] = new $chgname();
         }
 
         $chgvisitor = new CheckVisitor($chglist);
@@ -337,21 +328,21 @@ EOT;
         } else {
             $kind = ParserFactory::PREFER_PHP7;
         }
-        $parser = (new ParserFactory)->create($kind);
+        $parser = (new ParserFactory())->create($kind);
         if ($this->args['--verbose']) {
             Logging::info('Parser created '.get_class($parser));
         }
 
         // Instance traverser
-        $traverser_pre = new NodeTraverser;
-        $traverser_pre->addVisitor(new NameResolver);
-        $traverser_pre->addVisitor(new ReduceVisitor);
+        $traverser_pre = new NodeTraverser();
+        $traverser_pre->addVisitor(new NameResolver());
+        $traverser_pre->addVisitor(new ReduceVisitor());
 
-        $traverser = new NodeTraverser;
+        $traverser = new NodeTraverser();
         $traverser->addVisitor($chgvisitor);
 
         // Prepare filelist
-        $filelist = array();
+        $filelist = [];
         foreach ($this->args['<file>'] as $file) {
             if (is_dir($file)) {
                 $iterator = new \RecursiveIteratorIterator(
@@ -376,14 +367,14 @@ EOT;
         $chgvisitor->prepare();
         foreach ($filelist as $file) {
             if ($this->args['--verbose']) {
-                Logging::info('Parse file {file}', array('file' => $file));
+                Logging::info('Parse file {file}', ['file' => $file]);
             }
 
             if (!file_exists($file)) {
-                Logging::warning('No such file or directory "{file}"', array('file' => $file));
+                Logging::warning('No such file or directory "{file}"', ['file' => $file]);
                 continue;
             } elseif (!is_readable($file)) {
-                Logging::warning('Permission denied "{file}"', array('file' => $file));
+                Logging::warning('Permission denied "{file}"', ['file' => $file]);
                 continue;
             }
 
@@ -395,10 +386,10 @@ EOT;
             } catch (PhpParserError $e) {
                 $chgvisitor->addSpot('PARSE', true, $e->getMessage(), 'NONE', $e->getStartLine());
                 if ($this->args['--verbose']) {
-                    Logging::warning('Parse error {file}, error message "{exception}"', array(
+                    Logging::warning('Parse error {file}, error message "{exception}"', [
                         'exception' => $e,
                         'file' => $file,
-                    ));
+                    ]);
                 }
                 continue;
             }
@@ -413,7 +404,7 @@ EOT;
         $has_output = false;
         foreach ($chgvisitor->getSpots() as $spotlist) {
             // Init nums
-            $nums = array('total' => 0, 'identified' => 0);
+            $nums = ['total' => 0, 'identified' => 0];
 
             $nums['total'] = count($spotlist);
             foreach ($spotlist as $key => $spot) {
@@ -436,9 +427,9 @@ EOT;
 
             $spot = current($spotlist);
             echo "\n";
-            echo "File: ".$spot['file']."\n";
+            echo 'File: '.$spot['file']."\n";
             echo "--------------------------------------------------------------------------------\n";
-            echo "Found ".$nums['total']." spot(s), ".$nums['identified']." identified\n";
+            echo 'Found '.$nums['total'].' spot(s), '.$nums['identified']." identified\n";
             echo "--------------------------------------------------------------------------------\n";
             foreach ($spotlist as $spot) {
                 printf(
@@ -460,7 +451,7 @@ EOT;
 
         // Dump tree
         if ($this->args['--dump']) {
-            $nodeDumper = new NodeDumper;
+            $nodeDumper = new NodeDumper();
             echo $nodeDumper->dump($stmts)."\n";
         }
     }

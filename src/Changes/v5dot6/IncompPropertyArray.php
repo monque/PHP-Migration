@@ -1,17 +1,10 @@
 <?php
+
 namespace PhpMigration\Changes\v5dot6;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
-
 use PhpMigration\Changes\AbstractChange;
-use PhpParser\Node\Scalar;
 use PhpParser\Node\Expr;
+use PhpParser\Node\Scalar;
 use PhpParser\Node\Stmt;
 
 class IncompPropertyArray extends AbstractChange
@@ -34,8 +27,8 @@ class IncompPropertyArray extends AbstractChange
          * http://php.net/manual/en/migration56.incompatible.php#migration56.incompatible.array-keys
          */
         if ($node instanceof Stmt\Class_) {
-            $array_list = array();
-            $const_table = array();
+            $array_list = [];
+            $const_table = [];
 
             // Gather all array property, save class const
             foreach ($node->stmts as $stmt) {
@@ -58,13 +51,13 @@ class IncompPropertyArray extends AbstractChange
             // Check keys in array
             foreach ($array_list as $arr) {
                 // Emulate array key initialization
-                $keylist = array();
-                $has = array(
+                $keylist = [];
+                $has = [
                     'scalar'    => false,
                     'const'     => false,
                     'null'      => false,
                     'unfetched' => false,
-                );
+                ];
                 $counter = 0;
                 foreach ($arr->items as $item) {
                     if ($item->key instanceof Expr\ClassConstFetch) {

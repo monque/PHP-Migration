@@ -1,13 +1,6 @@
 <?php
-namespace PhpMigration;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
+namespace PhpMigration;
 
 class SymbolTable implements \Iterator, \ArrayAccess
 {
@@ -25,7 +18,7 @@ class SymbolTable implements \Iterator, \ArrayAccess
             $data = array_flip($data);
         }
 
-        $this->data = array();
+        $this->data = [];
         foreach ($data as $rawkey => $value) {
             $key = $case_sensitive ? $rawkey : strtolower($rawkey);
             $this->data[$key] = $value;
@@ -116,7 +109,7 @@ class SymbolTable implements \Iterator, \ArrayAccess
 
     public function valid()
     {
-        return ($this->current() !== false);
+        return $this->current() !== false;
     }
 
     /**

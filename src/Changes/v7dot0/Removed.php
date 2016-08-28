@@ -1,4 +1,5 @@
 <?php
+
 namespace PhpMigration\Changes\v7dot0;
 
 use PhpMigration\Changes\AbstractRemoved;
@@ -7,7 +8,7 @@ class Removed extends AbstractRemoved
 {
     protected static $version = '7.0.0';
 
-    /** 
+    /**
      * Removed functions
      *
      * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.removed-functions

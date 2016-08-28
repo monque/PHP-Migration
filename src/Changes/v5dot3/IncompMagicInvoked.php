@@ -1,13 +1,6 @@
 <?php
-namespace PhpMigration\Changes\v5dot3;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
+namespace PhpMigration\Changes\v5dot3;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\Utils\ParserHelper;
@@ -27,7 +20,6 @@ class IncompMagicInvoked extends AbstractChange
          * {Reference}
          * http://php.net/manual/en/migration53.incompatible.php
          */
-
         $message = sprintf(
             'The __call() magic method will be invoked on access to non-public mehtods in %s',
             $this->visitor->getClassName()
@@ -37,7 +29,7 @@ class IncompMagicInvoked extends AbstractChange
 
     public function leaveNode($node)
     {
-        $non_public = array();
+        $non_public = [];
         $has_magic_call = false;
 
         if ($node instanceof Stmt\Class_) {

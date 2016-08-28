@@ -1,19 +1,12 @@
 <?php
-namespace PhpMigration\Utils;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
+namespace PhpMigration\Utils;
 
 class Packager
 {
     const NAME = 'phpmig.phar';
 
-    protected $filelist = array(
+    protected $filelist = [
         'LICENSE',
         'README.md',
         'README_ZH.md',
@@ -75,7 +68,7 @@ class Packager
         'src/Utils/Logging.php',
         'src/Utils/Packager.php',
         'src/Utils/ParserHelper.php',
-    );
+    ];
 
     public function pack()
     {
@@ -88,13 +81,6 @@ class Packager
         $code = <<<'EOC'
 #! /usr/bin/env php
 <?php
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
 
 Phar::mapPhar('phpmig.phar');
 

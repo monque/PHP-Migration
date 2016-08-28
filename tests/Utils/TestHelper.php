@@ -1,4 +1,5 @@
 <?php
+
 namespace PhpMigration\Utils;
 
 use PhpMigration\CheckVisitor;
@@ -23,23 +24,23 @@ class TestHelper
 
         $code = '<?php '.$code;
 
-        $visitor = new CheckVisitor(array($change));
+        $visitor = new CheckVisitor([$change]);
 
-        $traverser = new NodeTraverser;
+        $traverser = new NodeTraverser();
         $traverser->addVisitor($visitor);
 
         $visitor->prepare();
         $visitor->setCode($code);
 
         if (!isset($parser)) {
-            $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
+            $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
         }
         $stmts = $parser->parse($code);
 
         if (!isset($traverser_pre)) {
-            $traverser_pre = new NodeTraverser;
-            $traverser_pre->addVisitor(new NameResolver);
-            $traverser_pre->addVisitor(new ReduceVisitor);
+            $traverser_pre = new NodeTraverser();
+            $traverser_pre->addVisitor(new NameResolver());
+            $traverser_pre->addVisitor(new ReduceVisitor());
         }
         $stmts = $traverser_pre->traverse($stmts);
 

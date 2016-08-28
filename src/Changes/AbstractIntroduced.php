@@ -1,13 +1,6 @@
 <?php
-namespace PhpMigration\Changes;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
+namespace PhpMigration\Changes;
 
 use PhpMigration\SymbolTable;
 use PhpMigration\Utils\ParserHelper;
@@ -37,7 +30,7 @@ abstract class AbstractIntroduced extends AbstractChange
             $this->funcTable = new SymbolTable($this->funcTable, SymbolTable::IC);
         }
         if (isset($this->methodTable)) {
-            $this->methodTable  = new SymbolTable($this->methodTable, SymbolTable::IC);
+            $this->methodTable = new SymbolTable($this->methodTable, SymbolTable::IC);
         }
         if (isset($this->classTable)) {
             $this->classTable = new SymbolTable($this->classTable, SymbolTable::IC);
@@ -145,8 +138,8 @@ abstract class AbstractIntroduced extends AbstractChange
 
     protected function isNewParam($node)
     {
-        return ($node instanceof Expr\FuncCall && isset($this->paramTable) &&
-                $this->paramTable->has($node->migName));
+        return $node instanceof Expr\FuncCall && isset($this->paramTable) &&
+                $this->paramTable->has($node->migName);
     }
 
     /**

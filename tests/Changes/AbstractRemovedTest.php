@@ -1,15 +1,7 @@
 <?php
+
 namespace PhpMigration\Changes;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
-
-use PhpMigration\Changes\AbstractChangeTest;
 use PhpMigration\Utils\TestHelper;
 
 abstract class AbstractRemovedTest extends AbstractChangeTest
@@ -26,15 +18,15 @@ abstract class AbstractRemovedTest extends AbstractChangeTest
         }
         foreach ($table as $name => $dummy) {
             // Normal name
-            $code = sprintf("%s();", $name);
+            $code = sprintf('%s();', $name);
             $this->assertHasSpot($code);
 
             // Case Insensitive name
-            $code = sprintf("%s();", strtoupper($name));
+            $code = sprintf('%s();', strtoupper($name));
             $this->assertHasSpot($code);
 
             // Namespaced
-            $code = sprintf("use Dummy as %s; %s();", $name, $name);
+            $code = sprintf('use Dummy as %s; %s();', $name, $name);
             $this->assertHasSpot($code);
 
             $code = sprintf("dummy\%s();", $name, $name);

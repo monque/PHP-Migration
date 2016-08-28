@@ -1,13 +1,6 @@
 <?php
-namespace PhpMigration\Changes\v5dot4;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
+namespace PhpMigration\Changes\v5dot4;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpParser\Node\Scalar;
@@ -35,7 +28,6 @@ class IncompBreakContinue extends AbstractChange
          * http://php.net/manual/en/control-structures.break.php
          * http://php.net/manual/en/migration54.incompatible.php
          */
-
         if ($node instanceof Stmt\Break_) {
             $operator = 'break';
         } elseif ($node instanceof Stmt\Continue_) {

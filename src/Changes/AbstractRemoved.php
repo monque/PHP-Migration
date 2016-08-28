@@ -1,13 +1,6 @@
 <?php
-namespace PhpMigration\Changes;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
+namespace PhpMigration\Changes;
 
 use PhpMigration\SymbolTable;
 use PhpParser\Node\Expr;
@@ -51,19 +44,19 @@ abstract class AbstractRemoved extends AbstractChange
 
     protected function isRemovedFunc($node)
     {
-        return ($node instanceof Expr\FuncCall && isset($this->funcTable) &&
-                $this->funcTable->has($node->migName));
+        return $node instanceof Expr\FuncCall && isset($this->funcTable) &&
+                $this->funcTable->has($node->migName);
     }
 
     protected function isRemovedConst($node)
     {
-        return ($node instanceof Expr\ConstFetch && isset($this->constTable) &&
-                $this->constTable->has($node->migName));
+        return $node instanceof Expr\ConstFetch && isset($this->constTable) &&
+                $this->constTable->has($node->migName);
     }
 
     protected function isRemovedVar($node)
     {
-        return ($node instanceof Expr\Variable && isset($this->varTable) &&
-                $this->varTable->has($node->migName));
+        return $node instanceof Expr\Variable && isset($this->varTable) &&
+                $this->varTable->has($node->migName);
     }
 }

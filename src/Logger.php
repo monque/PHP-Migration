@@ -1,13 +1,6 @@
 <?php
-namespace PhpMigration;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
+namespace PhpMigration;
 
 use Psr\Log\AbstractLogger;
 use Psr\Log\InvalidArgumentException;
@@ -16,11 +9,11 @@ class Logger extends AbstractLogger
 {
     protected $stderr;
 
-    protected static $levels = array(
+    protected static $levels = [
         'emergency', 'alert', 'critical', 'error', 'warning', 'notice', 'info', 'debug',
-    );
+    ];
 
-    public function log($level, $message, array $context = array())
+    public function log($level, $message, array $context = [])
     {
         // Check level defined
         if (!in_array($level, static::$levels)) {
@@ -54,9 +47,9 @@ class Logger extends AbstractLogger
     /**
      * Example implementation in http://www.php-fig.org/psr/psr-3/
      */
-    protected function interpolate($message, array $context = array())
+    protected function interpolate($message, array $context = [])
     {
-        $replace = array();
+        $replace = [];
         foreach ($context as $key => $val) {
             if ($key == 'exception') {
                 $val = $val->getMessage();

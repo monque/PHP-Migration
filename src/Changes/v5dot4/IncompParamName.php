@@ -1,13 +1,6 @@
 <?php
-namespace PhpMigration\Changes\v5dot4;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
+namespace PhpMigration\Changes\v5dot4;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\SymbolTable;
@@ -17,9 +10,9 @@ class IncompParamName extends AbstractChange
 {
     protected static $version = '5.4.0';
 
-    protected $autoGlobals = array(
-        '_SESSION', '_GET', '_POST', '_COOKIE', '_SERVER', '_ENV', '_REQUEST', '_FILES'
-    );
+    protected $autoGlobals = [
+        '_SESSION', '_GET', '_POST', '_COOKIE', '_SERVER', '_ENV', '_REQUEST', '_FILES',
+    ];
 
     public function __construct()
     {
@@ -40,7 +33,6 @@ class IncompParamName extends AbstractChange
          * {Reference}
          * http://php.net/manual/en/migration54.incompatible.php
          */
-
         if (($node instanceof Stmt\Function_ || $node instanceof Stmt\ClassMethod)
                 && $this->hasParamShadowGlobal($node)) {
             $this->addSpot('FATAL', true, 'Cannot re-assign auto-global variable');

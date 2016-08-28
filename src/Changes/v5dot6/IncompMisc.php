@@ -1,13 +1,6 @@
 <?php
-namespace PhpMigration\Changes\v5dot6;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
+namespace PhpMigration\Changes\v5dot6;
 
 use PhpMigration\Changes\AbstractChange;
 use PhpMigration\Changes\RemoveTableItemTrait;
@@ -21,7 +14,7 @@ class IncompMisc extends AbstractChange
 
     protected static $version = '5.6.0';
 
-    protected $gmpTable = array(
+    protected $gmpTable = [
         'gmp_abs', 'gmp_add', 'gmp_and', 'gmp_clrbit', 'gmp_cmp', 'gmp_com',
         'gmp_div_q', 'gmp_div_qr', 'gmp_div_r', 'gmp_div', 'gmp_divexact',
         'gmp_export', 'gmp_fact', 'gmp_gcd', 'gmp_gcdext', 'gmp_hamdist',
@@ -32,12 +25,12 @@ class IncompMisc extends AbstractChange
         'gmp_root', 'gmp_rootrem', 'gmp_scan0', 'gmp_scan1', 'gmp_setbit',
         'gmp_sign', 'gmp_sqrt', 'gmp_sqrtrem', 'gmp_strval', 'gmp_sub',
         'gmp_testbit', 'gmp_xor',
-    );
+    ];
 
-    protected $mcryptTable = array(
+    protected $mcryptTable = [
         'mcrypt_encrypt', 'mcrypt_decrypt', 'mcrypt_cbc', 'mcrypt_cfb',
         'mcrypt_ecb', 'mcrypt_generic', 'mcrypt_ofb',
-    );
+    ];
 
     public function __construct()
     {

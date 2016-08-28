@@ -1,13 +1,6 @@
 <?php
-namespace PhpMigration\Changes\v5dot4;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
+namespace PhpMigration\Changes\v5dot4;
 
 use PhpMigration\Changes\AbstractKeywordReserved;
 
@@ -24,7 +17,7 @@ class IncompReserved extends AbstractKeywordReserved
      * {Reference}
      * http://php.net/manual/en/migration54.incompatible.php
      */
-    protected $wordTable = array(
-        'trait', 'callable', 'insteadof'
-    );
+    protected $wordTable = [
+        'trait', 'callable', 'insteadof',
+    ];
 }
