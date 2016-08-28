@@ -1,4 +1,5 @@
 <?php
+
 namespace PhpMigration;
 
 class SymbolTable implements \Iterator, \ArrayAccess

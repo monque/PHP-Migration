@@ -1,4 +1,5 @@
 <?php
+
 namespace PhpMigration\Changes;
 
 use PhpMigration\Changes\AbstractChangeTest;

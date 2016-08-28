@@ -1,4 +1,5 @@
 <?php
+
 namespace PhpMigration;
 
 class SymbolTableTest extends \PHPUnit_Framework_TestCase

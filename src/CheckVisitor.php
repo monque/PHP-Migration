@@ -1,4 +1,5 @@
 <?php
+
 namespace PhpMigration;
 
 use PhpParser\Node;

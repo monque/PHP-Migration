@@ -1,4 +1,5 @@
 <?php
+
 namespace PhpMigration;
 
 use Psr\Log\AbstractLogger;
