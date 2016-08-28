@@ -10,7 +10,7 @@
 码。
 
 有以下特性：
-- 检查全面，覆盖PHP 5.3至5.6中绝大部分改动
+- 检查全面，覆盖PHP 5.3至**7.0**中绝大部分改动
 - 严谨不遗漏，并做到尽可能精准
 - 零配置，下载即用
 - 可以快速开发适用于个人项目的检查
@@ -27,7 +27,7 @@
 
 1. 你可以通过下面命令下载一个封装好的可执行的[Phar](http://php.net/manual/zh/book.phar.php)文件
     ```
-    wget https://github.com/monque/PHP-Migration/releases/download/v0.1.2/phpmig.phar
+    wget https://github.com/monque/PHP-Migration/releases/download/v0.2.0/phpmig.phar
     ```
 
 2. 执行下面命令，将会对该文件进行检查，并输出报告
@@ -47,6 +47,8 @@
 
     // Fatal error: Cannot redeclare class_alias()
     function class_alias() {}
+
+    // This is fine
     if (!function_exists('class_alias')) {
         function class_alias() {}
     }
@@ -62,8 +64,26 @@
     // Fatal error: Cannot re-assign auto-global variable _GET
     function ohno($_GET) {}
 
-    // Fatal error:  Call to undefined function php_logo_guid()
-    php_logo_guid();
+    // Array keys won't be overwritten when defining an array as a property of a class via an array literal
+    class C {
+        const ONE = 1;
+        public $array = [
+            self::ONE => 'foo',
+            'bar',
+            'quux',
+        ];
+    }
+
+    // set_exception_handler() is no longer guaranteed to receive Exception objects
+    set_exception_handler(function (Exception $e) { });
+
+    // Changes to the handling of indirect variables, properties, and methods
+    echo $$foo['bar']['baz'];
+
+    // foreach no longer changes the internal array pointer
+    foreach ($list as &$row) {
+        current($list);
+    }
     ```
 
 3. 报告输出内容如下
@@ -71,16 +91,19 @@
     ```
     File: sample.php
     --------------------------------------------------------------------------------
-    Found 8 spot(s), 8 identified
+    Found 11 spot(s), 10 identified
     --------------------------------------------------------------------------------
         3 | FATAL      | * | 5.3.0 | Only variables can be passed by reference
         4 | FATAL      | * | 5.3.0 | Only variables can be passed by reference
-        7 | WARNING    | * | 5.3.0 | Constant __DIR__ already defined
+        7 | WARNING    | * | 5.3.0 | Constant "__DIR__" already defined
        10 | FATAL      | * | 5.3.0 | Cannot redeclare class_alias()
-       16 | FATAL      | * | 5.4.0 | Call-time pass-by-reference has been removed
-       20 | FATAL      | * | 5.4.0 | break operator with non-constant operand is no longer supported
-       24 | FATAL      | * | 5.4.0 | Cannot re-assign auto-global variable
-       27 | FATAL      | * | 5.5.0 | Function php_logo_guid() is removed
+       18 | FATAL      | * | 5.4.0 | Call-time pass-by-reference has been removed
+       22 | FATAL      | * | 5.4.0 | break operator with non-constant operand is no longer supported
+       26 | FATAL      | * | 5.4.0 | Cannot re-assign auto-global variable
+       31 | WARNING    |   | 5.6.0 | Array key may be overwritten when defining as a property and using constants
+       39 | WARNING    | * | 7.0.0 | set_exception_handler() is no longer guaranteed to receive Exception objects
+       42 | WARNING    | * | 7.0.0 | Different behavior between PHP 5/7
+       46 | NOTICE     | * | 7.0.0 | foreach no longer changes the internal array pointer
     --------------------------------------------------------------------------------
     ```
     > 关于第三列`是否确认`的含义，在下面会有详细的解释。
@@ -98,10 +121,12 @@ to53       => Migrating from ANY version to PHP 5.3.x
 to54       => Migrating from ANY version to PHP 5.4.x
 to55       => Migrating from ANY version to PHP 5.5.x
 to56       => Migrating from ANY version to PHP 5.6.x
+to70       => Migrating from ANY version to PHP 7.0.x
 v53        => Migrating from PHP 5.2.x to PHP 5.3.x
 v54        => Migrating from PHP 5.3.x to PHP 5.4.x
 v55        => Migrating from PHP 5.4.x to PHP 5.5.x
 v56        => Migrating from PHP 5.5.x to PHP 5.6.x
+v70        => Migrating from PHP 5.6.x to PHP 7.0.x
 ```
 
 并通过`php phpmig.phar -s <setname>`选择要使用的检查组。
@@ -125,7 +150,8 @@ v56        => Migrating from PHP 5.5.x to PHP 5.6.x
 |   |   |-- PhpMigration\Changes\v5dot3\Introduced
 |   |   |-- PhpMigration\Changes\v5dot4\Introduced
 |   |   |-- PhpMigration\Changes\v5dot5\Introduced
-|   |   `-- PhpMigration\Changes\v5dot6\Introduced
+|   |   |-- PhpMigration\Changes\v5dot6\Introduced
+|   |   `-- PhpMigration\Changes\v7dot0\Introduced
 |   |-- PhpMigration\Changes\AbstractKeywordReserved
 |   |   |-- PhpMigration\Changes\v5dot3\IncompReserved
 |   |   `-- PhpMigration\Changes\v5dot4\IncompReserved
@@ -133,8 +159,10 @@ v56        => Migrating from PHP 5.5.x to PHP 5.6.x
 |   |   |-- PhpMigration\Changes\v5dot3\Removed
 |   |   |-- PhpMigration\Changes\v5dot4\Removed
 |   |   |-- PhpMigration\Changes\v5dot5\Removed
-|   |   `-- PhpMigration\Changes\v5dot6\Removed
+|   |   |-- PhpMigration\Changes\v5dot6\Removed
+|   |   `-- PhpMigration\Changes\v7dot0\Removed
 |   |-- PhpMigration\Changes\ClassTree
+|   |-- PhpMigration\Changes\Dev
 |   |-- PhpMigration\Changes\v5dot3\Deprecated
 |   |-- PhpMigration\Changes\v5dot3\IncompByReference
 |   |-- PhpMigration\Changes\v5dot3\IncompCallFromGlobal
@@ -144,6 +172,7 @@ v56        => Migrating from PHP 5.5.x to PHP 5.6.x
 |   |-- PhpMigration\Changes\v5dot4\Deprecated
 |   |-- PhpMigration\Changes\v5dot4\IncompBreakContinue
 |   |-- PhpMigration\Changes\v5dot4\IncompByReference
+|   |-- PhpMigration\Changes\v5dot4\IncompHashAlgo
 |   |-- PhpMigration\Changes\v5dot4\IncompMisc
 |   |-- PhpMigration\Changes\v5dot4\IncompParamName
 |   |-- PhpMigration\Changes\v5dot4\IncompRegister
@@ -152,9 +181,20 @@ v56        => Migrating from PHP 5.5.x to PHP 5.6.x
 |   |-- PhpMigration\Changes\v5dot5\IncompPack
 |   |-- PhpMigration\Changes\v5dot6\Deprecated
 |   |-- PhpMigration\Changes\v5dot6\IncompMisc
-|   `-- PhpMigration\Changes\v5dot6\IncompPropertyArray
+|   |-- PhpMigration\Changes\v5dot6\IncompPropertyArray
+|   |-- PhpMigration\Changes\v7dot0\Deprecated
+|   |-- PhpMigration\Changes\v7dot0\ExceptionHandle
+|   |-- PhpMigration\Changes\v7dot0\ForeachLoop
+|   |-- PhpMigration\Changes\v7dot0\FuncList
+|   |-- PhpMigration\Changes\v7dot0\FuncParameters
+|   |-- PhpMigration\Changes\v7dot0\IntegerOperation
+|   |-- PhpMigration\Changes\v7dot0\KeywordReserved
+|   |-- PhpMigration\Changes\v7dot0\ParseDifference
+|   |-- PhpMigration\Changes\v7dot0\StringOperation
+|   `-- PhpMigration\Changes\v7dot0\SwitchMultipleDefaults
 |-- PhpMigration\CheckVisitor
 |-- PhpMigration\Logger
+|-- PhpMigration\ReduceVisitor
 |-- PhpMigration\SymbolTable
 |-- PhpMigration\Utils\FunctionListExporter
 |-- PhpMigration\Utils\Logging
