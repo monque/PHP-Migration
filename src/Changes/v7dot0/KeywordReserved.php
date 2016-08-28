@@ -5,7 +5,7 @@ use PhpMigration\Changes\AbstractChange;
 use PhpMigration\SymbolTable;
 use PhpParser\Node\Stmt;
 
-/** 
+/**
  * Invalid class, interface and trait names
  *
  * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.other.classes
