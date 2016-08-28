@@ -1,4 +1,5 @@
 <?php
+
 namespace PhpMigration\Utils;
 
 use PhpMigration\CheckVisitor;

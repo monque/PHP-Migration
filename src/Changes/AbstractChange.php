@@ -1,4 +1,5 @@
 <?php
+
 namespace PhpMigration\Changes;
 
 abstract class AbstractChange
