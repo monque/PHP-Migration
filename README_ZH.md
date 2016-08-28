@@ -1,6 +1,9 @@
 # PHP Migration
 
 [![Build Status](https://travis-ci.org/monque/PHP-Migration.svg)](https://travis-ci.org/monque/PHP-Migration)
+[![Total Downloads](https://poser.pugx.org/monque/PHP-Migration/d/total.svg)](https://packagist.org/packages/monque/PHP-Migration)
+[![Latest Stable Version](https://poser.pugx.org/monque/PHP-Migration/v/stable.svg)](https://packagist.org/packages/monque/PHP-Migration)
+[![License](https://poser.pugx.org/monque/PHP-Migration/license.svg)](https://packagist.org/packages/monque/PHP-Migration)
 
 这是一个用于PHP版本迁移和兼容性检查的代码静态分析器。
 

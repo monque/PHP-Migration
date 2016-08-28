@@ -3,6 +3,9 @@
 > Readme in [Chinese 中文](https://github.com/monque/PHP-Migration/tree/master/README_ZH.md)
 
 [![Build Status](https://travis-ci.org/monque/PHP-Migration.svg)](https://travis-ci.org/monque/PHP-Migration)
+[![Total Downloads](https://poser.pugx.org/monque/PHP-Migration/d/total.svg)](https://packagist.org/packages/monque/PHP-Migration)
+[![Latest Stable Version](https://poser.pugx.org/monque/PHP-Migration/v/stable.svg)](https://packagist.org/packages/monque/PHP-Migration)
+[![License](https://poser.pugx.org/monque/PHP-Migration/license.svg)](https://packagist.org/packages/monque/PHP-Migration)
 
 This is a static analyzer for PHP version migration and compatibility checking.
 
