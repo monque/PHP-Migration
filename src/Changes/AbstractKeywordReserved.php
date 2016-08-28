@@ -1,14 +1,6 @@
 <?php
 namespace PhpMigration\Changes;
 
-/**
- * @author Yuchen Wang <phobosw@gmail.com>
- *
- * Code is compliant with PSR-1 and PSR-2 standards
- * http://www.php-fig.org/psr/psr-1/
- * http://www.php-fig.org/psr/psr-2/
- */
-
 use PhpMigration\SymbolTable;
 use PhpMigration\Utils\ParserHelper;
 use PhpParser\Node\Expr;
@@ -41,7 +33,7 @@ abstract class AbstractKeywordReserved extends AbstractChange
         if ($node instanceof Stmt\ClassLike ||
                 $node instanceof Stmt\Function_ || $node instanceof Stmt\ClassMethod ||
                 $node instanceof Expr\MethodCall || $node instanceof Expr\StaticCall ||
-                $node instanceof Expr\ConstFetch ||  
+                $node instanceof Expr\ConstFetch ||
                 ($node instanceof Expr\FuncCall && !ParserHelper::isDynamicCall($node))) {
             $name = $node->migName;
         }

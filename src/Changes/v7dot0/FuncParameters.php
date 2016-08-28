@@ -4,7 +4,7 @@ namespace PhpMigration\Changes\v7dot0;
 use PhpMigration\Changes\AbstractChange;
 
 /**
- * Functions cannot have multiple parameters with the same name 
+ * Functions cannot have multiple parameters with the same name
  *
  * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.other.func-parameters
  */
