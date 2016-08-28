@@ -7,14 +7,14 @@ Backward incompatible changes:
   # Changes to error and exception handling
   -
     name: set_exception_handler() is no longer guaranteed to receive Exception objects
-    status: CHECK
+    status: CHECKED
     check: v7dot0/ExceptionHandle
   -
     name: Internal constructors always throw exceptions on failure
-    status: IGNORE
+    status: IGNORED
   -
     name: Parse errors throw ParseError
-    status: IGNORE
+    status: IGNORED
   -
     name: E_STRICT notices severity changes
     status: TODO
@@ -22,43 +22,43 @@ Backward incompatible changes:
   # Changes to variable handling
   -
     name: Changes to the handling of indirect variables, properties, and methods
-    status: CHECK
+    status: CHECKED
     check: v7dot0/ParseDifference
   -
     name: list() no longer assigns variables in reverse order
-    status: CHECK
+    status: CHECKED
     check: v7dot0/FuncList
   -
     name: Empty list() assignments have been removed
-    status: CHECK
+    status: CHECKED
     check: v7dot0/FuncList
   -
     name: list() cannot unpack strings
-    status: IGNORE
+    status: IGNORED
   -
     name: Array ordering when elements are automatically created during by reference assignments has changed
-    status: IGNORE
+    status: IGNORED
   -
     name: global only accepts simple variables
     status: PARSER
   -
     name: Parentheses around function arguments no longer affect behaviour
-    status: IGNORE
+    status: IGNORED
 
   # Changes to foreach
   -
     name: foreach no longer changes the internal array pointer
-    status: CHECK
+    status: CHECKED
     check: v7dot0/ForeachLoop
   -
     name: foreach by-value operates on a copy of the array
-    status: IGNORE
+    status: IGNORED
   -
     name: foreach by-reference has improved iteration behaviour
-    status: IGNORE
+    status: IGNORED
   -
     name: Iteration of non-Traversable objects
-    status: IGNORE
+    status: IGNORED
 
   # Changes to integer handling
   -
@@ -66,68 +66,68 @@ Backward incompatible changes:
     status: PARSER
   -
     name: Negative bitshifts
-    status: CHECK
+    status: CHECKED
     check: v7dot0/IntegerOperation
   -
     name: Out of range bitshits
-    status: IGNORE
+    status: IGNORED
   -
     name: Changes to Division By Zero
-    status: IGNORE
+    status: IGNORED
   -
     name: Changes to Modulus By Zero
-    status: CHECK
+    status: CHECKED
     check: v7dot0/IntegerOperation
 
   # Changes to string handling
   -
     name: Hexadecimal strings are no longer considered numeric
-    status: CHECK
+    status: CHECKED
     check: v7dot0/StringOperation
   -
     name: \u{ may cause errors
-    status: IGNORE
+    status: IGNORED
 
   # Removed functions
   -
     name: call_user_method() and call_user_method_array()
-    status: CHECK
+    status: CHECKED
     check: v7dot0/Removed
   -
     name: All ereg* functions
-    status: CHECK
+    status: CHECKED
     check: v7dot0/Removed
   -
     name: mcrypt aliases
-    status: CHECK
+    status: CHECKED
     check: v7dot0/Removed
   -
     name: All ext/mysql functions
-    status: CHECK
+    status: CHECKED
     check: v7dot0/Removed
   -
     name: All ext/mssql functions
-    status: CHECK
+    status: CHECKED
     check: v7dot0/Removed
   -
     name: intl aliases
-    status: CHECK
+    status: CHECKED
     check: v7dot0/Removed
   -
     name: set_magic_quotes_runtime()
-    status: CHECK
+    status: CHECKED
     check: v7dot0/Removed
   -
     name: set_socket_blocking()
-    status: CHECK
+    status: CHECKED
     check: v7dot0/Removed
   -
     name: dl() in PHP-FPM
-    status: CHECK
+    status: CHECKED
     check: v5dot3/Removed
   -
     name: GD Type1 functions
-    status: CHECK
+    status: CHECKED
     check: v7dot0/Removed
 
   # Removed INI directives
@@ -141,97 +141,97 @@ Backward incompatible changes:
     status: PARSER # @see https://github.com/nikic/PHP-Parser/issues/295
   -
     name: Invalid class, interface and trait names
-    status: CHECK
+    status: CHECKED
     check: v7dot0/KeywordReserved
   -
     name: ASP and script PHP tags removed
     status: PARSER
   -
     name: Calls from incompatible context removed
-    status: IGNORE
+    status: IGNORED
   -
     name: yield is now a right associative operator
-    status: CHECK
+    status: CHECKED
     check: v7dot0/ParseDifference
   -
     name: Functions cannot have multiple parameters with the same name
-    status: CHECK
+    status: CHECKED
     check: v7dot0/FuncParameters
   -
     name: Functions inspecting arguments report the current parameter value
     status: TODO
   -
     name: Switch statements cannot have multiple default blocks
-    status: CHECK
+    status: CHECKED
     check: v7dot0/SwitchMultipleDefaults
   -
     name: $HTTP_RAW_POST_DATA removed
-    status: CHECK
+    status: CHECKED
     check: v7dot0/Removed
   -
     name: \# comments in INI files removed 
     status: INI
   -
     name: JSON extension replaced with JSOND
-    status: IGNORE
+    status: IGNORED
   -
     name: Internal function failure on overflow
-    status: IGNORE
+    status: IGNORED
   -
     name: Fixes to custom session handler return values
-    status: IGNORE
+    status: IGNORED
 
 
 Deprecated:
   - 
     name: PHP 4 style constructors
-    status: CHECK
+    status: CHECKED
     check: v7dot0/Deprecated
   - 
     name: Static calls to non-static methods
     status: TODO
   - 
     name: password_hash() salt option
-    status: CHECK
+    status: CHECKED
     check: v7dot0/Deprecated
   - 
     name: capture_session_meta SSL context option
-    status: IGNORE
+    status: IGNORED
   - 
     name: LDAP deprecations
-    status: CHECK
+    status: CHECKED
     check: v7dot0/Deprecated
 
 
 Changed functions:
   -
-    status: IGNORE
+    status: IGNORED
 
 
 New functions, classes, interfaces, constans:
   -
-    status: CHECK
+    status: CHECKED
     check: v7dot0/Introduced
 
 
 Changes in SAPI Modules:
   -
     name: Unqualified listen ports now listen on both IPv4 and IPv6
-    status: IGNORE
+    status: IGNORED
 
 
 Removed Extensions and SAPIs:
   -
-    status: IGNORE
+    status: IGNORED
 
 
 Other Changes:
   -
     name: Loosening Reserved Word Restrictions
-    status: IGNORE
+    status: IGNORED
   -
     name: Removal of date.timezone Warning
-    status: IGNORE
+    status: IGNORED
 
 
 # vim: set shiftwidth=2 expandtab softtabstop=2:
