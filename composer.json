@@ -19,5 +19,8 @@
         "psr-4": {
             "PhpMigration\\": "src/"
         }
-    }
+    },
+    "bin": [
+        "bin/phpmig"
+    ]
 }
