@@ -30,7 +30,7 @@
 
 1. 你可以通过下面命令下载一个封装好的可执行的[Phar](http://php.net/manual/zh/book.phar.php)文件
     ```
-    wget https://github.com/monque/PHP-Migration/releases/download/v0.2.0/phpmig.phar
+    wget https://github.com/monque/PHP-Migration/releases/download/v0.2.1/phpmig.phar
     ```
 
 2. 执行下面命令，将会对该文件进行检查，并输出报告
