@@ -1,0 +1,20 @@
+# Migrating from PHP 7.0.x to PHP 7.1.x
+# http://php.net/migration71
+---
+
+New features:
+  -
+    status: IGNORED
+
+
+New functions, constants:
+  -
+    status: CHECKED
+    check: v7dot1/Introduced
+
+Backward incompatible changes:
+  -
+    name: Throw on passing too few function arguments
+    status: TODO
+
+# vim: set shiftwidth=2 expandtab softtabstop=2:

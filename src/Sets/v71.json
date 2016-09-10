@@ -1,0 +1,10 @@
+{
+    "desc": "Migrating from PHP 7.0.x to PHP 7.1.x",
+    "link": "http://php.net/migration71",
+    "changes": [
+        "v7dot1\\Introduced"
+    ],
+    "options": {
+        "parse_as_version": 7
+    }
+}
