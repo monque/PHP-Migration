@@ -1,5 +1,5 @@
 # Migrating from PHP 5.6.x to PHP 7.0.x
-# http://php.net/manual/en/migration70.php
+# http://php.net/migration70
 ---
 
 Backward incompatible changes:
@@ -208,7 +208,7 @@ Changed functions:
     status: IGNORED
 
 
-New functions, classes, interfaces, constans:
+New functions, classes, interfaces, constants:
   -
     status: CHECKED
     check: v7dot0/Introduced
