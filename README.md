@@ -33,7 +33,7 @@ Features:
 
 1. You can download a executable [Phar](http://php.net/manual/en/book.phar.php) file
     ```
-    wget https://github.com/monque/PHP-Migration/releases/download/v0.2.1/phpmig.phar
+    wget https://github.com/monque/PHP-Migration/releases/download/v0.2.2/phpmig.phar
     ```
 
 2. Use the following command to check PHP file

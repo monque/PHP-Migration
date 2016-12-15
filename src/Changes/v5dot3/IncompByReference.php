@@ -393,6 +393,7 @@ class IncompByReference extends AbstractChange
         if ($type == 'func') {
             $callname = $node->name;
         } elseif ($type == 'static') {
+            // TODO static::callMethod
             $class = $node->class->toString();
             if ($class == 'self' && $this->visitor->inClass()) {
                 $class = $this->visitor->getClassName();

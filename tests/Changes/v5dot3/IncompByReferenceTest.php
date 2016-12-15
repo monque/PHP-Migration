@@ -48,5 +48,9 @@ class IncompByReferenceTest extends AbstractChangeTest
 
         $code = 'class Sample {static function sample($a, &$b) {}} sAMPLE::saMPLe(1, 2);';
         $this->assertHasSpot($code);
+
+        // #Issue 13: Call to undefined method PhpParser\Node\Expr\ArrayDimFetch::toString()
+        $code = '$cb[0]::sample(1);';
+        $this->assertNotSpot($code);
     }
 }

@@ -18,7 +18,7 @@ class ParserHelper
         if ($node instanceof Expr\MethodCall) {
             return !is_string($node->name);
         } elseif ($node instanceof Expr\StaticCall) {
-            return !is_string($node->name) || $node->class instanceof Expr\Variable;
+            return !is_string($node->name) || !self::isConstName($node->class);
         } elseif ($node instanceof Expr\FuncCall) {
             return !($node->name instanceof Name);
         } else {
@@ -26,9 +26,17 @@ class ParserHelper
         }
     }
 
+    /**
+     * Test if given variable is a const name
+     */
+    public static function isConstName($prop)
+    {
+        return is_string($prop) || method_exists($prop, '__toString');
+    }
+
     public static function isSameFunc($name, $const)
     {
-        if (!is_string($name) && !method_exists($name, '__toString')) {
+        if (!self::isConstName($name)) {
             return false;
         }
 
@@ -37,7 +45,7 @@ class ParserHelper
 
     public static function isSameClass($name, $const)
     {
-        if (!is_string($name) && !method_exists($name, '__toString')) {
+        if (!self::isConstName($name)) {
             return false;
         }
 

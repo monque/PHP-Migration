@@ -13,7 +13,7 @@ use PhpParser\ParserFactory;
 
 class App
 {
-    const VERSION = '0.2.1';
+    const VERSION = '0.2.2';
 
     protected $setpath;
 
