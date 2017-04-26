@@ -21,7 +21,7 @@ class IncompMagicInvoked extends AbstractChange
          * http://php.net/manual/en/migration53.incompatible.php
          */
         $message = sprintf(
-            'The __call() magic method will be invoked on access to non-public mehtods in %s',
+            'The __call() magic method will be invoked on access to non-public methods in %s',
             $this->visitor->getClassName()
         );
         $this->addSpot('NOTICE', false, $message, $node->getLine());
