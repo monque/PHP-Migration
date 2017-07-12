@@ -47,6 +47,7 @@ Options:
   -q, --quite           Only output identified spots, ignore all uncertain
   -s, --set=NAME        The name of check set to use [default: to56]
   -d, --dump            Dump abstract syntax tree
+  --level=LEVEL         The mimimum level of spots to report, ignores all below levels [FATAL|DEPRECATED|NEW|WARNING|NOTICE]
   -v, --verbose
   -h, --help            Show this screen
       --version         Show version
@@ -92,6 +93,7 @@ EOT;
 
             '--export-posbit'   => false,
             '--pack'            => false,
+            '--level'           => 'ALL'
         ];
 
         // Fill args
@@ -116,7 +118,13 @@ EOT;
                 case '--quite':
                     $args['--quite'] = true;
                     break;
-
+                case '--level':
+                    $next = array_shift($argv);
+                    if ($is_split) {
+                        $next = substr($next, 1);
+                    }
+                    $args['--level'] = $next;
+                    break;
                 case '-s':
                 case '--set':
                     $next = array_shift($argv);
@@ -400,6 +408,11 @@ EOT;
         }
         $chgvisitor->finish();
 
+        
+        $cates = ['NOTICE','WARNING','NEW','DEPRECATED','FATAL'];
+        
+        $filter = array_slice($cates, array_search(strtoupper($this->args['--level']), $cates));
+
         // Display
         $has_output = false;
         foreach ($chgvisitor->getSpots() as $spotlist) {
@@ -414,7 +427,14 @@ EOT;
                     // Remove uncertain
                     unset($spotlist[$key]);
                 }
+                if (!in_array($spot['cate'], $filter))
+                    unset($spotlist[$key]);
+
             }
+            if (count($spotlist) == 0){
+                continue;
+            }
+
             $has_output = true;
 
             if (!$spotlist) {
