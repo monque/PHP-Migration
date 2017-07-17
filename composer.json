@@ -13,7 +13,8 @@
     "require": {
         "php": ">=5.4.0",
         "nikic/php-parser": "^2.1.0",
-        "psr/log": "^1.0"
+        "psr/log": "^1.0",
+        "phpunit/phpunit": "^6.2"
     },
     "autoload": {
         "psr-4": {
