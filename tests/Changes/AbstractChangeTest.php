@@ -4,7 +4,7 @@ namespace PhpMigration\Changes;
 
 use PhpMigration\Utils\TestHelper;
 
-abstract class AbstractChangeTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractChangeTest extends \PHPUnit\Framework\TestCase
 {
     protected $change;
 
