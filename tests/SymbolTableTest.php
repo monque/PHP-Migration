@@ -2,7 +2,7 @@
 
 namespace PhpMigration;
 
-class SymbolTableTest extends \PHPUnit\Framework\TestCase
+class SymbolTableTest extends \PHPUnit_Framework_TestCase
 {
     protected $fillData = [
         'CamelCase' => 'CamelCase',

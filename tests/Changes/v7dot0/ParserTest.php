@@ -5,7 +5,7 @@ namespace PhpMigration\Changes\v7dot0;
 use PhpParser\Error;
 use PhpParser\ParserFactory;
 
-class ParserTest extends \PHPUnit\Framework\TestCase
+class ParserTest extends \PHPUnit_Framework_TestCase
 {
     protected $parser;
 
