@@ -6,7 +6,7 @@ use PhpMigration\Changes\AbstractChange;
 use PhpParser\Node\Scalar;
 
 /**
- * Hexadecimal strings are no longer considered numeric
+ * Hexadecimal strings are no longer considered numeric.
  *
  * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.strings.hex
  */

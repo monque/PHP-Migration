@@ -6,7 +6,7 @@ use PhpMigration\Changes\AbstractChange;
 use PhpParser\Node\Stmt;
 
 /**
- * Switch statements cannot have multiple default blocks
+ * Switch statements cannot have multiple default blocks.
  *
  * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.other.multiple-default
  */

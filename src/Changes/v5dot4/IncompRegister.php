@@ -27,7 +27,7 @@ class IncompRegister extends AbstractChange
 
     public function leaveNode($node)
     {
-        /**
+        /*
          * {Description}
          * The register_globals and register_long_arrays php.ini directives
          * have been removed.

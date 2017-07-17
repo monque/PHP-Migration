@@ -26,7 +26,7 @@ class IncompHashAlgo extends AbstractChange
 
     public function leaveNode($node)
     {
-        /**
+        /*
          * {Description}
          * The Salsa10 and Salsa20 hash algorithms have been removed.
          *

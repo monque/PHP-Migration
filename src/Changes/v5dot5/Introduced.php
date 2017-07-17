@@ -12,7 +12,7 @@ class Introduced extends AbstractIntroduced
         // PHP Core
         'array_column', 'boolval', 'json_last_error_msg',
 
-        /**
+        /*
          * There is a lib named ircmaxell/password-compat and its description
          * is "A Compatibility library with PHP 5.5's simplified password
          * hashing API". It provide 4 functions that duplicated with below

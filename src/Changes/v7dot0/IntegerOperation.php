@@ -12,7 +12,7 @@ class IntegerOperation extends AbstractChange
 
     public function leaveNode($node)
     {
-        /**
+        /*
          * Negative bitshifts
          *
          * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.integers.negative-bitshift
@@ -33,7 +33,7 @@ class IntegerOperation extends AbstractChange
                 $this->addSpot('NOTICE', $certain, 'Bitwise shifts should not by negative numbers');
             }
 
-        /**
+        /*
          * Changes to Modulus By Zero
          *
          * The modulus operator E_WARNING has been removed and will throw a DivisionByZeroError exception.

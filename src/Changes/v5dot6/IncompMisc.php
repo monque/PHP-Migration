@@ -42,7 +42,7 @@ class IncompMisc extends AbstractChange
     {
         // json_decode()
         if ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'json_decode')) {
-            /**
+            /*
              * {Description}
              * json_decode() now rejects non-lowercase variants of the JSON
              * literals true, false and null at all times, as per the JSON
@@ -61,7 +61,7 @@ class IncompMisc extends AbstractChange
 
         // GMP
         } elseif ($node instanceof Expr\FuncCall && $this->gmpTable->has($node->name)) {
-            /**
+            /*
              * {Description}
              * GMP resources are now objects. The functional API implemented in
              * the GMP extension has not changed, and code should run
@@ -75,7 +75,7 @@ class IncompMisc extends AbstractChange
 
         // Mcrypt
         } elseif ($node instanceof Expr\FuncCall && $this->mcryptTable->has($node->name)) {
-            /**
+            /*
              * {Description}
              * mcrypt_encrypt(), mcrypt_decrypt(), mcrypt_cbc(), mcrypt_cfb(),
              * mcrypt_ecb(), mcrypt_generic() and mcrypt_ofb() will no longer

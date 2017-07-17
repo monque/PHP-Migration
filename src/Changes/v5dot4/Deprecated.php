@@ -27,7 +27,7 @@ class Deprecated extends AbstractChange
     {
         // Function call
         if ($this->isDeprecatedFunc($node)) {
-            /**
+            /*
              * {Errmsg}
              * Deprecated: Function {function} is deprecated
              *

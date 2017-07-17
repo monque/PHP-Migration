@@ -10,7 +10,7 @@ class Removed extends AbstractRemoved
 
     /**
      * {Reference}
-     * http://php.net/manual/en/migration54.incompatible.php
+     * http://php.net/manual/en/migration54.incompatible.php.
      */
     protected $funcTable = [
         'define_syslog_variables',

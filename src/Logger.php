@@ -45,7 +45,7 @@ class Logger extends AbstractLogger
     }
 
     /**
-     * Example implementation in http://www.php-fig.org/psr/psr-3/
+     * Example implementation in http://www.php-fig.org/psr/psr-3/.
      */
     protected function interpolate($message, array $context = [])
     {

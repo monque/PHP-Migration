@@ -51,6 +51,7 @@ class IncompParamName extends AbstractChange
                 return true;
             }
         }
+
         return false;
     }
 }

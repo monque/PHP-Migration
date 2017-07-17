@@ -8,7 +8,7 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Stmt;
 
 /**
- * foreach no longer changes the internal array pointer
+ * foreach no longer changes the internal array pointer.
  *
  * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.foreach.array-pointer
  */

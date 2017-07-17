@@ -12,7 +12,7 @@ class IncompBreakContinue extends AbstractChange
 
     public function leaveNode($node)
     {
-        /**
+        /*
          * {Description}
          * The break and continue statements no longer accept variable
          * arguments (e.g., break 1 + foo() * $bar;). Static arguments

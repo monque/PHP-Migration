@@ -94,7 +94,7 @@ EOT;
             '--skip'            => false,
             '--export-posbit'   => false,
             '--pack'            => false,
-            '--level'           => 'ALL'
+            '--level'           => 'ALL',
         ];
 
         // Fill args
@@ -369,8 +369,9 @@ EOT;
                 $iterator = new \RegexIterator($iterator, '/\.php$/');
                 try {
                     foreach ($iterator as $file) {
-                        if (strpos($file, $this->args['--skip']) !== FALSE)
+                        if (strpos($file, $this->args['--skip']) !== false) {
                             continue;
+                        }
                         $filelist[] = $file;
                     }
                 } catch (Exception $e) {
@@ -406,7 +407,7 @@ EOT;
                 if ($this->args['--verbose']) {
                     Logging::warning('Parse error {file}, error message "{exception}"', [
                         'exception' => $e,
-                        'file' => $file,
+                        'file'      => $file,
                     ]);
                 }
                 continue;
@@ -418,9 +419,8 @@ EOT;
         }
         $chgvisitor->finish();
 
-        
-        $cates = ['NOTICE','WARNING','NEW','DEPRECATED','FATAL'];
-        
+        $cates = ['NOTICE', 'WARNING', 'NEW', 'DEPRECATED', 'FATAL'];
+
         $filter = array_slice($cates, array_search(strtoupper($this->args['--level']), $cates));
 
         // Display
@@ -437,11 +437,11 @@ EOT;
                     // Remove uncertain
                     unset($spotlist[$key]);
                 }
-                if (!in_array($spot['cate'], $filter))
+                if (!in_array($spot['cate'], $filter)) {
                     unset($spotlist[$key]);
-
+                }
             }
-            if (count($spotlist) == 0){
+            if (count($spotlist) == 0) {
                 continue;
             }
 
