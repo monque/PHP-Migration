@@ -47,6 +47,7 @@ Options:
   -q, --quite           Only output identified spots, ignore all uncertain
   -s, --set=NAME        The name of check set to use [default: to56]
   -d, --dump            Dump abstract syntax tree
+  --skip=DIR            Skip the file paths that contains the parameter
   --level=LEVEL         The mimimum level of spots to report, ignores all below levels [FATAL|DEPRECATED|NEW|WARNING|NOTICE]
   -v, --verbose
   -h, --help            Show this screen
@@ -90,7 +91,7 @@ EOT;
             '--version'         => false,
             '--help'            => false,
             '<file>'            => [],
-
+            '--skip'            => false,
             '--export-posbit'   => false,
             '--pack'            => false,
             '--level'           => 'ALL'
@@ -124,6 +125,13 @@ EOT;
                         $next = substr($next, 1);
                     }
                     $args['--level'] = $next;
+                    break;
+                case '--skip':
+                    $next = array_shift($argv);
+                    if ($is_split) {
+                        $next = substr($next, 1);
+                    }
+                    $args['--skip'] = $next;
                     break;
                 case '-s':
                 case '--set':
@@ -361,6 +369,8 @@ EOT;
                 $iterator = new \RegexIterator($iterator, '/\.php$/');
                 try {
                     foreach ($iterator as $file) {
+                        if (strpos($file, $this->args['--skip']) !== FALSE)
+                            continue;
                         $filelist[] = $file;
                     }
                 } catch (Exception $e) {
