@@ -11,7 +11,7 @@ class Removed extends AbstractRemoved
     /**
      * {Description}
      * A number of constants marked obsolete in the cURL library have now been
-     * removed
+     * removed.
      *
      * {Reference}
      * http://php.net/manual/en/migration56.extensions.php#migration56.extensions.curl

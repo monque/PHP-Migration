@@ -36,7 +36,7 @@ class ReduceVisitor extends NodeVisitorAbstract
     }
 
     /**
-     * Get data from name node or pure string
+     * Get data from name node or pure string.
      */
     protected function getName($name)
     {

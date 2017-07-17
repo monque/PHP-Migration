@@ -10,52 +10,52 @@ use PhpParser\NodeVisitorAbstract;
 class CheckVisitor extends NodeVisitorAbstract
 {
     /**
-     * All Spots emitted by the Changes during check
+     * All Spots emitted by the Changes during check.
      */
     protected $spots;
 
     /**
-     * Instances of the Change
+     * Instances of the Change.
      */
     protected $changes;
 
     /**
-     * Current fileinfo
+     * Current fileinfo.
      */
     protected $file;
 
     /**
-     * Current code
+     * Current code.
      */
     protected $code;
 
     /**
-     * Current node
+     * Current node.
      */
     protected $node;
 
     /**
-     * Current class-like node (class, interface, trait)
+     * Current class-like node (class, interface, trait).
      */
     protected $class;
 
     /**
-     * Stack for record current class-like node
+     * Stack for record current class-like node.
      */
     protected $classStack;
 
     /**
-     * Current funciton-like node (function, method, closure)
+     * Current funciton-like node (function, method, closure).
      */
     protected $function;
 
     /**
-     * Stack for record current function-like node
+     * Stack for record current function-like node.
      */
     protected $funcStack;
 
     /**
-     * Empty spots, current state and save the Changes
+     * Empty spots, current state and save the Changes.
      */
     public function __construct($changes = [])
     {
@@ -65,7 +65,7 @@ class CheckVisitor extends NodeVisitorAbstract
     }
 
     /**
-     * The interface that allow a Change call another Change's method
+     * The interface that allow a Change call another Change's method.
      */
     public function callChange($name, $method, $args)
     {
@@ -148,7 +148,7 @@ class CheckVisitor extends NodeVisitorAbstract
 
         // Record current
         if ($node instanceof Stmt\ClassLike) {
-            /**
+            /*
              * Class, Interface, Trait are stored in one same HashTable
              * (zend_executor_globals.class_table). Their name will be conflict
              * if duplicated (eg, class Demo {} and Interface Demo {}). So, we
@@ -201,7 +201,7 @@ class CheckVisitor extends NodeVisitorAbstract
     }
 
     /**
-     * Add a new spot
+     * Add a new spot.
      */
     public function addSpot($cate, $identified, $message, $version = '', $line = null, $file = null)
     {
@@ -220,17 +220,17 @@ class CheckVisitor extends NodeVisitorAbstract
 
         // Add by file
         $this->spots[$filename][] = [
-            'cate' => $cate,
+            'cate'       => $cate,
             'identified' => $identified,
-            'message' => $message,
-            'version' => $version,
-            'line' => $line,
-            'file' => $file,
+            'message'    => $message,
+            'version'    => $version,
+            'line'       => $line,
+            'file'       => $file,
         ];
     }
 
     /**
-     * Get all spots
+     * Get all spots.
      */
     public function getSpots()
     {

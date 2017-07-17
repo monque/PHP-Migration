@@ -7,7 +7,7 @@ use PhpParser\Node\Expr;
 
 /**
  * list() no longer assigns variables in reverse order
- * Empty list() assignments have been removed
+ * Empty list() assignments have been removed.
  *
  * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.variable-handling.list
  */
@@ -29,6 +29,7 @@ class FuncList extends AbstractChange
         foreach ($node->vars as $var) {
             if ($var instanceof Expr\ArrayDimFetch && is_null($var->dim)) {
                 $this->addSpot('NOTICE', true, 'list() no longer assigns variables in reverse order');
+
                 return;
             }
         }

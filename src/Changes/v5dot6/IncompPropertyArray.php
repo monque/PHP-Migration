@@ -13,7 +13,7 @@ class IncompPropertyArray extends AbstractChange
 
     public function leaveNode($node)
     {
-        /**
+        /*
          * {Description}
          * Array keys won't be overwritten when defining an array as a property
          * of a class via an array literal

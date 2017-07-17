@@ -27,7 +27,7 @@ class ParseDifference extends AbstractChange
     protected $plain7;
 
     /**
-     * a mini node traverser convert AST to plain list
+     * a mini node traverser convert AST to plain list.
      */
     protected function ast2plain($entry, array &$records)
     {
@@ -44,7 +44,7 @@ class ParseDifference extends AbstractChange
     }
 
     /**
-     * Normalize node name and convert NameResolver's FullyQualified node
+     * Normalize node name and convert NameResolver's FullyQualified node.
      */
     protected function normalizeNodeList(array &$nodes)
     {
@@ -80,6 +80,7 @@ class ParseDifference extends AbstractChange
             $stmts = $this->parser5->parse($this->visitor->getCode());
         } catch (PhpParserError $e) {
             $this->addSpot('WARNING', true, 'Parse failed as PHP 5 "'.$e->getMessage().'"', $e->getStartLine());
+
             return;
         }
 

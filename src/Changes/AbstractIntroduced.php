@@ -110,6 +110,7 @@ abstract class AbstractIntroduced extends AbstractChange
         }
 
         $mname = $class->migExtends.'::'.$node->migName;
+
         return $this->methodTable->has($mname);
     }
 
@@ -132,6 +133,7 @@ abstract class AbstractIntroduced extends AbstractChange
         }
 
         $name = $node->args[0]->value->value;
+
         return $this->constTable->has($name) &&
                 (is_null($this->condConst) || $name != $this->condConst);
     }
@@ -143,7 +145,7 @@ abstract class AbstractIntroduced extends AbstractChange
     }
 
     /**
-     * Conditional checking
+     * Conditional checking.
      */
     protected function isConditionalDeclare($node, $testfunc)
     {
@@ -152,6 +154,7 @@ abstract class AbstractIntroduced extends AbstractChange
         }
 
         $expr = $node->cond->expr;
+
         return $expr instanceof Expr\FuncCall && ParserHelper::isSameFunc($expr->migName, $testfunc);
     }
 
@@ -170,7 +173,7 @@ abstract class AbstractIntroduced extends AbstractChange
         if ($node->cond->expr->args[0]->value instanceof Scalar\String_) {
             return $node->cond->expr->args[0]->value->value;
         } else {
-            return null;
+            return;
         }
     }
 }

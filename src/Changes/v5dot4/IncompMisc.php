@@ -14,7 +14,7 @@ class IncompMisc extends AbstractChange
     {
         // array_combine()
         if ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'array_combine')) {
-            /**
+            /*
              * {Description}
              * array_combine() now returns array() instead of FALSE when two empty
              * arrays are provided as parameters.
@@ -31,7 +31,7 @@ class IncompMisc extends AbstractChange
         // ob_start()
         } elseif ($node instanceof Expr\FuncCall && ParserHelper::isSameFunc($node->name, 'ob_start') &&
                 isset($node->args[2])) {
-            /**
+            /*
              * {Description}
              * The third parameter of ob_start() has changed from boolean erase
              * to integer flags. Note that code that explicitly set erase to

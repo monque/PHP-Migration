@@ -55,7 +55,7 @@ class Deprecated extends AbstractChange
     public function leaveNode($node)
     {
         if ($node instanceof Expr\FuncCall && $this->mysqlTable->has($node->name)) {
-            /**
+            /*
              * {Description}
              * The original MySQL extension is now deprecated, and will generate
              * E_DEPRECATED errors when connecting to a database. Instead, use the
@@ -103,12 +103,11 @@ class Deprecated extends AbstractChange
                 foreach ($pattern->items as $key => $value) {
                     $this->verifyPregReplace($value->value->value);
                 }
-            }else{
+            } else {
                 $this->verifyPregReplace($pattern);
             }
-            
         } elseif ($node instanceof Expr\FuncCall && $this->funcTable->has($node->name)) {
-            /**
+            /*
              * TODO: how to check IntlDateFormatter::setTimeZoneId
              *
              * {Reference}
@@ -119,17 +118,18 @@ class Deprecated extends AbstractChange
         }
     }
 
-    private function verifyPregReplace($pattern){
-        $affected = TRUE;
-        $certain = FALSE;
+    private function verifyPregReplace($pattern)
+    {
+        $affected = true;
+        $certain = false;
 
         if (is_string($pattern)) {
             $modifier = strrchr($pattern, substr($pattern, 0, 1));
-            if ((strpos($modifier, 'e') !== false)){
-                $affected = TRUE;
-                $certain = TRUE;
-            }else{
-                $affected = FALSE;
+            if ((strpos($modifier, 'e') !== false)) {
+                $affected = true;
+                $certain = true;
+            } else {
+                $affected = false;
             }
         }
         if ($affected) {

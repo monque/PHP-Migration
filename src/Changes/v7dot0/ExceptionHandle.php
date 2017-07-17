@@ -12,7 +12,7 @@ class ExceptionHandle extends AbstractChange
 
     public function leaveNode($node)
     {
-        /**
+        /*
          * set_exception_handler() is no longer guaranteed to receive Exception
          * objects
          *

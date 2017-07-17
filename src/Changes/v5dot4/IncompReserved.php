@@ -12,7 +12,7 @@ class IncompReserved extends AbstractKeywordReserved
      * {Description}
      * The following keywords are now reserved, and may not be used as names by
      * functions, classes, etc.
-     * trait, callable, insteadof
+     * trait, callable, insteadof.
      *
      * {Reference}
      * http://php.net/manual/en/migration54.incompatible.php

@@ -12,7 +12,7 @@ class Deprecated extends AbstractChange
     protected $checkHRPD = true;
 
     /**
-     * For another Changes to set whether skip this check
+     * For another Changes to set whether skip this check.
      */
     public function skipHRPD($off)
     {
@@ -21,7 +21,7 @@ class Deprecated extends AbstractChange
 
     public function leaveNode($node)
     {
-        /**
+        /*
          * {Description}
          * always_populate_raw_post_data will now generate an E_DEPRECATED
          * error when used. New code should use php://input instead of
