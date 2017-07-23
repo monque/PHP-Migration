@@ -1,0 +1,15 @@
+preset: recommended
+
+risky: false
+
+disabled:
+  - align_double_arrow
+  - blank_line_before_return
+  - phpdoc_summary
+  - phpdoc_to_comment
+
+finder:
+  name:
+    - "*.php"
+  not-name:
+    - "IncompByReference.php"
