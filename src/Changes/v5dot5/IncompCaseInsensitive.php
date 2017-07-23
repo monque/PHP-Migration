@@ -24,7 +24,7 @@ class IncompCaseInsensitive extends AbstractChange
 
     public function leaveNode($node)
     {
-        /**
+        /*
          * {Description}
          * self, parent and static are now always case insensitive
          * Prior to PHP 5.5, cases existed where the self, parent, and static

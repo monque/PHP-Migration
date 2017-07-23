@@ -11,7 +11,7 @@ class IncompReserved extends AbstractKeywordReserved
     /**
      * {Description}
      * The following keywords are now reserved and may not be used in function, class, etc. names.
-     * goto, namespace
+     * goto, namespace.
      *
      * {Reference}
      * http://php.net/manual/en/migration53.incompatible.php

@@ -7,7 +7,7 @@ use PhpMigration\Changes\AbstractChangeTest;
 class ParseDifferenceTest extends AbstractChangeTest
 {
     /**
-     * Changes to the handling of indirect variables, properties, and methods
+     * Changes to the handling of indirect variables, properties, and methods.
      *
      * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.variable-handling.indirect
      */
@@ -22,7 +22,7 @@ class ParseDifferenceTest extends AbstractChangeTest
     }
 
     /**
-     * yield is now a right associative operator
+     * yield is now a right associative operator.
      *
      * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.other.yield
      */

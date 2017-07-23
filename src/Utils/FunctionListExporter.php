@@ -6,17 +6,17 @@ class FunctionListExporter
 {
     protected static $defaultMethod = [
         'modifier' => [],
-        'type' => null,
-        'name' => null,
-        'params' => [],
+        'type'     => null,
+        'name'     => null,
+        'params'   => [],
     ];
 
     protected static $defaultParam = [
-        'optional' => false,
-        'type' => null,
-        'name' => null,
+        'optional'    => false,
+        'type'        => null,
+        'name'        => null,
         'initializer' => null,
-        'reference' => false,
+        'reference'   => false,
     ];
 
     public function parse($dhtml)
@@ -59,6 +59,7 @@ class FunctionListExporter
     {
         // Add CDATA to reference param
         $dhtml = preg_replace('/<code([^>]+)>(.*?)<\/code>/s', '<code$1><![CDATA[$2]]></code>', $dhtml);
+
         return $dhtml;
     }
 

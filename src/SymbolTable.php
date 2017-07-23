@@ -37,11 +37,12 @@ class SymbolTable implements \Iterator, \ArrayAccess
         }
 
         $key = $this->caseSensitive ? $key : strtolower($key);
+
         return true;
     }
 
     /**
-     * Basic operation
+     * Basic operation.
      */
     public function has($key)
     {
@@ -55,7 +56,7 @@ class SymbolTable implements \Iterator, \ArrayAccess
     public function get($key)
     {
         if (!$this->prepareKey($key)) {
-            return null;
+            return;
         }
 
         return isset($this->data[$key]) ? $this->data[$key] : null;
@@ -64,7 +65,7 @@ class SymbolTable implements \Iterator, \ArrayAccess
     public function set($key, $value)
     {
         if (!$this->prepareKey($key)) {
-            return null;
+            return;
         }
 
         return $this->data[$key] = $value;
@@ -81,11 +82,12 @@ class SymbolTable implements \Iterator, \ArrayAccess
         }
 
         unset($this->data[$key]);
+
         return true;
     }
 
     /**
-     * Implement Iterator
+     * Implement Iterator.
      */
     public function current()
     {
@@ -113,7 +115,7 @@ class SymbolTable implements \Iterator, \ArrayAccess
     }
 
     /**
-     * Implement ArrayAccess
+     * Implement ArrayAccess.
      */
     public function offsetExists($offset)
     {

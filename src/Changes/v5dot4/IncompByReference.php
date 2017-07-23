@@ -17,7 +17,7 @@ class IncompByReference extends AbstractChange
     public function leaveNode($node)
     {
         if ($this->isCallTimePassByRef($node)) {
-            /**
+            /*
              * {Description}
              * Call-time pass by reference has been removed.
              *
@@ -33,7 +33,7 @@ class IncompByReference extends AbstractChange
     }
 
     /**
-     * Duplicated with same method in Changes/v5dot3/Deprecated.php
+     * Duplicated with same method in Changes/v5dot3/Deprecated.php.
      */
     protected function isCallTimePassByRef($node)
     {
@@ -47,6 +47,7 @@ class IncompByReference extends AbstractChange
                 return true;
             }
         }
+
         return false;
     }
 }

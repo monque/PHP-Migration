@@ -15,7 +15,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * global only accepts simple variables
+     * global only accepts simple variables.
      *
      * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.variable-handling.global
      * @expectedException PhpParser\Error
@@ -36,7 +36,7 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Invalid octal literals
+     * Invalid octal literals.
      *
      * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.integers.invalid-octals
      * @expectedException PhpParser\Error

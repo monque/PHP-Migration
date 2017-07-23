@@ -55,7 +55,7 @@ class Deprecated extends AbstractChange
     public function leaveNode($node)
     {
         if ($node instanceof Expr\FuncCall && $this->mysqlTable->has($node->name)) {
-            /**
+            /*
              * {Description}
              * The original MySQL extension is now deprecated, and will generate
              * E_DEPRECATED errors when connecting to a database. Instead, use the
@@ -98,21 +98,16 @@ class Deprecated extends AbstractChange
             if ($pattern instanceof Scalar\String_ || $pattern instanceof Scalar\EncapsedStringPart) {
                 $pattern = $pattern->value;
             }
-            // Guess whether e in modifier
-            if (is_string($pattern)) {
-                $modifier = strrchr($pattern, '/');
-                $certain = $affected = (strpos($modifier, 'e') !== false);
-            }
-
-            if ($affected) {
-                $this->addSpot(
-                    'DEPRECATED',
-                    $certain,
-                    'preg_replace() /e modifier is deprecated, use preg_replace_callback() instead'
-                );
+            // Extract array to strings
+            if ($pattern instanceof Expr\Array_) {
+                foreach ($pattern->items as $key => $value) {
+                    $this->verifyPregReplace($value->value->value);
+                }
+            } else {
+                $this->verifyPregReplace($pattern);
             }
         } elseif ($node instanceof Expr\FuncCall && $this->funcTable->has($node->name)) {
-            /**
+            /*
              * TODO: how to check IntlDateFormatter::setTimeZoneId
              *
              * {Reference}
@@ -120,6 +115,29 @@ class Deprecated extends AbstractChange
              * http://php.net/manual/en/migration55.deprecated.php#migration55.deprecated.mcrypt
              */
             $this->addSpot('DEPRECATED', true, 'Function '.$node->name.'() is deprecated');
+        }
+    }
+
+    private function verifyPregReplace($pattern)
+    {
+        $affected = true;
+        $certain = false;
+
+        if (is_string($pattern)) {
+            $modifier = strrchr($pattern, substr($pattern, 0, 1));
+            if ((strpos($modifier, 'e') !== false)) {
+                $affected = true;
+                $certain = true;
+            } else {
+                $affected = false;
+            }
+        }
+        if ($affected) {
+            $this->addSpot(
+                'DEPRECATED',
+                $certain,
+                'preg_replace() /e modifier is deprecated, use preg_replace_callback() instead.'
+            );
         }
     }
 }

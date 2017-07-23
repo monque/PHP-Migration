@@ -13,7 +13,7 @@ class IncompPack extends AbstractChange
 
     public function leaveNode($node)
     {
-        /**
+        /*
          * {Description}
          * Changes were made to pack() and unpack() to make them more compatible with Perl:
          *

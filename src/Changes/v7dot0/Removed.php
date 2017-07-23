@@ -9,7 +9,7 @@ class Removed extends AbstractRemoved
     protected static $version = '7.0.0';
 
     /**
-     * Removed functions
+     * Removed functions.
      *
      * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.removed-functions
      */
@@ -63,7 +63,7 @@ class Removed extends AbstractRemoved
         // set_socket_blocking()
         'set_socket_blocking',
 
-        /**
+        /*
          * dl() in PHP-FPM
          *
          * dl() can no longer be used in PHP-FPM. It remains functional in the
@@ -79,7 +79,7 @@ class Removed extends AbstractRemoved
     ];
 
     /**
-     * $HTTP_RAW_POST_DATA removed
+     * $HTTP_RAW_POST_DATA removed.
      *
      * @see http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.other.http-raw-post-data
      */

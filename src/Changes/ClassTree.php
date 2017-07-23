@@ -25,7 +25,7 @@ class ClassTree extends AbstractChange
             }
 
             $this->classTable[$name] = [
-                'parent' => $parent_name,
+                'parent'   => $parent_name,
                 'children' => [],
                 'topentry' => true,
             ];

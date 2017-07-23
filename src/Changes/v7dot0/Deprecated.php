@@ -13,7 +13,7 @@ class Deprecated extends AbstractChange
 
     public function leaveNode($node)
     {
-        /**
+        /*
          * PHP 4 style constructors
          *
          * @see http://php.net/manual/en/migration70.deprecated.php#migration70.deprecated.php4-constructors
@@ -22,7 +22,7 @@ class Deprecated extends AbstractChange
                 $node->migName == $this->visitor->getClass()->name) {
             $this->addSpot('DEPRECATED', true, 'PHP 4 style constructor is deprecated');
 
-        /**
+        /*
          * password_hash() salt option
          *
          * @see http://php.net/manual/en/migration70.deprecated.php#migration70.deprecated.pwshash-salt-option
@@ -32,7 +32,7 @@ class Deprecated extends AbstractChange
                 isset($node->args[2])) {
             $this->addSpot('DEPRECATED', false, 'salt option for password_hash() is deprecated');
 
-        /**
+        /*
          * LDAP deprecations
          *
          * @see http://php.net/manual/en/migration70.deprecated.php#migration70.deprecated.ldap

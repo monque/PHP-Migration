@@ -10,7 +10,7 @@ class Logging
 
     /**
      * Handle dynamic, static calls to the object.
-     * inspired by Laravel's Illuminate/Support/Facades/Facade.php
+     * inspired by Laravel's Illuminate/Support/Facades/Facade.php.
      */
     public static function __callStatic($method, $args)
     {

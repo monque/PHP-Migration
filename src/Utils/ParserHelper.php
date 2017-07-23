@@ -10,7 +10,7 @@ class ParserHelper
 {
     public static function isDynamicCall(Node $node)
     {
-        /**
+        /*
          * Due to the mechanism of dynamic script programming language,
          * it's TOO hard to guess what the callname exactly references to.
          * eg: $_GET['func']($arg)
@@ -27,7 +27,7 @@ class ParserHelper
     }
 
     /**
-     * Test if given variable is a const name
+     * Test if given variable is a const name.
      */
     public static function isConstName($prop)
     {

@@ -46,7 +46,7 @@ class Deprecated extends AbstractChange
 
     /**
      * For another Changes to set whether skip the check for Call-time
-     * Pass-by-ref
+     * Pass-by-ref.
      */
     public function skipCallTimePassByRef($off)
     {
@@ -63,7 +63,7 @@ class Deprecated extends AbstractChange
             } else {
                 $errmsg = sprintf('Function %s() is deprecated', $node->name);
             }
-            /**
+            /*
              * {Errmsg}
              * Deprecated: Function {function} is deprecated
              *
@@ -74,7 +74,7 @@ class Deprecated extends AbstractChange
 
         // Assign new instance
         } elseif ($this->isAssignNewByRef($node)) {
-            /**
+            /*
              * {Description}
              * Assigning the return value of new by reference is now deprecated.
              *
@@ -88,7 +88,7 @@ class Deprecated extends AbstractChange
 
         // Call-time pass-by-reference
         } elseif ($this->checkCallTimePassByRef && $this->isCallTimePassByRef($node)) {
-            /**
+            /*
              * {Description}
              * Call-time pass-by-reference is now deprecated
              *
@@ -122,6 +122,7 @@ class Deprecated extends AbstractChange
                 return true;
             }
         }
+
         return false;
     }
 }

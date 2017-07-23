@@ -15,6 +15,7 @@ class TestHelper
         $reflection = new \ReflectionClass($object);
         $property = $reflection->getProperty($name);
         $property->setAccessible(true);
+
         return $property->getValue($object);
     }
 
