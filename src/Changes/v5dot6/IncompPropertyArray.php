@@ -3,7 +3,6 @@
 namespace PhpMigration\Changes\v5dot6;
 
 use PhpMigration\Changes\AbstractChange;
-use PhpParser\Node\Scalar\MagicConst;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Scalar;
 use PhpParser\Node\Stmt;
@@ -42,7 +41,7 @@ class IncompPropertyArray extends AbstractChange
                     }
                 } elseif ($stmt instanceof Stmt\ClassConst) {
                     foreach ($stmt->consts as $const) {
-                        if ($const->value instanceof MagicConst) {
+                        if ($const->value instanceof Scalar\MagicConst) {
                             $const_table['self::'.$const->name] = $const->value->getName();
                         } elseif ($const->value instanceof Scalar) {
                             $const_table['self::'.$const->name] = $const->value->value;
