@@ -3,10 +3,10 @@
 namespace PhpMigration\Changes\v5dot6;
 
 use PhpMigration\Changes\AbstractChange;
+use PhpParser\Node\Scalar\MagicConst;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Scalar;
 use PhpParser\Node\Stmt;
-use PhpParser\Node\Scalar\MagicConst;
 
 class IncompPropertyArray extends AbstractChange
 {
