@@ -93,5 +93,17 @@ class Sample
 }
 EOC;
         $this->assertNotSpot($code);
+
+        // MagicConst trigger warning
+        $code = <<<'EOC'
+class Sample
+{
+    const LOGTAG = __FUNCTION__;
+    public $data = array(
+        self::LOGTAG => 1
+    );
+}
+EOC;
+        $this->assertNotSpot($code);
     }
 }
