@@ -41,7 +41,9 @@ class IncompPropertyArray extends AbstractChange
                     }
                 } elseif ($stmt instanceof Stmt\ClassConst) {
                     foreach ($stmt->consts as $const) {
-                        if ($const->value instanceof Scalar) {
+                        if ($const->value instanceof Scalar\MagicConst) {
+                            $const_table['self::'.$const->name] = $const->value->getName();
+                        } elseif ($const->value instanceof Scalar) {
                             $const_table['self::'.$const->name] = $const->value->value;
                         }
                     }
